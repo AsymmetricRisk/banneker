@@ -37,13 +37,13 @@ describe('Full Install Smoke Test', () => {
     tempDir = await mkdtemp(join(tmpdir(), 'banneker-smoke-'));
 
     // Resolve paths using fake home directory
-    const { commandsDir } = resolveInstallPaths('claude', 'global', tempDir);
+    const { commandsDir, configDir } = resolveInstallPaths('claude', 'global', tempDir);
 
     // Simulate full install flow (what installer.run() does):
     // 1. Create target directory
     mkdirSync(commandsDir, { recursive: true });
 
-    // 2. Copy template files
+    // 2. Copy command template files
     const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
     cpSync(templatesDir, commandsDir, {
       recursive: true,
@@ -51,7 +51,19 @@ describe('Full Install Smoke Test', () => {
       filter: (src) => !src.endsWith('.gitkeep')
     });
 
-    // 3. Write VERSION file
+    // 3. Copy agent template files (if agents directory exists)
+    const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+    if (existsSync(agentsTemplatesDir)) {
+      const agentsDir = join(configDir, 'agents');
+      mkdirSync(agentsDir, { recursive: true });
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+    }
+
+    // 4. Write VERSION file
     const versionPath = join(commandsDir, 'VERSION');
     writeFileSync(versionPath, VERSION + '\n', 'utf8');
 
@@ -63,27 +75,50 @@ describe('Full Install Smoke Test', () => {
     const versionContent = await readFile(versionPath, 'utf8');
     assert.strictEqual(versionContent.trim(), VERSION, 'VERSION should match current version');
 
-    // VERIFY: At least one .md file exists
+    // VERIFY: At least one .md file exists in commands
     const files = await readdir(commandsDir);
     const mdFiles = files.filter(f => f.endsWith('.md'));
     assert.ok(mdFiles.length > 0, 'Should have at least one .md skill file');
 
     // VERIFY: All tracked files from BANNEKER_FILES manifest exist
     for (const file of BANNEKER_FILES) {
-      const filePath = join(commandsDir, file);
+      // Agent files are relative to configDir, others to commandsDir
+      const filePath = file.startsWith('agents/')
+        ? join(configDir, file)
+        : join(commandsDir, file);
       assert.ok(existsSync(filePath), `Tracked file ${file} should exist`);
     }
 
-    // VERIFY: Specific expected skill files exist
+    // VERIFY: Specific expected command files exist
     assert.ok(existsSync(join(commandsDir, 'banneker-survey.md')), 'banneker-survey.md should exist');
     assert.ok(existsSync(join(commandsDir, 'banneker-help.md')), 'banneker-help.md should exist');
 
-    // VERIFY: Files have content (not empty)
+    // VERIFY: Command files have content (not empty)
     const surveyContent = await readFile(join(commandsDir, 'banneker-survey.md'), 'utf8');
     assert.ok(surveyContent.length > 0, 'banneker-survey.md should have content');
 
     const helpContent = await readFile(join(commandsDir, 'banneker-help.md'), 'utf8');
     assert.ok(helpContent.length > 0, 'banneker-help.md should have content');
+
+    // VERIFY: Agents directory exists
+    const agentsDir = join(configDir, 'agents');
+    assert.ok(existsSync(agentsDir), 'Agents directory should exist');
+
+    // VERIFY: Specific expected agent files exist
+    assert.ok(existsSync(join(agentsDir, 'banneker-surveyor.md')), 'banneker-surveyor.md should exist');
+
+    // VERIFY: Agent file has valid frontmatter with name field
+    const surveyorContent = await readFile(join(agentsDir, 'banneker-surveyor.md'), 'utf8');
+    assert.ok(surveyorContent.length > 0, 'banneker-surveyor.md should have content');
+    assert.ok(surveyorContent.startsWith('---\n'), 'banneker-surveyor.md should have frontmatter');
+
+    // Extract frontmatter and verify name field exists
+    const lines = surveyorContent.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-surveyor.md should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+    assert.ok(/^name:\s*/.test(frontmatter), 'banneker-surveyor.md should have name field in frontmatter');
   });
 
   it('should install to correct directory for different runtimes', async () => {

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://banneker.dev/schemas/architecture-decisions.schema.json",
+  "title": "Banneker Architecture Decisions",
+  "description": "Reference JSON Schema for architecture decision records captured during the Banneker survey interview. Uses DEC-XXX format for decision identification.",
+  "type": "object",
+  "required": ["decisions"],
+  "properties": {
+    "decisions": {
+      "type": "array",
+      "description": "List of architecture decisions made during the survey",
+      "items": {
+        "type": "object",
+        "required": ["id", "question", "choice", "rationale"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Decision identifier in DEC-XXX format",
+            "pattern": "^DEC-\\d{3}$"
+          },
+          "question": {
+            "type": "string",
+            "description": "The decision question or problem being addressed",
+            "minLength": 1
+          },
+          "choice": {
+            "type": "string",
+            "description": "The selected option or decision made",
+            "minLength": 1
+          },
+          "rationale": {
+            "type": "string",
+            "description": "Reasoning behind the choice",
+            "minLength": 1
+          },
+          "alternatives_considered": {
+            "type": "array",
+            "description": "Other options that were evaluated",
+            "items": {
+              "type": "object",
+              "required": ["option", "rejected_because"],
+              "properties": {
+                "option": {
+                  "type": "string",
+                  "description": "Alternative option name",
+                  "minLength": 1
+                },
+                "rejected_because": {
+                  "type": "string",
+                  "description": "Reason this alternative was not chosen",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "phase": {
+            "type": "string",
+            "description": "Interview phase where this decision was captured",
+            "enum": ["pitch", "actors", "walkthroughs", "backend", "gaps", "decision_gate"]
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "ISO 8601 timestamp when decision was recorded",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

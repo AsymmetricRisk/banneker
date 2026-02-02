@@ -3,11 +3,11 @@
 ## Current Position
 
 Phase: 04 of 10 (Document Generation)
-Plan: 01 of 03 in progress
+Plan: 02 of 03 complete
 Status: In progress
-Last activity: 2026-02-02 — Completed 04-01-PLAN.md (Architect Agent & Document Catalog)
+Last activity: 2026-02-02 — Completed 04-02-PLAN.md (Writer Sub-agent)
 
-Progress: ███████░░░ 33% (10/30 plans estimated)
+Progress: ███████░░░ 37% (11/30 plans estimated)
 
 ## Project Reference
 
@@ -65,6 +65,10 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 | 04-01 | Term registry for naming consistency | Extract canonical names once from survey.json, enforce across all documents | 2026-02-02 |
 | 04-01 | 4-wave dependency-ordered generation | Wave 1 (TECHNICAL-SUMMARY, STACK) → Wave 2 (TECHNICAL-DRAFT, INFRASTRUCTURE-ARCHITECTURE) → Wave 3 (DEVELOPER-HANDBOOK) → Wave 4 (independent) | 2026-02-02 |
 | 04-01 | 3-tier validation framework | Placeholder detection (rejects), term consistency (rejects), decision citations (warns) | 2026-02-02 |
+| 04-02 | Writer agent self-validates before returning | Catches placeholders, naming inconsistencies, invalid citations during generation | 2026-02-02 |
+| 04-02 | Zero-tolerance policy for generic examples | Every sentence must be project-specific, no "e.g., React" or "such as PostgreSQL" | 2026-02-02 |
+| 04-02 | 3-phase generation workflow | Planning → Generation → Self-Validation for each document | 2026-02-02 |
+| 04-02 | Document-specific data mappings | Each of 10 types has explicit guidance on survey data → section content mapping | 2026-02-02 |
 
 ## Blockers/Concerns
 
@@ -77,8 +81,8 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Session Continuity
 
 Last session: 2026-02-02 22:38
-Stopped at: Completed 04-01-PLAN.md (Architect Agent & Document Catalog)
+Stopped at: Completed 04-02-PLAN.md (Writer Sub-agent)
 Resume file: None
 
 ---
-*Last updated: 2026-02-02 — Phase 04 in progress (1/3 plans)*
+*Last updated: 2026-02-02 — Phase 04 in progress (2/3 plans)*

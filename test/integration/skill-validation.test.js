@@ -113,4 +113,123 @@ describe('Skill File YAML Frontmatter Validation', () => {
     const afterFrontmatter = lines.slice(closingIndex + 1).join('\n').trim();
     assert.ok(afterFrontmatter.length > 0, 'Should have content after frontmatter');
   });
+
+  it('should have agent template files', async () => {
+    const agentsDir = join(PACKAGE_ROOT, 'templates', 'agents');
+    const files = await readdir(agentsDir);
+    const agentFiles = files.filter(f => f.endsWith('.md'));
+    assert.ok(agentFiles.length > 0, 'Should have at least one agent template file');
+  });
+
+  it('should validate all agent files have YAML frontmatter with required fields', async () => {
+    const agentsDir = join(PACKAGE_ROOT, 'templates', 'agents');
+    const files = await readdir(agentsDir);
+    const agentFiles = files.filter(f => f.endsWith('.md'));
+
+    for (const file of agentFiles) {
+      const filePath = join(agentsDir, file);
+      const content = await readFile(filePath, 'utf8');
+
+      // Assert: file starts with frontmatter delimiter
+      assert.ok(
+        content.startsWith('---\n'),
+        `${file} should start with YAML frontmatter delimiter (---)`
+      );
+
+      // Find the closing delimiter
+      const lines = content.split('\n');
+      let closingIndex = -1;
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[i] === '---') {
+          closingIndex = i;
+          break;
+        }
+      }
+
+      assert.ok(
+        closingIndex > 0,
+        `${file} should have closing frontmatter delimiter (---)`
+      );
+
+      // Extract frontmatter content
+      const frontmatterLines = lines.slice(1, closingIndex);
+      const frontmatter = frontmatterLines.join('\n');
+
+      // Assert: frontmatter has 'name' field
+      assert.ok(
+        /^name:\s*".+"$/m.test(frontmatter) || /^name:\s*'.+'$/m.test(frontmatter) || /^name:\s+\S+$/m.test(frontmatter),
+        `${file} should have 'name' field in frontmatter`
+      );
+
+      // Assert: frontmatter has 'description' field
+      const hasDescription = /^description:\s*".+"$/m.test(frontmatter) || /^description:\s*'.+'$/m.test(frontmatter) || /^description:\s+\S+$/m.test(frontmatter);
+      assert.ok(hasDescription, `${file} should have 'description' field in frontmatter`);
+
+      // Extract description value to check length
+      const descMatch = frontmatter.match(/^description:\s*"([^"]+)"/m) ||
+                        frontmatter.match(/^description:\s*'([^']+)'/m) ||
+                        frontmatter.match(/^description:\s+(.+)$/m);
+      if (descMatch) {
+        const description = descMatch[1].trim();
+        assert.ok(
+          description.length > 20,
+          `${file} description should be meaningful (>20 chars), got ${description.length} chars`
+        );
+      }
+    }
+  });
+
+  it('should validate banneker-surveyor.md references all 6 phases', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-surveyor.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify it mentions all 6 phases
+    const phases = ['pitch', 'actors', 'walkthroughs', 'backend', 'gaps', 'decision'];
+    for (const phase of phases) {
+      assert.ok(
+        content.toLowerCase().includes(phase),
+        `banneker-surveyor.md should mention phase: ${phase}`
+      );
+    }
+
+    // Verify it mentions state management
+    assert.ok(
+      content.includes('survey-state.md'),
+      'banneker-surveyor.md should mention survey-state.md for state management'
+    );
+
+    // Verify it mentions output files
+    assert.ok(
+      content.includes('survey.json'),
+      'banneker-surveyor.md should mention survey.json output'
+    );
+    assert.ok(
+      content.includes('architecture-decisions.json'),
+      'banneker-surveyor.md should mention architecture-decisions.json output'
+    );
+  });
+
+  it('should validate banneker-survey.md is no longer a stub and references surveyor', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-survey.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify it's not a stub
+    const lowercaseContent = content.toLowerCase();
+    assert.ok(
+      !lowercaseContent.includes('placeholder') && !lowercaseContent.includes('stub'),
+      'banneker-survey.md should not contain placeholder or stub references'
+    );
+
+    // Verify it mentions the surveyor agent
+    assert.ok(
+      content.includes('banneker-surveyor'),
+      'banneker-survey.md should reference banneker-surveyor agent'
+    );
+
+    // Verify it mentions resume detection
+    assert.ok(
+      content.includes('survey-state.md'),
+      'banneker-survey.md should mention survey-state.md for resume detection'
+    );
+  });
 });

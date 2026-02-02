@@ -312,4 +312,46 @@ describe('Skill File YAML Frontmatter Validation', () => {
     // Verify it has document structure guidance
     assert.ok(content.includes('Section Structure') || content.includes('Structure'), 'document-catalog.md should have section structure information');
   });
+
+  it('should validate banneker-roadmap command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-roadmap.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-roadmap command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-roadmap command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-roadmap$/m.test(frontmatter), 'banneker-roadmap command should have name: banneker-roadmap');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-roadmap command should have description field');
+  });
+
+  it('should validate banneker-diagrammer agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-diagrammer.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-diagrammer agent should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-diagrammer agent should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-diagrammer$/m.test(frontmatter), 'banneker-diagrammer agent should have name: banneker-diagrammer');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-diagrammer agent should have description field');
+  });
 });

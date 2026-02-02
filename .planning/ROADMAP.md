@@ -85,9 +85,11 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Surveyor sub-agent and JSON reference schemas
-- [ ] 03-02-PLAN.md — Survey command orchestrator skill file
-- [ ] 03-03-PLAN.md — Installer integration for agents directory and tests
+- [x] 03-01-PLAN.md — Surveyor sub-agent and JSON reference schemas
+- [x] 03-02-PLAN.md — Survey command orchestrator skill file
+- [x] 03-03-PLAN.md — Installer integration for agents directory and tests
+
+**Phase 3 Status:** COMPLETE (all 3 plans executed, all success criteria met)
 
 ---
 
@@ -109,6 +111,14 @@ Plans:
 **Complexity:** L
 
 **Dependencies:** Phase 3
+
+**Plans:** 4 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Architect sub-agent and document catalog reference
+- [ ] 04-02-PLAN.md — Writer sub-agent for individual document generation
+- [ ] 04-03-PLAN.md — Architect command orchestrator skill file
+- [ ] 04-04-PLAN.md — Installer manifest update and tests
 
 ---
 

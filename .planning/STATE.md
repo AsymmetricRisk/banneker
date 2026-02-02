@@ -2,10 +2,12 @@
 
 ## Current Position
 
-Phase: Not started (ready to plan Phase 1)
-Plan: —
-Status: Milestone 1 initialized, ready to plan first phase
-Last activity: 2026-02-02 — Milestone 1 started
+Phase: 01 of 10 (Package Scaffolding & Installer)
+Plan: 01 of 03 complete
+Status: Phase 01 in progress
+Last activity: 2026-02-02 — Completed 01-01-PLAN.md
+
+Progress: █░░░░░░░░░ 3% (1/30 plans estimated)
 
 ## Project Reference
 
@@ -27,5 +29,18 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 - Installer writes to `~/` — needs high confidence before publishing
 - Pre-1.0 versioning at 0.2.0
 
+## Decisions Ledger
+
+| Phase-Plan | Decision | Impact | Date |
+|------------|----------|--------|------|
+| 01-01 | Use ES modules throughout package | All lib modules use ES import/export syntax | 2026-02-02 |
+| 01-01 | Multi-runtime support baked into constants | RUNTIMES object provides centralized runtime configs | 2026-02-02 |
+
+## Session Continuity
+
+Last session: 2026-02-02 19:21
+Stopped at: Completed 01-01-PLAN.md
+Resume file: None
+
 ---
-*Last updated: 2026-02-02 — Milestone 1 initialized*
+*Last updated: 2026-02-02 — Plan 01-01 complete*

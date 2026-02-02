@@ -28,10 +28,10 @@
 
 ## REQ-DIAG: Architecture Diagrams
 
-- **REQ-DIAG-001** (must): Generate 4 HTML architecture diagrams: executive roadmap, decision map, system map, and architecture wiring. Source: Developer walkthrough step 4.
-- **REQ-DIAG-002** (must): Wave 1 produces 3 CSS-only diagrams; Wave 2 produces 1 JS-enhanced wiring diagram. Source: Developer walkthrough step 4.
-- **REQ-DIAG-003** (must): All diagrams are self-contained HTML files with no external dependencies. Source: STACK.md output formats.
-- **REQ-DIAG-004** (should): Support context budget handoff — if Wave 1 completes but context is exhausted, write handoff file for Wave 2 resume. Source: Developer walkthrough step 4 error case.
+- **REQ-DIAG-001** (must) ✓: Generate 4 HTML architecture diagrams: executive roadmap, decision map, system map, and architecture wiring. Source: Developer walkthrough step 4. *Complete: Phase 5*
+- **REQ-DIAG-002** (must) ✓: Wave 1 produces 3 CSS-only diagrams; Wave 2 produces 1 JS-enhanced wiring diagram. Source: Developer walkthrough step 4. *Complete: Phase 5*
+- **REQ-DIAG-003** (must) ✓: All diagrams are self-contained HTML files with no external dependencies. Source: STACK.md output formats. *Complete: Phase 5*
+- **REQ-DIAG-004** (should) ✓: Support context budget handoff — if Wave 1 completes but context is exhausted, write handoff file for Wave 2 resume. Source: Developer walkthrough step 4 error case. *Complete: Phase 5*
 
 ## REQ-APPENDIX: HTML Appendix
 
@@ -71,4 +71,4 @@
 
 - **REQ-CONT-001** (must): All long-running commands track progress in `.banneker/state/{command}-state.md`. Source: continuation-protocol.md Method B.
 - **REQ-CONT-002** (must): Commands check for continuation state before starting work (resume detection at Step 0). Source: continuation-protocol.md resume detection pattern.
-- **REQ-CONT-003** (should): Write `.banneker/state/.continue-here.md` handoff file when a command cannot continue in the current session. Source: continuation-protocol.md Method C.
+- **REQ-CONT-003** (should) ✓: Write `.banneker/state/.continue-here.md` handoff file when a command cannot continue in the current session. Source: continuation-protocol.md Method C. *Complete: Phase 5*

@@ -44,6 +44,8 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 | 02-01 | Tiered test directory structure | unit/integration/smoke directories for CI optimization | 2026-02-02 |
 | 02-01 | Use node:test programmatic API | Coverage enforcement via run() API with strict thresholds | 2026-02-02 |
 | 02-01 | Enforce 100% coverage on installer code paths | Only lib/installer.js, lib/paths.js, lib/flags.js require 100% coverage | 2026-02-02 |
+| 02-02 | Export checkWritePermission() for testability | Made permission checking function exportable for unit test isolation | 2026-02-02 |
+| 02-02 | Walk directory tree for permission checks | checkWritePermission walks up to existing directory for access verification | 2026-02-02 |
 | 02-03 | Trigger validation on all branches | Push to any branch triggers CI per REQ-CICD-001 "every push" | 2026-02-02 |
 | 02-03 | Use Node 24.x for publish workflow | Trusted publishing requires npm 11.5.1+ which ships with Node 24.x | 2026-02-02 |
 | 02-03 | Separate validation and publish workflows | Clear failure isolation, independent retry capability | 2026-02-02 |
@@ -59,8 +61,8 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 
 ## Session Continuity
 
-Last session: 2026-02-02 20:39
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-02-02 20:40
+Stopped at: Completed 02-02-PLAN.md (re-executed with atomic commits)
 Resume file: None
 
 ---

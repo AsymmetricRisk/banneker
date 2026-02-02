@@ -169,6 +169,13 @@ Plans:
 
 **Dependencies:** Phase 4, Phase 5
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Publisher sub-agent for HTML appendix compilation
+- [ ] 06-02-PLAN.md — Appendix command orchestrator skill file
+- [ ] 06-03-PLAN.md — Installer manifest update and tests
+
 ---
 
 ## Phase 7: Export & Feed System

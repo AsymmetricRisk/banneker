@@ -82,6 +82,13 @@ Plans:
 
 **Dependencies:** Phase 1
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Surveyor sub-agent and JSON reference schemas
+- [ ] 03-02-PLAN.md — Survey command orchestrator skill file
+- [ ] 03-03-PLAN.md — Installer integration for agents directory and tests
+
 ---
 
 ## Phase 4: Document Generation

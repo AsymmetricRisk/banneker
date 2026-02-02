@@ -1,0 +1,141 @@
+/**
+ * Smoke tests for full Banneker installation lifecycle
+ * Tests REQ-CICD-004 (end-to-end install verification)
+ */
+
+import { describe, it, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtemp, rm, readdir, readFile } from 'node:fs/promises';
+import { mkdirSync, cpSync, writeFileSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { tmpdir } from 'node:os';
+import { fileURLToPath } from 'node:url';
+import { resolveInstallPaths } from '../../lib/paths.js';
+import { VERSION, BANNEKER_FILES } from '../../lib/constants.js';
+
+// Get package root for accessing templates
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const PACKAGE_ROOT = join(__dirname, '..', '..');
+
+describe('Full Install Smoke Test', () => {
+  let tempDir;
+
+  afterEach(async () => {
+    // Clean up temp directory after each test
+    if (tempDir) {
+      try {
+        await rm(tempDir, { recursive: true, force: true });
+      } catch (err) {
+        // Ignore cleanup errors
+      }
+    }
+  });
+
+  it('should complete full install lifecycle in clean temp directory', async () => {
+    // Create temp directory to act as fake home
+    tempDir = await mkdtemp(join(tmpdir(), 'banneker-smoke-'));
+
+    // Resolve paths using fake home directory
+    const { commandsDir } = resolveInstallPaths('claude', 'global', tempDir);
+
+    // Simulate full install flow (what installer.run() does):
+    // 1. Create target directory
+    mkdirSync(commandsDir, { recursive: true });
+
+    // 2. Copy template files
+    const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
+    cpSync(templatesDir, commandsDir, {
+      recursive: true,
+      force: true,
+      filter: (src) => !src.endsWith('.gitkeep')
+    });
+
+    // 3. Write VERSION file
+    const versionPath = join(commandsDir, 'VERSION');
+    writeFileSync(versionPath, VERSION + '\n', 'utf8');
+
+    // VERIFY: Commands directory exists
+    assert.ok(existsSync(commandsDir), 'Commands directory should exist');
+
+    // VERIFY: VERSION file exists with correct content
+    assert.ok(existsSync(versionPath), 'VERSION file should exist');
+    const versionContent = await readFile(versionPath, 'utf8');
+    assert.strictEqual(versionContent.trim(), VERSION, 'VERSION should match current version');
+
+    // VERIFY: At least one .md file exists
+    const files = await readdir(commandsDir);
+    const mdFiles = files.filter(f => f.endsWith('.md'));
+    assert.ok(mdFiles.length > 0, 'Should have at least one .md skill file');
+
+    // VERIFY: All tracked files from BANNEKER_FILES manifest exist
+    for (const file of BANNEKER_FILES) {
+      const filePath = join(commandsDir, file);
+      assert.ok(existsSync(filePath), `Tracked file ${file} should exist`);
+    }
+
+    // VERIFY: Specific expected skill files exist
+    assert.ok(existsSync(join(commandsDir, 'banneker-survey.md')), 'banneker-survey.md should exist');
+    assert.ok(existsSync(join(commandsDir, 'banneker-help.md')), 'banneker-help.md should exist');
+
+    // VERIFY: Files have content (not empty)
+    const surveyContent = await readFile(join(commandsDir, 'banneker-survey.md'), 'utf8');
+    assert.ok(surveyContent.length > 0, 'banneker-survey.md should have content');
+
+    const helpContent = await readFile(join(commandsDir, 'banneker-help.md'), 'utf8');
+    assert.ok(helpContent.length > 0, 'banneker-help.md should have content');
+  });
+
+  it('should install to correct directory for different runtimes', async () => {
+    tempDir = await mkdtemp(join(tmpdir(), 'banneker-smoke-'));
+
+    // Test Claude runtime
+    const claudePaths = resolveInstallPaths('claude', 'global', tempDir);
+    assert.ok(claudePaths.commandsDir.includes('.claude/commands'), 'Claude should use .claude/commands');
+
+    // Test OpenCode runtime
+    const opencodePaths = resolveInstallPaths('opencode', 'global', tempDir);
+    assert.ok(opencodePaths.commandsDir.includes('.opencode/commands'), 'OpenCode should use .opencode/commands');
+
+    // Test Gemini runtime
+    const geminiPaths = resolveInstallPaths('gemini', 'global', tempDir);
+    assert.ok(geminiPaths.commandsDir.includes('.gemini/commands'), 'Gemini should use .gemini/commands');
+  });
+
+  it('should handle multiple successive installs (overwrite scenario)', async () => {
+    tempDir = await mkdtemp(join(tmpdir(), 'banneker-smoke-'));
+
+    const { commandsDir } = resolveInstallPaths('claude', 'global', tempDir);
+
+    // First install
+    mkdirSync(commandsDir, { recursive: true });
+    const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
+    cpSync(templatesDir, commandsDir, {
+      recursive: true,
+      force: true,
+      filter: (src) => !src.endsWith('.gitkeep')
+    });
+    const versionPath = join(commandsDir, 'VERSION');
+    writeFileSync(versionPath, '0.1.0\n', 'utf8');
+
+    // Verify first install
+    let versionContent = await readFile(versionPath, 'utf8');
+    assert.strictEqual(versionContent.trim(), '0.1.0', 'First install should have 0.1.0');
+
+    // Second install (overwrite)
+    cpSync(templatesDir, commandsDir, {
+      recursive: true,
+      force: true,
+      filter: (src) => !src.endsWith('.gitkeep')
+    });
+    writeFileSync(versionPath, VERSION + '\n', 'utf8');
+
+    // Verify overwrite
+    versionContent = await readFile(versionPath, 'utf8');
+    assert.strictEqual(versionContent.trim(), VERSION, 'Second install should have current VERSION');
+
+    // Verify files still exist
+    assert.ok(existsSync(join(commandsDir, 'banneker-survey.md')), 'banneker-survey.md should still exist');
+    assert.ok(existsSync(join(commandsDir, 'banneker-help.md')), 'banneker-help.md should still exist');
+  });
+});

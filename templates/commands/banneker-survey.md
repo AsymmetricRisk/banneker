@@ -1,4 +1,5 @@
 ---
+name: "banneker-survey"
 description: "Survey a codebase and generate a project overview (stub - replaced in Phase 4)"
 ---
 

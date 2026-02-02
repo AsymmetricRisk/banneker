@@ -1,4 +1,5 @@
 ---
+name: "banneker-help"
 description: "Show available Banneker commands and usage (stub - replaced in Phase 3)"
 ---
 

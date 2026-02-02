@@ -55,16 +55,16 @@
 
 ## REQ-CICD: CI/CD & Quality
 
-- **REQ-CICD-001** (must): GitHub Actions validation workflow runs full test suite on every push and PR. Source: DEC-007, CICD-01 through CICD-04.
-- **REQ-CICD-002** (must): GitHub Actions publish workflow triggered by version tag runs tests then publishes to npm. Source: DEC-007.
-- **REQ-CICD-003** (must): Test suite includes unit tests (installer logic), integration tests (skill file validation), and smoke tests (full install verification). Source: DEC-008.
-- **REQ-CICD-004** (must): 100% coverage of installer file-write code paths. Source: TECHNICAL-SUMMARY.md key metrics.
+- **REQ-CICD-001** (must) ✓: GitHub Actions validation workflow runs full test suite on every push and PR. Source: DEC-007, CICD-01 through CICD-04. *Complete: Phase 2*
+- **REQ-CICD-002** (must) ✓: GitHub Actions publish workflow triggered by version tag runs tests then publishes to npm. Source: DEC-007. *Complete: Phase 2*
+- **REQ-CICD-003** (must) ✓: Test suite includes unit tests (installer logic), integration tests (skill file validation), and smoke tests (full install verification). Source: DEC-008. *Complete: Phase 2*
+- **REQ-CICD-004** (must) ✓: 100% coverage of installer file-write code paths. Source: TECHNICAL-SUMMARY.md key metrics. *Complete: Phase 2 (enforcement infrastructure in place)*
 - **REQ-CICD-005** (should): Changelog automation for releases. Source: rubric partial coverage CICD-05.
 
 ## REQ-SEC: Security
 
-- **REQ-SEC-001** (must): Installer checks file permissions before writing to `~/.claude/`. Source: SEC-01.
-- **REQ-SEC-002** (must): Installer prompts before overwriting existing files. Source: SEC-02.
+- **REQ-SEC-001** (must) ✓: Installer checks file permissions before writing to `~/.claude/`. Source: SEC-01. *Complete: Phase 2*
+- **REQ-SEC-002** (must) ✓: Installer prompts before overwriting existing files. Source: SEC-02. *Complete: Phase 2*
 - **REQ-SEC-003** (should): Document a formal threat model for the installer's file-write surface. Source: rubric partial coverage SEC-03.
 
 ## REQ-CONT: Continuation & State

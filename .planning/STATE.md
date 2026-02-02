@@ -3,11 +3,11 @@
 ## Current Position
 
 Phase: 01 of 10 (Package Scaffolding & Installer)
-Plan: 01 of 03 complete
+Plan: 02 of 04 complete
 Status: Phase 01 in progress
-Last activity: 2026-02-02 — Completed 01-01-PLAN.md
+Last activity: 2026-02-02 — Completed 01-02-PLAN.md
 
-Progress: █░░░░░░░░░ 3% (1/30 plans estimated)
+Progress: ██░░░░░░░░ 7% (2/30 plans estimated)
 
 ## Project Reference
 
@@ -35,12 +35,15 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 |------------|----------|--------|------|
 | 01-01 | Use ES modules throughout package | All lib modules use ES import/export syntax | 2026-02-02 |
 | 01-01 | Multi-runtime support baked into constants | RUNTIMES object provides centralized runtime configs | 2026-02-02 |
+| 01-02 | Use Node.js built-in test runner | Zero test dependencies, use node:test for TDD | 2026-02-02 |
+| 01-02 | Import RUNTIME_CHOICES in flags.js | Single source of truth for runtime validation | 2026-02-02 |
+| 01-02 | Optional homeDir parameter in paths.js | Enables deterministic testing with mock directories | 2026-02-02 |
 
 ## Session Continuity
 
-Last session: 2026-02-02 19:21
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-02-02 19:23
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-02 — Plan 01-01 complete*
+*Last updated: 2026-02-02 — Plan 01-02 complete*

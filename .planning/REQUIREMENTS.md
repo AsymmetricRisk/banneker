@@ -2,13 +2,13 @@
 
 ## REQ-INST: Installation & Distribution
 
-- **REQ-INST-001** (must): Distribute as npm package installable via `npx banneker`. Source: DEC-001.
-- **REQ-INST-002** (must): Installer copies 11 skill command files to the host runtime's commands directory and reference/template files to the config directory. Source: New User walkthrough step 4.
-- **REQ-INST-003** (must): Support Claude Code, OpenCode, and Gemini runtimes via `--claude`, `--opencode`, `--gemini` flags and interactive prompt. Source: DEC-004.
-- **REQ-INST-004** (must): Detect existing installations via `VERSION` file and prompt before overwriting. Source: New User walkthrough step 4 error case.
-- **REQ-INST-005** (must): Support `--uninstall` flag to remove all Banneker files from target directory without affecting non-Banneker files. Source: Installer CLI capabilities.
-- **REQ-INST-006** (should): Support `--global` and `--local` flags for non-interactive installation in CI or dotfile bootstrapping. Source: Installer CLI capabilities.
-- **REQ-INST-007** (must): Use zero third-party runtime dependencies — Node.js built-in modules only (`fs`, `path`, `readline`, `process`, `child_process`). Source: STACK.md, DEC-008.
+- **REQ-INST-001** (must) ✓: Distribute as npm package installable via `npx banneker`. Source: DEC-001. *Complete: Phase 1*
+- **REQ-INST-002** (must) ✓: Installer copies 11 skill command files to the host runtime's commands directory and reference/template files to the config directory. Source: New User walkthrough step 4. *Complete: Phase 1*
+- **REQ-INST-003** (must) ✓: Support Claude Code, OpenCode, and Gemini runtimes via `--claude`, `--opencode`, `--gemini` flags and interactive prompt. Source: DEC-004. *Complete: Phase 1*
+- **REQ-INST-004** (must) ✓: Detect existing installations via `VERSION` file and prompt before overwriting. Source: New User walkthrough step 4 error case. *Complete: Phase 1*
+- **REQ-INST-005** (must) ✓: Support `--uninstall` flag to remove all Banneker files from target directory without affecting non-Banneker files. Source: Installer CLI capabilities. *Complete: Phase 1*
+- **REQ-INST-006** (should) ✓: Support `--global` and `--local` flags for non-interactive installation in CI or dotfile bootstrapping. Source: Installer CLI capabilities. *Complete: Phase 1*
+- **REQ-INST-007** (must) ✓: Use zero third-party runtime dependencies — Node.js built-in modules only (`fs`, `path`, `readline`, `process`, `child_process`). Source: STACK.md, DEC-008. *Complete: Phase 1*
 
 ## REQ-SURVEY: Discovery Interview
 

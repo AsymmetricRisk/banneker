@@ -22,6 +22,14 @@
 
 **Dependencies:** None
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Package scaffolding (package.json, bin entry, constants, directory structure)
+- [ ] 01-02-PLAN.md — TDD: Flag parsing and path resolution modules
+- [ ] 01-03-PLAN.md — Installer orchestration, prompts, and uninstaller
+- [ ] 01-04-PLAN.md — Integration tests and end-to-end verification
+
 ---
 
 ## Phase 2: CI/CD Pipeline
@@ -176,7 +184,7 @@
 
 **Complexity:** M
 
-**Dependencies:** Phases 1–8
+**Dependencies:** Phases 1-8
 
 ---
 
@@ -195,4 +203,4 @@
 
 **Complexity:** S
 
-**Dependencies:** Phases 1–9
+**Dependencies:** Phases 1-9

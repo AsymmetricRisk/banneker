@@ -19,12 +19,12 @@
 
 ## REQ-DOCS: Document Generation
 
-- **REQ-DOCS-001** (must): Generate TECHNICAL-SUMMARY.md, STACK.md, and INFRASTRUCTURE-ARCHITECTURE.md for every project. Source: document-catalog.md always-generated rules.
-- **REQ-DOCS-002** (should): Conditionally generate TECHNICAL-DRAFT.md, DEVELOPER-HANDBOOK.md, DESIGN-SYSTEM.md, PORTAL-INTEGRATION.md, OPERATIONS-RUNBOOK.md, LEGAL-PLAN.md, and CONTENT-ARCHITECTURE.md based on project type and survey signals. Source: document-catalog.md conditional rules.
-- **REQ-DOCS-003** (must): All generated documents must be project-specific with zero generic placeholder content and zero leftover `<!-- BANNEKER: ... -->` template markers. Source: document-catalog.md quality standards.
-- **REQ-DOCS-004** (must): Technology names, actor names, and entity names must be consistent across all generated documents. Source: document-catalog.md quality standards.
-- **REQ-DOCS-005** (must): Documents must cite DEC-XXX decision IDs from `architecture-decisions.json` where relevant. Source: document-catalog.md quality standards.
-- **REQ-DOCS-006** (must): Generate documents in dependency order: TECHNICAL-SUMMARY and STACK first, then TECHNICAL-DRAFT, then INFRASTRUCTURE-ARCHITECTURE, then DEVELOPER-HANDBOOK, then all others. Source: document-catalog.md dependencies.
+- **REQ-DOCS-001** (must) ✓: Generate TECHNICAL-SUMMARY.md, STACK.md, and INFRASTRUCTURE-ARCHITECTURE.md for every project. Source: document-catalog.md always-generated rules. *Complete: Phase 4*
+- **REQ-DOCS-002** (should) ✓: Conditionally generate TECHNICAL-DRAFT.md, DEVELOPER-HANDBOOK.md, DESIGN-SYSTEM.md, PORTAL-INTEGRATION.md, OPERATIONS-RUNBOOK.md, LEGAL-PLAN.md, and CONTENT-ARCHITECTURE.md based on project type and survey signals. Source: document-catalog.md conditional rules. *Complete: Phase 4*
+- **REQ-DOCS-003** (must) ✓: All generated documents must be project-specific with zero generic placeholder content and zero leftover `<!-- BANNEKER: ... -->` template markers. Source: document-catalog.md quality standards. *Complete: Phase 4*
+- **REQ-DOCS-004** (must) ✓: Technology names, actor names, and entity names must be consistent across all generated documents. Source: document-catalog.md quality standards. *Complete: Phase 4*
+- **REQ-DOCS-005** (must) ✓: Documents must cite DEC-XXX decision IDs from `architecture-decisions.json` where relevant. Source: document-catalog.md quality standards. *Complete: Phase 4*
+- **REQ-DOCS-006** (must) ✓: Generate documents in dependency order: TECHNICAL-SUMMARY and STACK first, then TECHNICAL-DRAFT, then INFRASTRUCTURE-ARCHITECTURE, then DEVELOPER-HANDBOOK, then all others. Source: document-catalog.md dependencies. *Complete: Phase 4*
 
 ## REQ-DIAG: Architecture Diagrams
 

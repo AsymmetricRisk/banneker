@@ -30,7 +30,7 @@ Plans:
 - [x] 01-03-PLAN.md — Installer orchestration, prompts, and uninstaller
 - [x] 01-04-PLAN.md — Integration tests and end-to-end verification
 
-**Phase 1 Status:** COMPLETE ✓ (all 4 plans executed, all success criteria met)
+**Phase 1 Status:** COMPLETE (all 4 plans executed, all success criteria met)
 
 ---
 
@@ -43,7 +43,7 @@ Plans:
 **Success Criteria:**
 1. Push to any branch triggers validation workflow running full test suite
 2. PR creation triggers the same validation workflow
-3. Version tag push triggers publish workflow (tests → npm publish)
+3. Version tag push triggers publish workflow (tests -> npm publish)
 4. Unit tests cover installer flag parsing, directory resolution, file copy logic
 5. Integration tests validate skill file YAML frontmatter
 6. Smoke test runs full install in clean temp directory and verifies files exist
@@ -52,6 +52,13 @@ Plans:
 **Complexity:** M
 
 **Dependencies:** Phase 1
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Test infrastructure: reorganize directories, npm scripts, coverage thresholds
+- [ ] 02-02-PLAN.md — New tests: permission checks, YAML validation, smoke test
+- [ ] 02-03-PLAN.md — GitHub Actions workflows: validate.yml and publish.yml
 
 ---
 

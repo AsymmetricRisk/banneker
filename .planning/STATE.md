@@ -2,12 +2,12 @@
 
 ## Current Position
 
-Phase: 03 of 10 (Survey Pipeline)
-Plan: 03 of 03 complete
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 03-03-PLAN.md (Installer Support for Agent Files)
+Phase: 04 of 10 (Document Generation)
+Plan: 01 of 03 in progress
+Status: In progress
+Last activity: 2026-02-02 — Completed 04-01-PLAN.md (Architect Agent & Document Catalog)
 
-Progress: ███████░░░ 30% (9/30 plans estimated)
+Progress: ███████░░░ 33% (10/30 plans estimated)
 
 ## Project Reference
 
@@ -60,6 +60,11 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 | 03-02 | State file preserved on verification failure | Enables debugging and retry without starting over | 2026-02-02 |
 | 03-03 | Agent file tracking via path prefix | BANNEKER_FILES uses agents/ prefix for path-based routing in installer/uninstaller | 2026-02-02 |
 | 03-03 | Backwards-compatible null configDir handling | Uninstaller skips agent files if configDir is null for test compatibility | 2026-02-02 |
+| 04-01 | 10 document types with conditional generation | 3 always (TECHNICAL-SUMMARY, STACK, INFRASTRUCTURE-ARCHITECTURE) + 7 conditional based on survey signals | 2026-02-02 |
+| 04-01 | Signal detection for document applicability | Survey.json field patterns determine which documents are relevant for project type | 2026-02-02 |
+| 04-01 | Term registry for naming consistency | Extract canonical names once from survey.json, enforce across all documents | 2026-02-02 |
+| 04-01 | 4-wave dependency-ordered generation | Wave 1 (TECHNICAL-SUMMARY, STACK) → Wave 2 (TECHNICAL-DRAFT, INFRASTRUCTURE-ARCHITECTURE) → Wave 3 (DEVELOPER-HANDBOOK) → Wave 4 (independent) | 2026-02-02 |
+| 04-01 | 3-tier validation framework | Placeholder detection (rejects), term consistency (rejects), decision citations (warns) | 2026-02-02 |
 
 ## Blockers/Concerns
 
@@ -71,9 +76,9 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 
 ## Session Continuity
 
-Last session: 2026-02-02 21:48
-Stopped at: Completed 03-03-PLAN.md (Phase 03 complete)
+Last session: 2026-02-02 22:38
+Stopped at: Completed 04-01-PLAN.md (Architect Agent & Document Catalog)
 Resume file: None
 
 ---
-*Last updated: 2026-02-02 — Phase 03 complete (3/3 plans)*
+*Last updated: 2026-02-02 — Phase 04 in progress (1/3 plans)*

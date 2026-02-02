@@ -1,0 +1,20 @@
+{
+  "name": "banneker",
+  "version": "0.2.0",
+  "description": "Project planning and documentation pipeline for AI coding assistants",
+  "type": "module",
+  "bin": {
+    "banneker": "./bin/banneker.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
+  "files": [
+    "bin/",
+    "lib/",
+    "templates/",
+    "VERSION"
+  ],
+  "scripts": {}
+}

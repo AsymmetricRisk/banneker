@@ -1,0 +1,7 @@
+.planning/
+.banneker/
+.claude/
+.git/
+*.ipynb
+DIAGRAM-GUIDE.md
+TECHNICAL_SUMMARY_GUIDE.md

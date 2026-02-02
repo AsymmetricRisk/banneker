@@ -141,6 +141,13 @@ Plans:
 
 **Dependencies:** Phase 4
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Diagrammer sub-agent for HTML diagram generation
+- [ ] 05-02-PLAN.md — Roadmap command orchestrator skill file
+- [ ] 05-03-PLAN.md — Installer manifest update and tests
+
 ---
 
 ## Phase 6: HTML Appendix

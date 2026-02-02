@@ -63,6 +63,18 @@ describe('Full Install Smoke Test', () => {
       });
     }
 
+    // 3b. Copy config template files (if config directory exists)
+    const configTemplatesDir = join(PACKAGE_ROOT, 'templates', 'config');
+    if (existsSync(configTemplatesDir)) {
+      const configTargetDir = join(configDir, 'config');
+      mkdirSync(configTargetDir, { recursive: true });
+      cpSync(configTemplatesDir, configTargetDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+    }
+
     // 4. Write VERSION file
     const versionPath = join(commandsDir, 'VERSION');
     writeFileSync(versionPath, VERSION + '\n', 'utf8');
@@ -82,8 +94,9 @@ describe('Full Install Smoke Test', () => {
 
     // VERIFY: All tracked files from BANNEKER_FILES manifest exist
     for (const file of BANNEKER_FILES) {
-      // Agent files are relative to configDir, others to commandsDir
-      const filePath = file.startsWith('agents/')
+      // Agent files (agents/*) and config files (config/*) are relative to configDir
+      // Other files are relative to commandsDir
+      const filePath = (file.startsWith('agents/') || file.startsWith('config/'))
         ? join(configDir, file)
         : join(commandsDir, file);
       assert.ok(existsSync(filePath), `Tracked file ${file} should exist`);
@@ -92,6 +105,7 @@ describe('Full Install Smoke Test', () => {
     // VERIFY: Specific expected command files exist
     assert.ok(existsSync(join(commandsDir, 'banneker-survey.md')), 'banneker-survey.md should exist');
     assert.ok(existsSync(join(commandsDir, 'banneker-help.md')), 'banneker-help.md should exist');
+    assert.ok(existsSync(join(commandsDir, 'banneker-architect.md')), 'banneker-architect.md command should exist');
 
     // VERIFY: Command files have content (not empty)
     const surveyContent = await readFile(join(commandsDir, 'banneker-survey.md'), 'utf8');
@@ -106,6 +120,8 @@ describe('Full Install Smoke Test', () => {
 
     // VERIFY: Specific expected agent files exist
     assert.ok(existsSync(join(agentsDir, 'banneker-surveyor.md')), 'banneker-surveyor.md should exist');
+    assert.ok(existsSync(join(agentsDir, 'banneker-architect.md')), 'banneker-architect.md agent should exist');
+    assert.ok(existsSync(join(agentsDir, 'banneker-writer.md')), 'banneker-writer.md agent should exist');
 
     // VERIFY: Agent file has valid frontmatter with name field
     const surveyorContent = await readFile(join(agentsDir, 'banneker-surveyor.md'), 'utf8');
@@ -119,6 +135,16 @@ describe('Full Install Smoke Test', () => {
 
     const frontmatter = lines.slice(1, closingIndex).join('\n');
     assert.ok(/^name:\s*/.test(frontmatter), 'banneker-surveyor.md should have name field in frontmatter');
+
+    // VERIFY: Config directory exists and has expected files
+    const configTargetDir = join(configDir, 'config');
+    assert.ok(existsSync(configTargetDir), 'Config directory should exist');
+    assert.ok(existsSync(join(configTargetDir, 'document-catalog.md')), 'document-catalog.md should exist in config directory');
+
+    // VERIFY: Config file has content (not empty)
+    const catalogContent = await readFile(join(configTargetDir, 'document-catalog.md'), 'utf8');
+    assert.ok(catalogContent.length > 0, 'document-catalog.md should have content');
+    assert.ok(catalogContent.includes('TECHNICAL-SUMMARY'), 'document-catalog.md should reference TECHNICAL-SUMMARY');
   });
 
   it('should install to correct directory for different runtimes', async () => {

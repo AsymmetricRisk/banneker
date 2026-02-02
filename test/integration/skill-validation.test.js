@@ -232,4 +232,84 @@ describe('Skill File YAML Frontmatter Validation', () => {
       'banneker-survey.md should mention survey-state.md for resume detection'
     );
   });
+
+  it('should validate banneker-architect agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-architect.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-architect.md should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-architect.md should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-architect$/m.test(frontmatter), 'banneker-architect.md should have name: banneker-architect');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-architect.md should have description field');
+  });
+
+  it('should validate banneker-writer agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-writer.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-writer.md should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-writer.md should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-writer$/m.test(frontmatter), 'banneker-writer.md should have name: banneker-writer');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-writer.md should have description field');
+  });
+
+  it('should validate banneker-architect command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-architect.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-architect command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-architect command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-architect$/m.test(frontmatter), 'banneker-architect command should have name: banneker-architect');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-architect command should have description field');
+  });
+
+  it('should validate document-catalog.md config file exists and has expected content', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'config', 'document-catalog.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Config files do NOT have frontmatter (unlike agent and command files)
+    assert.ok(!content.startsWith('---\n'), 'document-catalog.md should NOT start with frontmatter (it is a config file)');
+
+    // Verify it contains expected section headers
+    assert.ok(content.includes('# Document Catalog'), 'document-catalog.md should have Document Catalog heading');
+
+    // Verify it mentions TECHNICAL-SUMMARY (a key always-generated document)
+    assert.ok(content.includes('TECHNICAL-SUMMARY'), 'document-catalog.md should reference TECHNICAL-SUMMARY document');
+
+    // Verify it has document structure guidance
+    assert.ok(content.includes('Section Structure') || content.includes('Structure'), 'document-catalog.md should have section structure information');
+  });
 });

@@ -4,7 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { resolveInstallPaths } from '../lib/paths.js';
+import { resolveInstallPaths } from '../../lib/paths.js';
 
 describe('resolveInstallPaths', () => {
   const mockHomeDir = '/home/testuser';

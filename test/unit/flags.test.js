@@ -4,7 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { parseFlags } from '../lib/flags.js';
+import { parseFlags } from '../../lib/flags.js';
 
 describe('parseFlags', () => {
   it('parses --claude flag', () => {

@@ -9,15 +9,15 @@ import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync, cpSync } fr
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { parseFlags } from '../lib/flags.js';
-import { resolveInstallPaths } from '../lib/paths.js';
-import { uninstall } from '../lib/uninstaller.js';
-import { VERSION, BANNEKER_FILES } from '../lib/constants.js';
+import { parseFlags } from '../../lib/flags.js';
+import { resolveInstallPaths } from '../../lib/paths.js';
+import { uninstall } from '../../lib/uninstaller.js';
+import { VERSION, BANNEKER_FILES } from '../../lib/constants.js';
 
 // Get package root for accessing templates
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const PACKAGE_ROOT = join(__dirname, '..');
+const PACKAGE_ROOT = join(__dirname, '..', '..');
 
 describe('Installer Integration Tests', () => {
   let tempDir;

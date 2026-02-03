@@ -396,4 +396,63 @@ describe('Skill File YAML Frontmatter Validation', () => {
     const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
     assert.ok(hasDescription, 'banneker-publisher agent should have description field');
   });
+
+  it('should validate banneker-feed command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-feed.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-feed command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-feed command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-feed$/m.test(frontmatter), 'banneker-feed command should have name: banneker-feed');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-feed command should have description field');
+  });
+
+  it('should validate banneker-exporter agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-exporter.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-exporter agent should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-exporter agent should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-exporter$/m.test(frontmatter), 'banneker-exporter agent should have name: banneker-exporter');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-exporter agent should have description field');
+  });
+
+  it('should validate framework-adapters.md config file exists and has expected content', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'config', 'framework-adapters.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Config files do NOT have frontmatter (unlike agent and command files)
+    assert.ok(!content.startsWith('---\n'), 'framework-adapters.md should NOT start with frontmatter (it is a config file)');
+
+    // Verify it contains expected section headers
+    assert.ok(content.includes('# Framework Adapters'), 'framework-adapters.md should have Framework Adapters heading');
+
+    // Verify it has adapter configurations
+    assert.ok(content.includes('GSD Adapter') || content.includes('GSD'), 'framework-adapters.md should reference GSD adapter');
+
+    // Verify non-empty
+    assert.ok(content.trim().length > 0, 'framework-adapters.md should have content');
+  });
 });

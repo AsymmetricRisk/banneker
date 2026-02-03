@@ -59,16 +59,16 @@
 - **REQ-CICD-002** (must) ✓: GitHub Actions publish workflow triggered by version tag runs tests then publishes to npm. Source: DEC-007. *Complete: Phase 2*
 - **REQ-CICD-003** (must) ✓: Test suite includes unit tests (installer logic), integration tests (skill file validation), and smoke tests (full install verification). Source: DEC-008. *Complete: Phase 2*
 - **REQ-CICD-004** (must) ✓: 100% coverage of installer file-write code paths. Source: TECHNICAL-SUMMARY.md key metrics. *Complete: Phase 2 (enforcement infrastructure in place)*
-- **REQ-CICD-005** (should): Changelog automation for releases. Source: rubric partial coverage CICD-05.
+- **REQ-CICD-005** (should) ✓: Changelog automation for releases. Source: rubric partial coverage CICD-05. *Complete: Phase 9*
 
 ## REQ-SEC: Security
 
 - **REQ-SEC-001** (must) ✓: Installer checks file permissions before writing to `~/.claude/`. Source: SEC-01. *Complete: Phase 2*
 - **REQ-SEC-002** (must) ✓: Installer prompts before overwriting existing files. Source: SEC-02. *Complete: Phase 2*
-- **REQ-SEC-003** (should): Document a formal threat model for the installer's file-write surface. Source: rubric partial coverage SEC-03.
+- **REQ-SEC-003** (should) ✓: Document a formal threat model for the installer's file-write surface. Source: rubric partial coverage SEC-03. *Complete: Phase 9*
 
 ## REQ-CONT: Continuation & State
 
-- **REQ-CONT-001** (must): All long-running commands track progress in `.banneker/state/{command}-state.md`. Source: continuation-protocol.md Method B.
-- **REQ-CONT-002** (must): Commands check for continuation state before starting work (resume detection at Step 0). Source: continuation-protocol.md resume detection pattern.
-- **REQ-CONT-003** (should) ✓: Write `.banneker/state/.continue-here.md` handoff file when a command cannot continue in the current session. Source: continuation-protocol.md Method C. *Complete: Phase 5*
+- **REQ-CONT-001** (must) ✓: All long-running commands track progress in `.banneker/state/{command}-state.md`. Source: continuation-protocol.md Method B. *Complete: Phase 9*
+- **REQ-CONT-002** (must) ✓: Commands check for continuation state before starting work (resume detection at Step 0). Source: continuation-protocol.md resume detection pattern. *Complete: Phase 9*
+- **REQ-CONT-003** (should) ✓: Write `.banneker/state/.continue-here.md` handoff file when a command cannot continue in the current session. Source: continuation-protocol.md Method C. *Complete: Phase 9*

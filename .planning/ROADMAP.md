@@ -227,10 +227,12 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — Cartographer sub-agent for codebase analysis
-- [ ] 08-02-PLAN.md — Auditor sub-agent and completeness rubric config
-- [ ] 08-03-PLAN.md — Document and audit command orchestrators
-- [ ] 08-04-PLAN.md — Installer manifest update and tests
+- [x] 08-01-PLAN.md — Cartographer sub-agent for codebase analysis
+- [x] 08-02-PLAN.md — Auditor sub-agent and completeness rubric config
+- [x] 08-03-PLAN.md — Document and audit command orchestrators
+- [x] 08-04-PLAN.md — Installer manifest update and tests
+
+**Phase 8 Status:** COMPLETE (all 4 plans executed, all success criteria met)
 
 ---
 
@@ -254,10 +256,12 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — Help and progress utility commands
-- [ ] 09-02-PLAN.md — Plat command and plat-generator agent
-- [ ] 09-03-PLAN.md — STRIDE threat model and changelog automation
-- [ ] 09-04-PLAN.md — Installer manifest update and tests
+- [x] 09-01-PLAN.md — Help and progress utility commands
+- [x] 09-02-PLAN.md — Plat command and plat-generator agent
+- [x] 09-03-PLAN.md — STRIDE threat model and changelog automation
+- [x] 09-04-PLAN.md — Installer manifest update and tests
+
+**Phase 9 Status:** COMPLETE (all 4 plans executed, all success criteria met)
 
 ---
 

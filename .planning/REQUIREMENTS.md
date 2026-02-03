@@ -41,12 +41,12 @@
 
 ## REQ-EXPORT: Export & Feed System
 
-- **REQ-EXPORT-001** (must): Export to GSD format: PROJECT.md, REQUIREMENTS.md, ROADMAP.md in `.planning/`. Source: framework-adapters.md GSD adapter.
-- **REQ-EXPORT-002** (must): Export to platform prompt format: single dense context document under 4,000 words in `.banneker/exports/platform-prompt.md`. Source: framework-adapters.md platform prompt adapter.
-- **REQ-EXPORT-003** (must): Export to generic summary format: concatenated markdown in `.banneker/exports/summary.md`. Source: framework-adapters.md generic adapter.
-- **REQ-EXPORT-004** (must): Generate context bundle — single concatenated markdown file optimized for LLM agent context windows. Source: DEC-009, Developer walkthrough step 7.
-- **REQ-EXPORT-005** (must): GSD requirements use REQ-ID format (`REQ-[CATEGORY]-[NUMBER]`) with categories, priorities, and traceability to survey data. Source: framework-adapters.md REQUIREMENTS.md generation.
-- **REQ-EXPORT-006** (must): GSD roadmap milestones ordered by dependency: infrastructure first, then auth, then core flows, then secondary flows, then polish. Source: framework-adapters.md ROADMAP.md generation.
+- **REQ-EXPORT-001** (must) ✓: Export to GSD format: PROJECT.md, REQUIREMENTS.md, ROADMAP.md in `.planning/`. Source: framework-adapters.md GSD adapter. *Complete: Phase 7*
+- **REQ-EXPORT-002** (must) ✓: Export to platform prompt format: single dense context document under 4,000 words in `.banneker/exports/platform-prompt.md`. Source: framework-adapters.md platform prompt adapter. *Complete: Phase 7*
+- **REQ-EXPORT-003** (must) ✓: Export to generic summary format: concatenated markdown in `.banneker/exports/summary.md`. Source: framework-adapters.md generic adapter. *Complete: Phase 7*
+- **REQ-EXPORT-004** (must) ✓: Generate context bundle — single concatenated markdown file optimized for LLM agent context windows. Source: DEC-009, Developer walkthrough step 7. *Complete: Phase 7*
+- **REQ-EXPORT-005** (must) ✓: GSD requirements use REQ-ID format (`REQ-[CATEGORY]-[NUMBER]`) with categories, priorities, and traceability to survey data. Source: framework-adapters.md REQUIREMENTS.md generation. *Complete: Phase 7*
+- **REQ-EXPORT-006** (must) ✓: GSD roadmap milestones ordered by dependency: infrastructure first, then auth, then core flows, then secondary flows, then polish. Source: framework-adapters.md ROADMAP.md generation. *Complete: Phase 7*
 
 ## REQ-ANALYSIS: Brownfield & Audit
 

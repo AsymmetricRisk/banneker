@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 12 of 15 (Cliff Detection)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-03 — Completed 12-01-PLAN.md
+Last activity: 2026-02-03 — Completed 12-02-PLAN.md
 
-Progress: [############........] 60% (Phase 12: 1/3 plans)
+Progress: [#############.......] 63% (Phase 12: 2/3 plans)
 
 ## Current Milestone: v0.3.0
 
@@ -70,6 +70,10 @@ Recent decisions affecting v0.3.0 work:
 - 14 explicit signal phrases for HIGH confidence detection (12-01)
 - Two declined offers before suppression threshold (12-01)
 - All detections logged regardless of offer status (audit trail) (12-01)
+- Three-option confirmation flow (switch/continue/skip) per CLIFF-02 (12-02)
+- Context handoff via surveyor-context.md captures preferences and constraints (12-02)
+- Engineer invocation uses standard Skill tool mechanism (12-02)
+- Deferred questions re-offered at end of each phase (12-02)
 
 ### Blockers/Concerns
 
@@ -78,9 +82,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-03T23:07:49Z
-Stopped at: Completed 12-01-PLAN.md
+Last session: 2026-02-03T23:11:42Z
+Stopped at: Completed 12-02-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-03 — Completed 12-01-PLAN.md*
+*Last updated: 2026-02-03 — Completed 12-02-PLAN.md*

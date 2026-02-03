@@ -79,8 +79,8 @@
 
 ### REQ-CLIFF: Cliff Detection
 
-- [ ] **CLIFF-01** (must): Detect explicit cliff signals during survey ("I don't know", "you decide", "take it from here", "whatever you think is best"). Source: v0.3.0 features research.
-- [ ] **CLIFF-02** (must): Require confirmation before mode switch — no silent takeover. Source: PITFALLS.md P1 prevention.
+- [x] **CLIFF-01** (must) ✓: Detect explicit cliff signals during survey ("I don't know", "you decide", "take it from here", "whatever you think is best"). Source: v0.3.0 features research. *Complete: Phase 12*
+- [x] **CLIFF-02** (must) ✓: Require confirmation before mode switch — no silent takeover. Source: PITFALLS.md P1 prevention. *Complete: Phase 12*
 - [ ] **CLIFF-03** (should): Detect implicit cliff signals (hedging language, response quality drop, repeated deferrals). Source: v0.3.0 features research.
 - [ ] **CLIFF-04** (should): Use compound signal detection (2+ signals required) to prevent false positives. Source: PITFALLS.md P1 prevention.
 
@@ -121,8 +121,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CLIFF-01 | Phase 12 | Pending |
-| CLIFF-02 | Phase 12 | Pending |
+| CLIFF-01 | Phase 12 | Complete |
+| CLIFF-02 | Phase 12 | Complete |
 | CLIFF-03 | Phase 15 | Pending |
 | CLIFF-04 | Phase 15 | Pending |
 | ENGDOC-01 | Phase 11 | Pending |
@@ -147,4 +147,4 @@
 - Unmapped: 0
 
 ---
-*Requirements updated: 2026-02-03 — v0.3.0 traceability complete*
+*Requirements updated: 2026-02-03 — CLIFF-01, CLIFF-02 complete (Phase 12)*

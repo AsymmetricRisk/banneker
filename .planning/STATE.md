@@ -2,12 +2,12 @@
 
 ## Current Position
 
-Phase: 09 of 10 (Polish and Operations) — COMPLETE
-Plan: 04 of 04 complete
-Status: Phase complete — ready for Phase 10
-Last activity: 2026-02-03 — Completed Phase 9 (Polish & Ops) — all 4 plans executed, verified
+Phase: 10 of 10 (Public Launch) — IN PROGRESS
+Plan: 01 of 02 complete
+Status: In progress — npm registry preparation complete
+Last activity: 2026-02-03 — Completed 10-01-PLAN.md (npm registry preparation)
 
-Progress: ████████████████ 100% (30/30 plans estimated)
+Progress: ████████████████░ 97% (31/32 plans estimated)
 
 ## Project Reference
 
@@ -121,6 +121,9 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 | 09-03 | STRIDE analysis covers installer home directory writes and .banneker/ project writes | Comprehensive security documentation covering all file-write operations | 2026-02-03 |
 | 09-03 | GitHub Security Advisories as primary vulnerability reporting channel | Standard GitHub security workflow with coordinated disclosure | 2026-02-03 |
 | 09-04 | Allow devDependencies for build-time tooling | auto-changelog (Phase 9-03) is build-time only, never shipped to users | 2026-02-03 |
+| 10-01 | Primary installation method: npx banneker (no global install) | Zero-install experience preferred, npm install -g banneker documented as secondary option | 2026-02-03 |
+| 10-01 | Command reference table includes all 10 commands | Complete reference in README improves discoverability without installation | 2026-02-03 |
+| 10-01 | Keywords array optimized for npm search | 10 terms covering use case, target users, runtimes, and category for discoverability | 2026-02-03 |
 
 ## Blockers/Concerns
 
@@ -133,8 +136,8 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 ## Session Continuity
 
 Last session: 2026-02-03
-Stopped at: Completed Phase 9 (all 4 plans done, verified)
+Stopped at: Completed 10-01-PLAN.md (npm registry preparation)
 Resume file: None
 
 ---
-*Last updated: 2026-02-03 — Phase 09 COMPLETE (4/4 plans complete, verified)*
+*Last updated: 2026-02-03 — Phase 10 IN PROGRESS (1/2 plans complete)*

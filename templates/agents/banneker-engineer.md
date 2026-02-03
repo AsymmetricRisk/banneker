@@ -86,6 +86,126 @@ const decisionsPath = '.banneker/architecture-decisions.json';
 - Contains document structures, confidence definitions, ADR format, quality standards
 - You'll reference this throughout the workflow
 
+## State Management (ENGINT-05)
+
+Write state to `.banneker/state/engineer-state.md` after each document completes. This enables resume if generation is interrupted.
+
+### State File Structure
+
+```markdown
+---
+command: engineer
+status: in-progress
+started_at: 2026-02-03T10:00:00Z
+last_updated: 2026-02-03T10:15:00Z
+items_completed: 1
+items_total: 3
+current_position: "RECOMMENDATION.md generation"
+---
+
+## Survey Analysis
+
+**Survey completeness:** 65%
+**Confidence baseline:** MEDIUM
+
+**Identified gaps:**
+- backend.infrastructure: Hosting details not captured
+- rubric_coverage.gaps: ["testing-strategy", "deployment-process"]
+
+## Progress
+
+- [x] DIAGNOSIS.md (completed 2026-02-03T10:05:00Z, 2847 bytes)
+- [ ] RECOMMENDATION.md (in progress)
+- [ ] ENGINEERING-PROPOSAL.md (pending)
+
+## Generated Documents
+
+### DIAGNOSIS.md
+- Path: .banneker/documents/DIAGNOSIS.md
+- Completed: 2026-02-03T10:05:00Z
+- Size: 2847 bytes
+- Gap count: 5
+
+## Next Steps
+
+1. Generate RECOMMENDATION.md addressing identified gaps
+2. Mark recommendations touching gap areas as MEDIUM or LOW confidence
+3. Generate ENGINEERING-PROPOSAL.md with ADR format decisions
+```
+
+### Write State After Each Document
+
+After completing each document:
+
+```javascript
+function updateState(documentType, documentPath, documentSize) {
+    const state = readStateFile() || initializeState();
+
+    // Mark document complete
+    state.completed.push({
+        document: documentType,
+        path: documentPath,
+        timestamp: new Date().toISOString(),
+        size: documentSize
+    });
+
+    // Update progress
+    state.items_completed = state.completed.length;
+    state.last_updated = new Date().toISOString();
+
+    // Determine next step
+    const pending = ['DIAGNOSIS.md', 'RECOMMENDATION.md', 'ENGINEERING-PROPOSAL.md']
+        .filter(d => !state.completed.some(c => c.document === d));
+    state.current_position = pending.length > 0 ?
+        `${pending[0]} generation` : 'Complete';
+
+    writeStateFile(state);
+}
+```
+
+### Resume From State
+
+When spawned with resume context:
+
+1. Parse state file to identify:
+   - Which documents are complete (skip regenerating)
+   - Survey analysis (don't re-analyze)
+   - Where to resume (current_position)
+
+2. Load already-generated documents:
+   - Read DIAGNOSIS.md if complete (needed for RECOMMENDATION input)
+   - Read RECOMMENDATION.md if complete (needed for PROPOSAL input)
+
+3. Continue from current_position:
+   - If RECOMMENDATION.md pending: Generate it using DIAGNOSIS
+   - If ENGINEERING-PROPOSAL.md pending: Generate it using RECOMMENDATION
+
+4. Maintain consistency:
+   - Use same confidence baseline from state
+   - Use same gap analysis from state
+   - Don't change already-written documents
+
+### Delete State on Completion
+
+After all three documents are successfully generated:
+
+```javascript
+function onCompletion() {
+    // Delete state file
+    deleteFile('.banneker/state/engineer-state.md');
+
+    // Report results
+    reportResults();
+}
+```
+
+### Preserve State on Failure
+
+If any document generation fails:
+- Do NOT delete state file
+- Write current progress to state
+- Allow resume on retry
+
 ## Step 2: Analyze Survey Completeness (ENGINT-02)
 
 Detect gaps in survey.json to calibrate confidence levels and generate explicit gap documentation.
@@ -449,10 +569,16 @@ const diagnosisContent = generateDiagnosisContent(survey, completenessAnalysis);
 writeFile('.banneker/documents/DIAGNOSIS.md', diagnosisContent);
 ```
 
-### Update State
+### Update State (ENGINT-05)
+
+Write state to `.banneker/state/engineer-state.md` after document completion:
 
 ```javascript
 updateState({
+    document: 'DIAGNOSIS.md',
+    path: '.banneker/documents/DIAGNOSIS.md',
+    size: diagnosisContent.length,
+    timestamp: new Date().toISOString(),
     completed: ['DIAGNOSIS.md'],
     pending: ['RECOMMENDATION.md', 'ENGINEERING-PROPOSAL.md'],
     current_position: 'RECOMMENDATION.md generation'
@@ -651,10 +777,16 @@ const recommendationContent = generateRecommendationContent(
 writeFile('.banneker/documents/RECOMMENDATION.md', recommendationContent);
 ```
 
-### Update State
+### Update State (ENGINT-05)
+
+Write state to `.banneker/state/engineer-state.md` after document completion:
 
 ```javascript
 updateState({
+    document: 'RECOMMENDATION.md',
+    path: '.banneker/documents/RECOMMENDATION.md',
+    size: recommendationContent.length,
+    timestamp: new Date().toISOString(),
     completed: ['DIAGNOSIS.md', 'RECOMMENDATION.md'],
     pending: ['ENGINEERING-PROPOSAL.md'],
     current_position: 'ENGINEERING-PROPOSAL.md generation'
@@ -874,15 +1006,13 @@ const proposalContent = generateProposalContent(
 writeFile('.banneker/documents/ENGINEERING-PROPOSAL.md', proposalContent);
 ```
 
-### Update State
+### Delete State on Completion
+
+After all three documents are successfully generated:
 
 ```javascript
-updateState({
-    completed: ['DIAGNOSIS.md', 'RECOMMENDATION.md', 'ENGINEERING-PROPOSAL.md'],
-    pending: [],
-    current_position: 'complete',
-    status: 'complete'
-});
+// Delete state file - generation complete
+deleteFile('.banneker/state/engineer-state.md');
 ```
 
 ## Step 6: Report Results
@@ -1008,48 +1138,45 @@ function cleanupState() {
 
 ## Resume Handling
 
-If you are spawned and find an existing `.banneker/state/engineer-state.md`, this is a continuation after interruption.
+If you are spawned and receive resume context indicating an existing `.banneker/state/engineer-state.md`, this is a continuation after interruption.
 
-### Resume Protocol
+**Resume Protocol:**
 
-1. **Read state file:**
-```javascript
-const state = readStateFile('.banneker/state/engineer-state.md');
-```
+1. **Parse state file:**
+   - Extract completed documents list
+   - Extract survey analysis (completeness, gaps, confidence baseline)
+   - Identify current_position
 
-2. **Parse state:**
-```javascript
-const completed = state.completed; // Array of document names
-const pending = state.pending;
-const surveyAnalysis = state.survey_analysis;
-const confidenceBaseline = state.confidence_baseline;
-```
+2. **Load dependencies:**
+   - If resuming at RECOMMENDATION.md: Read existing DIAGNOSIS.md
+   - If resuming at ENGINEERING-PROPOSAL.md: Read existing DIAGNOSIS.md and RECOMMENDATION.md
 
-3. **Show user what was already generated:**
-```markdown
-Found interrupted engineering session from [timestamp].
+3. **Show resume status:**
+   ```
+   Resuming engineer session from 2026-02-03T10:00:00Z
 
-Already completed:
-  ✓ DIAGNOSIS.md ([timestamp])
-  [Additional completed documents...]
+   Already completed:
+     [x] DIAGNOSIS.md (2847 bytes)
 
-Remaining:
-  - [Pending document 1]
-  - [Pending document 2]
+   Remaining:
+     [ ] RECOMMENDATION.md
+     [ ] ENGINEERING-PROPOSAL.md
 
-Resuming from: [current_position]
-```
+   Continuing from RECOMMENDATION.md...
+   ```
 
-4. **Skip completed documents:**
-- Do not regenerate DIAGNOSIS if already complete
-- Do not recompute survey analysis (use from state)
-- Use existing confidence baseline
+4. **Continue generation:**
+   - Use existing survey analysis (don't re-analyze)
+   - Use existing confidence baseline
+   - Generate remaining documents in order
 
-5. **Continue from current position:**
-Resume wave execution from the first pending document using the state's survey analysis.
+5. **Maintain consistency:**
+   - References to DIAGNOSIS in RECOMMENDATION must match actual DIAGNOSIS content
+   - References to RECOMMENDATION in PROPOSAL must match actual RECOMMENDATION content
 
-6. **Continue normal workflow:**
-Execute remaining documents, update state after each, report results on full completion.
+6. **Complete normally:**
+   - Delete state file on success
+   - Report results as normal
 
 ## Error Handling
 

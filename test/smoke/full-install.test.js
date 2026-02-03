@@ -111,6 +111,8 @@ describe('Full Install Smoke Test', () => {
     assert.ok(existsSync(join(commandsDir, 'banneker-feed.md')), 'banneker-feed.md command should exist');
     assert.ok(existsSync(join(commandsDir, 'banneker-document.md')), 'banneker-document.md command should exist');
     assert.ok(existsSync(join(commandsDir, 'banneker-audit.md')), 'banneker-audit.md command should exist');
+    assert.ok(existsSync(join(commandsDir, 'banneker-plat.md')), 'banneker-plat.md command should exist (Phase 9)');
+    assert.ok(existsSync(join(commandsDir, 'banneker-progress.md')), 'banneker-progress.md command should exist (Phase 9)');
 
     // VERIFY: Command files have content (not empty)
     const surveyContent = await readFile(join(commandsDir, 'banneker-survey.md'), 'utf8');
@@ -132,6 +134,7 @@ describe('Full Install Smoke Test', () => {
     assert.ok(existsSync(join(agentsDir, 'banneker-exporter.md')), 'banneker-exporter.md agent should exist');
     assert.ok(existsSync(join(agentsDir, 'banneker-cartographer.md')), 'banneker-cartographer.md agent should exist');
     assert.ok(existsSync(join(agentsDir, 'banneker-auditor.md')), 'banneker-auditor.md agent should exist');
+    assert.ok(existsSync(join(agentsDir, 'banneker-plat-generator.md')), 'banneker-plat-generator.md agent should exist (Phase 9)');
 
     // VERIFY: Agent file has valid frontmatter with name field
     const surveyorContent = await readFile(join(agentsDir, 'banneker-surveyor.md'), 'utf8');

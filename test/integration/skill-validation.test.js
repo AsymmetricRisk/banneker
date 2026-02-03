@@ -554,6 +554,69 @@ describe('Skill File YAML Frontmatter Validation', () => {
     assert.ok(content.trim().length > 0, 'completeness-rubric.md should have content');
   });
 
+  it('should validate banneker-plat command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-plat.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-plat command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-plat command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-plat$/m.test(frontmatter), 'banneker-plat command should have name: banneker-plat');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-plat command should have description field');
+  });
+
+  it('should validate banneker-progress command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-progress.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-progress command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-progress command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-progress$/m.test(frontmatter), 'banneker-progress command should have name: banneker-progress');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-progress command should have description field');
+  });
+
+  it('should validate banneker-plat-generator agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-plat-generator.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-plat-generator agent should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-plat-generator agent should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-plat-generator$/m.test(frontmatter), 'banneker-plat-generator agent should have name: banneker-plat-generator');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-plat-generator agent should have description field');
+  });
+
   describe('REQ-CONT-003: handoff file writing', () => {
     const longRunningCommands = [
       'banneker-survey.md',

@@ -273,4 +273,153 @@ describe('Installer Integration Tests', () => {
       assert.ok(templateFiles.length > 0, 'Template files should exist and have content');
     });
   });
+
+  describe('Engineer command installation', () => {
+    it('should copy banneker-engineer.md to commands directory', () => {
+      // Resolve paths using fake home directory
+      const { commandsDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+
+      // Manually run install logic (mkdir, copy templates)
+      mkdirSync(commandsDir, { recursive: true });
+
+      // Copy template files
+      const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
+      cpSync(templatesDir, commandsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Assert: banneker-engineer.md copied to target
+      const targetPath = join(commandsDir, 'banneker-engineer.md');
+      assert.ok(existsSync(targetPath), 'banneker-engineer.md should be copied to commands directory');
+    });
+
+    it('banneker-engineer.md should contain expected sections', () => {
+      // Resolve paths using fake home directory
+      const { commandsDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+
+      // Manually run install logic
+      mkdirSync(commandsDir, { recursive: true });
+
+      const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
+      cpSync(templatesDir, commandsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Read and verify content
+      const targetPath = join(commandsDir, 'banneker-engineer.md');
+      const content = readFileSync(targetPath, 'utf8');
+
+      // Verify key content sections
+      assert.ok(content.includes('banneker-engineer'), 'Should contain banneker-engineer command name');
+      assert.ok(content.includes('survey.json'), 'Should reference survey.json');
+      assert.ok(content.includes('DIAGNOSIS.md'), 'Should reference DIAGNOSIS.md');
+      assert.ok(content.includes('RECOMMENDATION.md'), 'Should reference RECOMMENDATION.md');
+      assert.ok(content.includes('ENGINEERING-PROPOSAL.md'), 'Should reference ENGINEERING-PROPOSAL.md');
+    });
+  });
+
+  describe('Engineer agent installation', () => {
+    it('should copy banneker-engineer.md to agents directory', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Assert: banneker-engineer.md copied to agents directory
+      const targetPath = join(agentsDir, 'banneker-engineer.md');
+      assert.ok(existsSync(targetPath), 'banneker-engineer.md should be copied to agents directory');
+    });
+
+    it('banneker-engineer.md agent should contain expected sections', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Read and verify content
+      const targetPath = join(agentsDir, 'banneker-engineer.md');
+      const content = readFileSync(targetPath, 'utf8');
+
+      // Verify key content sections
+      assert.ok(content.includes('Banneker Engineer'), 'Should contain Banneker Engineer title');
+      assert.ok(content.includes('survey.json'), 'Should reference survey.json');
+      assert.ok(content.includes('engineer-state.md'), 'Should reference engineer-state.md');
+      assert.ok(content.includes('confidence'), 'Should reference confidence system');
+    });
+  });
+
+  describe('Engineering catalog installation', () => {
+    it('should copy engineering-catalog.md to config directory', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const configTargetDir = join(configDir, 'config');
+
+      // Manually run install logic
+      mkdirSync(configTargetDir, { recursive: true });
+
+      const configTemplatesDir = join(PACKAGE_ROOT, 'templates', 'config');
+      cpSync(configTemplatesDir, configTargetDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Assert: engineering-catalog.md copied to config directory
+      const targetPath = join(configTargetDir, 'engineering-catalog.md');
+      assert.ok(existsSync(targetPath), 'engineering-catalog.md should be copied to config directory');
+    });
+
+    it('engineering-catalog.md should define three documents', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const configTargetDir = join(configDir, 'config');
+
+      // Manually run install logic
+      mkdirSync(configTargetDir, { recursive: true });
+
+      const configTemplatesDir = join(PACKAGE_ROOT, 'templates', 'config');
+      cpSync(configTemplatesDir, configTargetDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Read and verify content
+      const targetPath = join(configTargetDir, 'engineering-catalog.md');
+      const content = readFileSync(targetPath, 'utf8');
+
+      // Verify three document definitions
+      assert.ok(content.includes('DIAGNOSIS.md'), 'Should define DIAGNOSIS.md');
+      assert.ok(content.includes('RECOMMENDATION.md'), 'Should define RECOMMENDATION.md');
+      assert.ok(content.includes('ENGINEERING-PROPOSAL.md'), 'Should define ENGINEERING-PROPOSAL.md');
+
+      // Verify confidence levels mentioned
+      assert.ok(
+        content.match(/HIGH.*MEDIUM.*LOW|confidence/i),
+        'Should reference confidence levels (HIGH/MEDIUM/LOW)'
+      );
+    });
+  });
 });

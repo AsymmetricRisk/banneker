@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 11 of 15 (Engineer Agent Core)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-03 — Completed 11-01-PLAN.md
+Last activity: 2026-02-03 — Completed 11-02-PLAN.md
 
-Progress: [##########..........] 51% (Phase 11 started)
+Progress: [##########..........] 52% (Phase 11 progress)
 
 ## Current Milestone: v0.3.0
 
@@ -58,6 +58,8 @@ Recent decisions affecting v0.3.0 work:
 - Confidence system uses HIGH (85-90%), MEDIUM (50-85%), LOW (<50%) with probabilistic ranges (11-01)
 - All proposals marked "Proposed (awaiting approval)" - no auto-merge to architecture-decisions.json (11-01)
 - Minimum viable survey requires Phase 1+2+3 (project + actors + walkthroughs) (11-01)
+- Minimum viable survey for engineer: Phases 1-3 required (project, actors, walkthroughs) (11-02)
+- Related commands documentation included in orchestrator files for workflow guidance (11-02)
 
 ### Blockers/Concerns
 
@@ -66,9 +68,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-03T22:13:24Z
-Stopped at: Completed 11-01-PLAN.md
+Last session: 2026-02-03T22:17:25Z
+Stopped at: Completed 11-02-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-03 — Completed 11-01-PLAN.md*
+*Last updated: 2026-02-03 — Completed 11-02-PLAN.md*

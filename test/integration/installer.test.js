@@ -422,4 +422,45 @@ describe('Installer Integration Tests', () => {
       );
     });
   });
+
+  describe('Cliff detection config installation', () => {
+    it('copies cliff-detection-signals.md to config directory', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const configTargetDir = join(configDir, 'config');
+
+      // Manually run install logic
+      mkdirSync(configTargetDir, { recursive: true });
+
+      const configTemplatesDir = join(PACKAGE_ROOT, 'templates', 'config');
+      cpSync(configTemplatesDir, configTargetDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Assert: cliff-detection-signals.md copied to config directory
+      const targetFile = join(configTargetDir, 'cliff-detection-signals.md');
+      assert.ok(existsSync(targetFile), 'cliff-detection-signals.md should be copied');
+    });
+
+    it('cliff-detection-signals.md contains explicit signal list', () => {
+      const sourceFile = join(PACKAGE_ROOT, 'templates', 'config', 'cliff-detection-signals.md');
+      const content = readFileSync(sourceFile, 'utf8');
+
+      assert.ok(content.includes('EXPLICIT_CLIFF_SIGNALS'), 'Should contain signal list constant');
+      assert.ok(content.includes("i don't know"), 'Should contain "i don\'t know" signal');
+      assert.ok(content.includes("whatever you think"), 'Should contain "whatever you think" signal');
+      assert.ok(content.includes("you decide"), 'Should contain "you decide" signal');
+    });
+
+    it('cliff-detection-signals.md has valid frontmatter', () => {
+      const sourceFile = join(PACKAGE_ROOT, 'templates', 'config', 'cliff-detection-signals.md');
+      const content = readFileSync(sourceFile, 'utf8');
+
+      assert.ok(content.startsWith('---'), 'Should start with frontmatter delimiter');
+      assert.ok(content.includes('name: cliff-detection-signals'), 'Should have name in frontmatter');
+      assert.ok(content.includes('version:'), 'Should have version in frontmatter');
+    });
+  });
 });

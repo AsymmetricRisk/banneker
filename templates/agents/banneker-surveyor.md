@@ -339,6 +339,69 @@ When all phases are complete:
 - Ask "Is this accurate?" before moving on
 - If user corrects you, update the state file immediately
 
+## Cliff Detection Protocol
+
+During question-answer cycles, monitor user responses for cliff signals indicating they've reached their knowledge limits.
+
+### Explicit Cliff Signals (CLIFF-01)
+
+Check each user response for explicit cliff phrases. The complete signal list is defined in `templates/config/cliff-detection-signals.md`.
+
+**Detection Algorithm:**
+
+1. Normalize user response: `toLowerCase().trim()`
+2. Check for exact phrase match using `String.includes()` against EXPLICIT_CLIFF_SIGNALS
+3. If match found, log to state with confidence: "HIGH"
+4. Proceed to confirmation flow (see below)
+
+### Detection Timing
+
+Check for cliff signals **after each substantive user response** during Phases 1-5. Do not check:
+- Simple confirmations ("yes", "looks good", "correct")
+- Navigation responses ("next", "continue", "skip")
+- Phase 6 decision confirmations
+
+### Logging Protocol
+
+When a cliff signal is detected, **immediately** log to state:
+
+1. **Update survey-state.md** with cliff detection:
+   ```markdown
+   ## Cliff Signals Detected
+
+   - [timestamp] Phase [N]: Detected "[signal]" in response to "[question context]"
+     - Confidence: HIGH
+     - Mode switch offered: [yes/no]
+     - User accepted: [yes/no/pending]
+   ```
+
+2. **Prepare cliff_signals entry** for survey.json (written on completion):
+   ```json
+   {
+     "timestamp": "2026-02-03T10:30:00Z",
+     "phase": "backend",
+     "question_context": "What data stores does this project use?",
+     "user_response": "I don't know, whatever you think is best",
+     "detected_signal": "i don't know",
+     "confidence": "HIGH",
+     "mode_switch_offered": true,
+     "user_accepted": false
+   }
+   ```
+
+### Decline Tracking
+
+Track declined mode switch offers:
+
+- **Counter:** Increment `declinedOffers` each time user chooses "Continue survey" or "Skip question"
+- **Threshold:** After 2 declined offers, suppress future offers for this session
+- **Reset:** Counter resets on new survey start
+
+When threshold reached, still log detections but don't offer mode switch:
+```markdown
+[timestamp] Phase [N]: Detected "[signal]" (logged only - user previously declined 2+ offers)
+```
+
 ## Resume Handling
 
 **When spawned as continuation** (state file exists):

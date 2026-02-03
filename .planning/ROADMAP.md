@@ -198,6 +198,13 @@ Plans:
 
 **Dependencies:** Phase 4
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Exporter sub-agent for all 4 export formats
+- [ ] 07-02-PLAN.md — Feed command orchestrator and framework-adapters config
+- [ ] 07-03-PLAN.md — Installer manifest update and tests
+
 ---
 
 ## Phase 8: Brownfield Analysis & Audit

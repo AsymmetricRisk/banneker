@@ -377,12 +377,12 @@ Plans:
 4. Summary tables display decisions grouped by category for efficient review
 5. Rejected decisions are logged with reason (not silently discarded)
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 13-01: Approval workflow design and merge logic
-- [ ] 13-02: Per-decision approval UI and edit-before-approve
-- [ ] 13-03: Summary table generation and rejection logging
+- [ ] 13-01-PLAN.md — Core approval lib modules (merge logic, display formatting)
+- [ ] 13-02-PLAN.md — Approve command orchestrator and interactive prompts
+- [ ] 13-03-PLAN.md — Installer tests and approval workflow integration tests
 
 ---
 
@@ -458,4 +458,4 @@ Plans:
 | 15. Polish & Advanced | v0.3.0 | 0/4 | Not started | - |
 
 ---
-*Roadmap updated: 2026-02-03 — Phase 12 complete (3 plans executed)*
+*Roadmap updated: 2026-02-03 — Phase 13 planned (3 plans created)*

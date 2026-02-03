@@ -3,11 +3,11 @@
 ## Current Position
 
 Phase: 06 of 10 (HTML Appendix)
-Plan: 01 of 03 in progress
+Plan: 02 of 03 complete
 Status: In progress
-Last activity: 2026-02-03 — Completed 06-01-PLAN.md (Publisher Agent Creation)
+Last activity: 2026-02-03 — Completed 06-02-PLAN.md (Appendix Command Orchestrator)
 
-Progress: █████████░ 57% (17/30 plans estimated)
+Progress: █████████░ 60% (18/30 plans estimated)
 
 ## Project Reference
 
@@ -88,6 +88,10 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 | 06-01 | Partial appendix generation as first-class feature | Detect available content, generate only available sections, report partial status with clear warnings | 2026-02-03 |
 | 06-01 | Diagrams linked (not embedded) from section pages | Use target="_blank" links instead of iframe to avoid JavaScript conflicts between accordion and diagram code | 2026-02-03 |
 | 06-01 | Index page generated last | Generate all section pages first, then build index.html based on which sections actually exist to prevent 404 errors | 2026-02-03 |
+| 06-02 | Survey and architecture-decisions are hard prerequisites | Command aborts if survey.json or architecture-decisions.json missing (required for all pages) | 2026-02-03 |
+| 06-02 | Documents and diagrams are NOT prerequisites | REQ-APPENDIX-003 requires partial appendix generation, missing content triggers warnings only | 2026-02-03 |
+| 06-02 | Three-tier appendix completion messaging | Full (6 pages), partial (3-5 pages), minimal (2 pages) with appropriate user guidance | 2026-02-03 |
+| 06-02 | Minimum viable appendix is index + 2 sections | State cleanup only on minimum viable completion threshold | 2026-02-03 |
 
 ## Blockers/Concerns
 
@@ -99,9 +103,9 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 
 ## Session Continuity
 
-Last session: 2026-02-03 00:02
-Stopped at: Completed 06-01-PLAN.md (Publisher Agent Creation)
+Last session: 2026-02-03 00:07
+Stopped at: Completed 06-02-PLAN.md (Appendix Command Orchestrator)
 Resume file: None
 
 ---
-*Last updated: 2026-02-03 — Phase 06 in progress (1/3 plans complete)*
+*Last updated: 2026-02-03 — Phase 06 in progress (2/3 plans complete)*

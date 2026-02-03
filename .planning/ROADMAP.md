@@ -251,6 +251,14 @@ Plans:
 
 **Dependencies:** Phases 1-8
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Help and progress utility commands
+- [ ] 09-02-PLAN.md — Plat command and plat-generator agent
+- [ ] 09-03-PLAN.md — STRIDE threat model and changelog automation
+- [ ] 09-04-PLAN.md — Installer manifest update and tests
+
 ---
 
 ## Phase 10: Public Launch

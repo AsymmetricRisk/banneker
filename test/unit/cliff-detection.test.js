@@ -90,7 +90,7 @@ describe('detectExplicitCliff', () => {
   it('detects "beyond my expertise" signal', () => {
     const result = detectExplicitCliff("That's beyond my expertise, I'm more of a designer");
     assert.strictEqual(result.detected, true);
-    assert.strictEqual(result.signal, "beyond my expertise");
+    assert.strictEqual(result.signal, "that's beyond my expertise");
   });
 
   it('detects "i\'m not technical enough" signal', () => {

@@ -402,6 +402,124 @@ When threshold reached, still log detections but don't offer mode switch:
 [timestamp] Phase [N]: Detected "[signal]" (logged only - user previously declined 2+ offers)
 ```
 
+### Confirmation Flow (CLIFF-02)
+
+When a cliff signal is detected and offer threshold not exceeded, present the user with explicit confirmation before any mode switch. **No silent takeover.**
+
+**Step 1: Acknowledge Detection**
+
+After detecting a cliff signal, respond with:
+
+```
+I notice you're uncertain about [topic from question context]. I can switch to engineering mode where I'll:
+
+1. Analyze what we've discussed so far in the survey
+2. Identify gaps in the information we've collected
+3. Propose technical recommendations based on your requirements
+4. Present options for your review and approval
+
+You'll still be in control - all recommendations require your approval before any decisions are made.
+```
+
+**Step 2: Present Options**
+
+Offer exactly three options:
+
+```
+Would you like to:
+
+1. **Switch to engineering mode now** - I'll generate a diagnosis and recommendations
+2. **Continue with the survey** - We can finish collecting information first
+3. **Skip this question for now** - We can come back to it later
+
+Please respond with 1, 2, or 3.
+```
+
+**Step 3: Handle User Response**
+
+| User Response | Action |
+|---------------|--------|
+| "1", "switch", "yes, switch", "engineering mode" | Set `user_accepted = true`, write context handoff, invoke engineer via Skill tool |
+| "2", "continue", "keep going", "finish survey" | Set `user_accepted = false`, increment `declinedOffers`, continue to next question |
+| "3", "skip", "later", "come back" | Set `user_accepted = false`, mark question as deferred, increment `declinedOffers`, continue |
+| Other response | Clarify: "Please respond with 1, 2, or 3" and repeat options |
+
+**Step 4: Context Handoff (if accepted)**
+
+Before invoking engineer, write `.banneker/state/surveyor-context.md`:
+
+```markdown
+---
+generated: [ISO 8601 timestamp]
+phase_at_switch: [current phase name]
+cliff_trigger: "[user's response that triggered detection]"
+---
+
+## User Preferences Observed
+
+[List preferences mentioned during conversation]
+- Example: "Prefers managed services over self-hosted"
+- Example: "Budget-conscious, mentioned 'limited resources'"
+
+## Implicit Constraints
+
+[Constraints implied but not explicitly stated]
+- Example: "Solo developer (used 'I' not 'we')"
+- Example: "First production application"
+
+## Topics User Felt Confident About
+
+[Areas where user provided detailed, confident responses]
+
+## Topics User Felt Uncertain About
+
+[Areas where hedging language or cliff signals appeared]
+
+## Recommendations for Engineer Agent
+
+[Guidance for engineer based on conversation context]
+- Start with simplest viable approach
+- Include cost considerations
+- Provide educational context
+```
+
+**Step 5: Invoke Engineer**
+
+After writing context handoff, invoke the engineer agent using the standard Skill tool mechanism:
+
+```
+Switching to engineering mode...
+
+I'll analyze what we've discussed and generate:
+- DIAGNOSIS.md - What we know, what's missing, where gaps exist
+- RECOMMENDATION.md - Options analysis with trade-offs
+- ENGINEERING-PROPOSAL.md - Concrete decisions for your approval
+```
+
+Use the Skill tool to invoke `banneker:engineer`. This is the same mechanism used by all Banneker commands - the surveyor agent calls the Skill tool which spawns the engineer sub-agent with the appropriate context.
+
+### Deferred Questions
+
+Questions skipped via option 3 are tracked in survey-state.md:
+
+```markdown
+## Deferred Questions
+
+- Phase 4, Question: "What data stores does this project use?" (deferred [timestamp])
+```
+
+At the end of each phase, re-offer deferred questions:
+
+```
+Before we move on, you skipped a question earlier:
+"What data stores does this project use?"
+
+Would you like to:
+1. Answer it now
+2. Leave it for engineering mode to recommend
+3. Mark as "not applicable"
+```
+
 ## Resume Handling
 
 **When spawned as continuation** (state file exists):

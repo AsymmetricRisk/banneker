@@ -2,12 +2,12 @@
 
 ## Current Position
 
-Phase: 05 of 10 (Architecture Diagrams)
-Plan: 03 of 03 complete
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 05-03-PLAN.md (Installer Manifest Update)
+Phase: 06 of 10 (HTML Appendix)
+Plan: 01 of 03 in progress
+Status: In progress
+Last activity: 2026-02-03 — Completed 06-01-PLAN.md (Publisher Agent Creation)
 
-Progress: █████████░ 53% (16/30 plans estimated)
+Progress: █████████░ 57% (17/30 plans estimated)
 
 ## Project Reference
 
@@ -84,6 +84,10 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 | 05-02 | State cleanup only on full completion | Preserve handoff for Wave 2 resume, preserve state on failure for debugging | 2026-02-02 |
 | 05-03 | Follow Phase 4 pattern for manifest updates | Command and agent files use established prefix pattern, both require frontmatter validation | 2026-02-02 |
 | 05-03 | Phase 5 files tracked in BANNEKER_FILES and AGENT_FILES | banneker-roadmap.md and agents/banneker-diagrammer.md added to manifests | 2026-02-02 |
+| 06-01 | LLM-based markdown-to-HTML conversion | Agent manually converts markdown using LLM's knowledge instead of marked.js dependency | 2026-02-03 |
+| 06-01 | Partial appendix generation as first-class feature | Detect available content, generate only available sections, report partial status with clear warnings | 2026-02-03 |
+| 06-01 | Diagrams linked (not embedded) from section pages | Use target="_blank" links instead of iframe to avoid JavaScript conflicts between accordion and diagram code | 2026-02-03 |
+| 06-01 | Index page generated last | Generate all section pages first, then build index.html based on which sections actually exist to prevent 404 errors | 2026-02-03 |
 
 ## Blockers/Concerns
 
@@ -95,9 +99,9 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 
 ## Session Continuity
 
-Last session: 2026-02-02 23:19
-Stopped at: Completed 05-03-PLAN.md (Installer Manifest Update)
+Last session: 2026-02-03 00:02
+Stopped at: Completed 06-01-PLAN.md (Publisher Agent Creation)
 Resume file: None
 
 ---
-*Last updated: 2026-02-02 — Phase 05 complete (3/3 plans complete)*
+*Last updated: 2026-02-03 — Phase 06 in progress (1/3 plans complete)*

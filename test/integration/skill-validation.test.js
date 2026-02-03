@@ -354,4 +354,46 @@ describe('Skill File YAML Frontmatter Validation', () => {
     const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
     assert.ok(hasDescription, 'banneker-diagrammer agent should have description field');
   });
+
+  it('should validate banneker-appendix command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-appendix.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-appendix command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-appendix command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-appendix$/m.test(frontmatter), 'banneker-appendix command should have name: banneker-appendix');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-appendix command should have description field');
+  });
+
+  it('should validate banneker-publisher agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-publisher.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-publisher agent should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-publisher agent should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-publisher$/m.test(frontmatter), 'banneker-publisher agent should have name: banneker-publisher');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-publisher agent should have description field');
+  });
 });

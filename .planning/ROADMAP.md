@@ -325,13 +325,13 @@ Plans:
 6. Engineer works with partial survey data (mid-interview scenarios produce valid output)
 7. Engineer state saved to `.banneker/state/engineer-state.md` enabling resume on interruption
 
-**Plans:** TBD
+**Plans:** 4 plans
 
 Plans:
-- [ ] 11-01: Engineer sub-agent and three-document catalog specs
-- [ ] 11-02: Engineer command orchestrator skill file
-- [ ] 11-03: State management and partial data handling
-- [ ] 11-04: Installer manifest update and tests
+- [ ] 11-01-PLAN.md — Engineer sub-agent and engineering catalog specs
+- [ ] 11-02-PLAN.md — Engineer command orchestrator skill file
+- [ ] 11-03-PLAN.md — State management and partial data handling
+- [ ] 11-04-PLAN.md — Installer manifest update and tests
 
 ---
 
@@ -447,11 +447,11 @@ Plans:
 | 8. Brownfield Analysis | v0.2.0 | 4/4 | Complete | - |
 | 9. Polish & Ops | v0.2.0 | 4/4 | Complete | - |
 | 10. Public Launch | v0.2.0 | 1/2 | In progress | - |
-| 11. Engineer Agent Core | v0.3.0 | 0/4 | Not started | - |
+| 11. Engineer Agent Core | v0.3.0 | 0/4 | Planned | - |
 | 12. Cliff Detection | v0.3.0 | 0/3 | Not started | - |
 | 13. Approval Flow | v0.3.0 | 0/3 | Not started | - |
 | 14. Survey Integration | v0.3.0 | 0/3 | Not started | - |
 | 15. Polish & Advanced | v0.3.0 | 0/4 | Not started | - |
 
 ---
-*Roadmap updated: 2026-02-03 — v0.3.0 phases added*
+*Roadmap updated: 2026-02-03 — Phase 11 plans created*

@@ -10,6 +10,27 @@
     "node": ">=18.0.0"
   },
   "license": "MIT",
+  "author": "Daniel Jackson",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsj7419/banneker.git"
+  },
+  "homepage": "https://github.com/dsj7419/banneker#readme",
+  "bugs": {
+    "url": "https://github.com/dsj7419/banneker/issues"
+  },
+  "keywords": [
+    "project-planning",
+    "documentation",
+    "ai-coding-assistant",
+    "claude-code",
+    "opencode",
+    "gemini",
+    "cli",
+    "developer-tools",
+    "architecture-diagrams",
+    "survey"
+  ],
   "files": [
     "bin/",
     "lib/",

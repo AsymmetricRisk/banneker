@@ -5,24 +5,24 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Transform structured discovery interviews into engineering plans, architecture diagrams, and agent-ready HTML appendices
-**Current focus:** Milestone v0.3.0 — The Engineer (Phase 11: Engineer Agent Core)
+**Current focus:** Milestone v0.3.0 — The Engineer (Phase 12: Cliff Detection)
 
 ## Current Position
 
-Phase: 11 of 15 (Engineer Agent Core)
-Plan: 4 of 4 in current phase
-Status: Phase complete
-Last activity: 2026-02-03 — Completed 11-04-PLAN.md
+Phase: 12 of 15 (Cliff Detection)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-03 — Completed 12-01-PLAN.md
 
-Progress: [###########.........] 57% (Phase 11 complete: 4/4 plans)
+Progress: [############........] 60% (Phase 12: 1/3 plans)
 
 ## Current Milestone: v0.3.0
 
 **Goal:** Add `/banneker:engineer` command that shifts from interviewing to engineering mode when users reach their knowledge limits
 
 **Phases:**
-- Phase 11: Engineer Agent Core (standalone synthesis)
-- Phase 12: Cliff Detection (signal detection + confirmation)
+- Phase 11: Engineer Agent Core (standalone synthesis) - COMPLETE
+- Phase 12: Cliff Detection (signal detection + confirmation) - IN PROGRESS
 - Phase 13: Approval Flow (user approval before merge)
 - Phase 14: Survey Integration (mid-survey takeover)
 - Phase 15: Polish & Advanced Detection (implicit signals, complexity ceiling)
@@ -66,18 +66,21 @@ Recent decisions affecting v0.3.0 work:
 - Partial data behavior: Generate all 3 documents even with incomplete survey, document gaps explicitly (11-03)
 - Installer already handles new files via recursive cpSync - no code changes needed for new templates (11-04)
 - Installation tests follow pattern: verify file copied + verify content structure (11-04)
+- cliff_signals is optional property (not required) to maintain backward compatibility (12-01)
+- 14 explicit signal phrases for HIGH confidence detection (12-01)
+- Two declined offers before suppression threshold (12-01)
+- All detections logged regardless of offer status (audit trail) (12-01)
 
 ### Blockers/Concerns
 
 - Phase 10 (v0.2.0 Public Launch) has 1 remaining plan before v0.3.0 can start
 - Approval flow UX needs validation during Phase 13 planning
-- Phase 11 complete - ready for Phase 12 (Cliff Detection)
 
 ## Session Continuity
 
-Last session: 2026-02-03T22:24:20Z
-Stopped at: Completed 11-04-PLAN.md (Phase 11 complete)
+Last session: 2026-02-03T23:07:49Z
+Stopped at: Completed 12-01-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-03 — Completed 11-04-PLAN.md (Phase 11 complete)*
+*Last updated: 2026-02-03 — Completed 12-01-PLAN.md*

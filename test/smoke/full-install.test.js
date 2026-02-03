@@ -109,6 +109,8 @@ describe('Full Install Smoke Test', () => {
     assert.ok(existsSync(join(commandsDir, 'banneker-roadmap.md')), 'banneker-roadmap.md command should exist');
     assert.ok(existsSync(join(commandsDir, 'banneker-appendix.md')), 'banneker-appendix.md command should exist');
     assert.ok(existsSync(join(commandsDir, 'banneker-feed.md')), 'banneker-feed.md command should exist');
+    assert.ok(existsSync(join(commandsDir, 'banneker-document.md')), 'banneker-document.md command should exist');
+    assert.ok(existsSync(join(commandsDir, 'banneker-audit.md')), 'banneker-audit.md command should exist');
 
     // VERIFY: Command files have content (not empty)
     const surveyContent = await readFile(join(commandsDir, 'banneker-survey.md'), 'utf8');
@@ -128,6 +130,8 @@ describe('Full Install Smoke Test', () => {
     assert.ok(existsSync(join(agentsDir, 'banneker-diagrammer.md')), 'banneker-diagrammer.md agent should exist');
     assert.ok(existsSync(join(agentsDir, 'banneker-publisher.md')), 'banneker-publisher.md agent should exist');
     assert.ok(existsSync(join(agentsDir, 'banneker-exporter.md')), 'banneker-exporter.md agent should exist');
+    assert.ok(existsSync(join(agentsDir, 'banneker-cartographer.md')), 'banneker-cartographer.md agent should exist');
+    assert.ok(existsSync(join(agentsDir, 'banneker-auditor.md')), 'banneker-auditor.md agent should exist');
 
     // VERIFY: Agent file has valid frontmatter with name field
     const surveyorContent = await readFile(join(agentsDir, 'banneker-surveyor.md'), 'utf8');
@@ -147,6 +151,7 @@ describe('Full Install Smoke Test', () => {
     assert.ok(existsSync(configTargetDir), 'Config directory should exist');
     assert.ok(existsSync(join(configTargetDir, 'document-catalog.md')), 'document-catalog.md should exist in config directory');
     assert.ok(existsSync(join(configTargetDir, 'framework-adapters.md')), 'framework-adapters.md should exist in config directory');
+    assert.ok(existsSync(join(configTargetDir, 'completeness-rubric.md')), 'completeness-rubric.md should exist in config directory');
 
     // VERIFY: Config file has content (not empty)
     const catalogContent = await readFile(join(configTargetDir, 'document-catalog.md'), 'utf8');

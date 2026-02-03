@@ -455,4 +455,102 @@ describe('Skill File YAML Frontmatter Validation', () => {
     // Verify non-empty
     assert.ok(content.trim().length > 0, 'framework-adapters.md should have content');
   });
+
+  it('should validate banneker-document command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-document.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-document command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-document command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-document$/m.test(frontmatter), 'banneker-document command should have name: banneker-document');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-document command should have description field');
+  });
+
+  it('should validate banneker-audit command has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'commands', 'banneker-audit.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-audit command should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-audit command should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-audit$/m.test(frontmatter), 'banneker-audit command should have name: banneker-audit');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-audit command should have description field');
+  });
+
+  it('should validate banneker-cartographer agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-cartographer.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-cartographer agent should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-cartographer agent should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-cartographer$/m.test(frontmatter), 'banneker-cartographer agent should have name: banneker-cartographer');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-cartographer agent should have description field');
+  });
+
+  it('should validate banneker-auditor agent has valid frontmatter', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-auditor.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Verify frontmatter structure
+    assert.ok(content.startsWith('---\n'), 'banneker-auditor agent should start with frontmatter');
+
+    const lines = content.split('\n');
+    const closingIndex = lines.findIndex((line, i) => i > 0 && line === '---');
+    assert.ok(closingIndex > 0, 'banneker-auditor agent should have closing frontmatter delimiter');
+
+    const frontmatter = lines.slice(1, closingIndex).join('\n');
+
+    // Verify name field matches expected value
+    assert.ok(/^name:\s*banneker-auditor$/m.test(frontmatter), 'banneker-auditor agent should have name: banneker-auditor');
+
+    // Verify description field exists and is meaningful
+    const hasDescription = /^description:\s*".+"$/m.test(frontmatter);
+    assert.ok(hasDescription, 'banneker-auditor agent should have description field');
+  });
+
+  it('should validate completeness-rubric.md config file exists and has expected content', async () => {
+    const filePath = join(PACKAGE_ROOT, 'templates', 'config', 'completeness-rubric.md');
+    const content = await readFile(filePath, 'utf8');
+
+    // Config files do NOT have frontmatter (unlike agent and command files)
+    assert.ok(!content.startsWith('---\n'), 'completeness-rubric.md should NOT start with frontmatter (it is a config file)');
+
+    // Verify it contains expected section headers
+    assert.ok(content.includes('# Completeness Rubric') || content.includes('Completeness'), 'completeness-rubric.md should have Completeness Rubric or related heading');
+
+    // Verify non-empty
+    assert.ok(content.trim().length > 0, 'completeness-rubric.md should have content');
+  });
 });

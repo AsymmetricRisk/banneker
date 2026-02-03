@@ -121,12 +121,30 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be filled by roadmapper) | | |
+| CLIFF-01 | Phase 12 | Pending |
+| CLIFF-02 | Phase 12 | Pending |
+| CLIFF-03 | Phase 15 | Pending |
+| CLIFF-04 | Phase 15 | Pending |
+| ENGDOC-01 | Phase 11 | Pending |
+| ENGDOC-02 | Phase 11 | Pending |
+| ENGDOC-03 | Phase 11 | Pending |
+| ENGDOC-04 | Phase 11 | Pending |
+| ENGDOC-05 | Phase 15 | Pending |
+| ENGDOC-06 | Phase 15 | Pending |
+| APPROVE-01 | Phase 13 | Pending |
+| APPROVE-02 | Phase 13 | Pending |
+| APPROVE-03 | Phase 13 | Pending |
+| APPROVE-04 | Phase 13 | Pending |
+| ENGINT-01 | Phase 11 | Pending |
+| ENGINT-02 | Phase 11 | Pending |
+| ENGINT-03 | Phase 14 | Pending |
+| ENGINT-04 | Phase 14 | Pending |
+| ENGINT-05 | Phase 11 | Pending |
 
 **Coverage:**
 - v0.3.0 requirements: 17 total
-- Mapped to phases: 0
-- Unmapped: 17 ⚠️
+- Mapped to phases: 17
+- Unmapped: 0
 
 ---
-*Requirements updated: 2026-02-03 after v0.3.0 milestone start*
+*Requirements updated: 2026-02-03 — v0.3.0 traceability complete*

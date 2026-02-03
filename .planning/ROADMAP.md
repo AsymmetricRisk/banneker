@@ -1,7 +1,17 @@
 # Banneker — Roadmap
 
-**Milestone:** v0.2.0 — Initial Public Release
-**Phases:** 10
+**Current Milestone:** v0.3.0 — The Engineer
+**Phases:** 15 (10 from v0.2.0 + 5 for v0.3.0)
+
+## Milestones
+
+- ✅ **v0.2.0 Initial Public Release** - Phases 1-10 (shipped)
+- 🚧 **v0.3.0 The Engineer** - Phases 11-15 (in progress)
+
+## Phases
+
+<details>
+<summary>v0.2.0 Initial Public Release (Phases 1-10) - SHIPPED</summary>
 
 ## Phase 1: Package Scaffolding & Installer
 
@@ -285,5 +295,163 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md — README creation and package.json metadata enhancement
+- [x] 10-01-PLAN.md — README creation and package.json metadata enhancement
 - [ ] 10-02-PLAN.md — Trusted publisher setup, tag creation, and post-publish verification
+
+**Phase 10 Status:** IN PROGRESS
+
+</details>
+
+---
+
+## v0.3.0 The Engineer
+
+**Milestone Goal:** Add `/banneker:engineer` command that shifts from interviewing to engineering mode when users reach their knowledge limits during surveys.
+
+### Phase 11: Engineer Agent Core
+
+**Goal:** Standalone engineer capability that synthesizes survey data into actionable engineering documents with explicit confidence levels.
+
+**Depends on:** Phase 10 (v0.2.0 complete)
+
+**Requirements:** ENGDOC-01, ENGDOC-02, ENGDOC-03, ENGDOC-04, ENGINT-01, ENGINT-02, ENGINT-05
+
+**Success Criteria** (what must be TRUE):
+1. `/banneker:engineer` command runs and reads existing survey.json (if present)
+2. DIAGNOSIS.md is generated identifying what is known, what is missing, and where gaps exist
+3. RECOMMENDATION.md is generated with options analysis, trade-offs, and alternatives considered
+4. ENGINEERING-PROPOSAL.md is generated with concrete decisions in DEC-XXX format
+5. Every recommendation includes confidence marker (HIGH/MEDIUM/LOW) with justification
+6. Engineer works with partial survey data (mid-interview scenarios produce valid output)
+7. Engineer state saved to `.banneker/state/engineer-state.md` enabling resume on interruption
+
+**Plans:** TBD
+
+Plans:
+- [ ] 11-01: Engineer sub-agent and three-document catalog specs
+- [ ] 11-02: Engineer command orchestrator skill file
+- [ ] 11-03: State management and partial data handling
+- [ ] 11-04: Installer manifest update and tests
+
+---
+
+### Phase 12: Cliff Detection
+
+**Goal:** Detect when users reach their knowledge limits during surveys and offer mode switch with explicit confirmation.
+
+**Depends on:** Phase 11
+
+**Requirements:** CLIFF-01, CLIFF-02
+
+**Success Criteria** (what must be TRUE):
+1. Explicit cliff signals are detected ("I don't know", "you decide", "take it from here", "whatever you think is best")
+2. Cliff signal detection logged to survey.json as `cliff_signals` array with timestamps and context
+3. Mode switch is offered only after explicit confirmation from user (no silent takeover)
+4. User can decline takeover and continue survey without penalty
+
+**Plans:** TBD
+
+Plans:
+- [ ] 12-01: Cliff signal detection logic and survey.json schema extension
+- [ ] 12-02: Confirmation flow and surveyor modification
+- [ ] 12-03: Tests for signal detection accuracy
+
+---
+
+### Phase 13: Approval Flow
+
+**Goal:** Granular user approval workflow before any AI-generated decisions merge into the project's decision record.
+
+**Depends on:** Phase 11
+
+**Requirements:** APPROVE-01, APPROVE-02, APPROVE-03, APPROVE-04
+
+**Success Criteria** (what must be TRUE):
+1. No decisions merge to architecture-decisions.json without explicit user approval
+2. User can approve/reject individual decisions (not all-or-nothing)
+3. User can edit proposed decisions before accepting (modify then approve)
+4. Summary tables display decisions grouped by category for efficient review
+5. Rejected decisions are logged with reason (not silently discarded)
+
+**Plans:** TBD
+
+Plans:
+- [ ] 13-01: Approval workflow design and merge logic
+- [ ] 13-02: Per-decision approval UI and edit-before-approve
+- [ ] 13-03: Summary table generation and rejection logging
+
+---
+
+### Phase 14: Survey Integration
+
+**Goal:** Integrate engineer mode into the survey pipeline with proper context handoff when users hit knowledge cliffs mid-interview.
+
+**Depends on:** Phase 12, Phase 13
+
+**Requirements:** ENGINT-03, ENGINT-04
+
+**Success Criteria** (what must be TRUE):
+1. Cliff detection during survey triggers offer to switch to engineer mode at phase boundaries
+2. Context handoff protocol produces explicit summary of what surveyor learned before switching
+3. Handoff summary persisted to survey.json as `surveyor_notes` or `.banneker/state/handoff-context.md`
+4. Engineer mode receives full context (no information loss during transition)
+5. User can complete survey normally if they decline engineer takeover
+
+**Plans:** TBD
+
+Plans:
+- [ ] 14-01: Mid-survey takeover offer at phase boundaries
+- [ ] 14-02: Context handoff protocol and surveyor_notes persistence
+- [ ] 14-03: Integration tests for survey-to-engineer flow
+
+---
+
+### Phase 15: Polish & Advanced Detection
+
+**Goal:** Add sophisticated cliff detection (implicit signals, compound detection) and engineering safeguards (complexity ceiling, research capability).
+
+**Depends on:** Phase 14
+
+**Requirements:** CLIFF-03, CLIFF-04, ENGDOC-05, ENGDOC-06
+
+**Success Criteria** (what must be TRUE):
+1. Implicit cliff signals detected (hedging language, response quality drop, repeated deferrals)
+2. Compound signal detection requires 2+ signals before triggering (prevents false positives)
+3. Complexity ceiling enforced based on extracted project constraints (prevents over-engineering)
+4. Research-on-demand capability available via WebSearch to fill knowledge gaps during synthesis
+5. End-to-end pipeline works: survey with cliff -> engineer takeover -> documents -> approval -> merge
+
+**Plans:** TBD
+
+Plans:
+- [ ] 15-01: Implicit signal detection patterns and compound logic
+- [ ] 15-02: Complexity ceiling configuration and enforcement
+- [ ] 15-03: Research-on-demand WebSearch integration
+- [ ] 15-04: End-to-end integration tests and installer update
+
+---
+
+## Progress
+
+**Execution Order:** Phases execute in numeric order. v0.3.0 starts at Phase 11.
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Package Scaffolding | v0.2.0 | 4/4 | Complete | - |
+| 2. CI/CD Pipeline | v0.2.0 | 3/3 | Complete | - |
+| 3. Survey Pipeline | v0.2.0 | 3/3 | Complete | - |
+| 4. Document Generation | v0.2.0 | 4/4 | Complete | - |
+| 5. Architecture Diagrams | v0.2.0 | 3/3 | Complete | - |
+| 6. HTML Appendix | v0.2.0 | 3/3 | Complete | - |
+| 7. Export & Feed System | v0.2.0 | 3/3 | Complete | - |
+| 8. Brownfield Analysis | v0.2.0 | 4/4 | Complete | - |
+| 9. Polish & Ops | v0.2.0 | 4/4 | Complete | - |
+| 10. Public Launch | v0.2.0 | 1/2 | In progress | - |
+| 11. Engineer Agent Core | v0.3.0 | 0/4 | Not started | - |
+| 12. Cliff Detection | v0.3.0 | 0/3 | Not started | - |
+| 13. Approval Flow | v0.3.0 | 0/3 | Not started | - |
+| 14. Survey Integration | v0.3.0 | 0/3 | Not started | - |
+| 15. Polish & Advanced | v0.3.0 | 0/4 | Not started | - |
+
+---
+*Roadmap updated: 2026-02-03 — v0.3.0 phases added*

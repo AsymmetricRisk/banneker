@@ -553,4 +553,34 @@ describe('Skill File YAML Frontmatter Validation', () => {
     // Verify non-empty
     assert.ok(content.trim().length > 0, 'completeness-rubric.md should have content');
   });
+
+  describe('REQ-CONT-003: handoff file writing', () => {
+    const longRunningCommands = [
+      'banneker-survey.md',
+      'banneker-architect.md',
+      'banneker-roadmap.md',
+      'banneker-appendix.md',
+      'banneker-feed.md',
+      'banneker-document.md',
+      'banneker-audit.md',
+      'banneker-plat.md'
+    ];
+
+    for (const cmd of longRunningCommands) {
+      it(`should verify ${cmd} references handoff/continuation protocol`, async () => {
+        const filePath = join(PACKAGE_ROOT, 'templates', 'commands', cmd);
+        const content = await readFile(filePath, 'utf8');
+
+        // Verify command references continuation protocol
+        const hasContinuationRef = content.includes('continue-here') ||
+                                   content.includes('handoff') ||
+                                   content.includes('REQ-CONT');
+
+        assert.ok(
+          hasContinuationRef,
+          `${cmd} should reference continuation protocol (.continue-here, handoff, or REQ-CONT)`
+        );
+      });
+    }
+  });
 });

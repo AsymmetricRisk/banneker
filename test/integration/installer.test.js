@@ -233,16 +233,27 @@ describe('Installer Integration Tests', () => {
       );
     });
 
-    it('should have no devDependencies (for now)', () => {
+    it('should allow build-time devDependencies only', () => {
       const packageJsonPath = join(PACKAGE_ROOT, 'package.json');
       const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
 
-      // Assert devDependencies field is empty or undefined
+      // devDependencies are OK for build-time tooling (e.g., auto-changelog)
+      // but runtime dependencies should be zero
       const devDeps = packageJson.devDependencies;
-      assert.ok(
-        devDeps === undefined || (typeof devDeps === 'object' && Object.keys(devDeps).length === 0),
-        'devDependencies should be empty or undefined (for now)'
-      );
+
+      // If devDependencies exist, verify they're build-time only (not shipped to users)
+      if (devDeps && typeof devDeps === 'object') {
+        // Allow known build-time dependencies
+        const allowedDevDeps = ['auto-changelog'];
+        const actualDevDeps = Object.keys(devDeps);
+
+        for (const dep of actualDevDeps) {
+          assert.ok(
+            allowedDevDeps.includes(dep),
+            `devDependency ${dep} should be in allowed list (build-time only)`
+          );
+        }
+      }
     });
   });
 

@@ -35,9 +35,9 @@
 
 ## REQ-APPENDIX: HTML Appendix
 
-- **REQ-APPENDIX-001** (must): Compile all documents and diagrams into self-contained HTML pages with shared dark-theme CSS. Source: Developer walkthrough step 5.
-- **REQ-APPENDIX-002** (must): Produce `index.html` landing page and individual section pages in `.banneker/appendix/`. Source: Developer walkthrough step 5.
-- **REQ-APPENDIX-003** (should): Generate only pages for available content when some documents are missing. Source: Developer walkthrough step 5 error case.
+- **REQ-APPENDIX-001** (must) ✓: Compile all documents and diagrams into self-contained HTML pages with shared dark-theme CSS. Source: Developer walkthrough step 5. *Complete: Phase 6*
+- **REQ-APPENDIX-002** (must) ✓: Produce `index.html` landing page and individual section pages in `.banneker/appendix/`. Source: Developer walkthrough step 5. *Complete: Phase 6*
+- **REQ-APPENDIX-003** (should) ✓: Generate only pages for available content when some documents are missing. Source: Developer walkthrough step 5 error case. *Complete: Phase 6*
 
 ## REQ-EXPORT: Export & Feed System
 

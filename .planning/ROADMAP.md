@@ -172,9 +172,11 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Publisher sub-agent for HTML appendix compilation
-- [ ] 06-02-PLAN.md — Appendix command orchestrator skill file
-- [ ] 06-03-PLAN.md — Installer manifest update and tests
+- [x] 06-01-PLAN.md — Publisher sub-agent for HTML appendix compilation
+- [x] 06-02-PLAN.md — Appendix command orchestrator skill file
+- [x] 06-03-PLAN.md — Installer manifest update and tests
+
+**Phase 6 Status:** COMPLETE (all 3 plans executed, all success criteria met)
 
 ---
 

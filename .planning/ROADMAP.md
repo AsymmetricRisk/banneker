@@ -224,6 +224,14 @@ Plans:
 
 **Dependencies:** Phase 4
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — Cartographer sub-agent for codebase analysis
+- [ ] 08-02-PLAN.md — Auditor sub-agent and completeness rubric config
+- [ ] 08-03-PLAN.md — Document and audit command orchestrators
+- [ ] 08-04-PLAN.md — Installer manifest update and tests
+
 ---
 
 ## Phase 9: Polish & Ops

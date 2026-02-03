@@ -86,13 +86,18 @@ const decisionsPath = '.banneker/architecture-decisions.json';
 - Contains document structures, confidence definitions, ADR format, quality standards
 - You'll reference this throughout the workflow
 
-## Step 2: Analyze Survey Completeness
+## Step 2: Analyze Survey Completeness (ENGINT-02)
 
-Before generating any documents, assess what information is present and what's missing.
+Detect gaps in survey.json to calibrate confidence levels and generate explicit gap documentation.
 
 ### Minimum Viable Survey Check
 
-**Required sections (REQ-ENGINT-02):**
+The minimum viable survey for engineer operation requires:
+- `survey.project` object (Phase 1 pitch)
+- `survey.actors` array with length > 0 (Phase 2)
+- `survey.walkthroughs` array with length > 0 (Phase 3)
+
+**Required sections:**
 ```javascript
 function checkMinimumViable(survey) {
     const required = {
@@ -143,6 +148,93 @@ Run /banneker:survey to complete required phases before engineering.
 ```
 
 **Stop execution.** Cannot proceed without minimum viable survey.
+
+### Section Completeness Detection
+
+Check each survey section and flag gaps:
+
+**Phase 1 - Project Details:**
+- project.name: REQUIRED
+- project.one_liner: REQUIRED
+- project.problem_statement: Helpful but optional
+
+**Phase 2 - Actors:**
+- actors[].name: REQUIRED for each
+- actors[].type: Helpful for filtering
+- actors[].role: Helpful for context
+
+**Phase 3 - Walkthroughs:**
+- walkthroughs[].actor: REQUIRED
+- walkthroughs[].steps: REQUIRED, length > 0
+- walkthroughs[].data_changes: Helpful for data model
+- walkthroughs[].error_cases: Helpful for robustness
+
+**Phase 4 - Backend (if applicable):**
+```javascript
+const backendGaps = [];
+if (survey.backend) {
+    if (survey.backend.applicable === true) {
+        // Backend is applicable, check completeness
+        if (!survey.backend.data_stores || survey.backend.data_stores.length === 0) {
+            backendGaps.push('backend.data_stores: No data stores defined');
+        }
+        if (!survey.backend.integrations) {
+            backendGaps.push('backend.integrations: External integrations not captured');
+        }
+        if (!survey.backend.hosting || !survey.backend.hosting.platform) {
+            backendGaps.push('backend.hosting: Deployment platform not specified');
+        }
+        if (!survey.backend.stack || survey.backend.stack.length === 0) {
+            backendGaps.push('backend.stack: Technology stack not defined');
+        }
+    }
+    // backend.applicable === false is valid (frontend-only project)
+} else {
+    // No backend section at all - major gap
+    backendGaps.push('backend: Entire backend section missing - was Phase 4 skipped?');
+}
+```
+
+**Phase 5 - Gaps & Rubric:**
+```javascript
+const rubricGaps = [];
+if (survey.rubric_coverage) {
+    if (survey.rubric_coverage.gaps && survey.rubric_coverage.gaps.length > 0) {
+        // User already identified gaps during survey
+        rubricGaps.push(...survey.rubric_coverage.gaps.map(g => `rubric_gap: ${g}`));
+    }
+} else {
+    rubricGaps.push('rubric_coverage: Gap analysis section missing - was Phase 5 completed?');
+}
+```
+
+### Compute Survey Completeness Percentage
+
+```javascript
+function computeCompleteness(survey) {
+    const sections = {
+        project: survey.project ? 1 : 0,
+        actors: survey.actors && survey.actors.length > 0 ? 1 : 0,
+        walkthroughs: survey.walkthroughs && survey.walkthroughs.length > 0 ? 1 : 0,
+        backend: survey.backend ? (survey.backend.applicable === false ? 1 :
+            (survey.backend.data_stores?.length > 0 ? 1 : 0.5)) : 0,
+        rubric: survey.rubric_coverage ? 1 : 0,
+        decisions: survey.architecture_decisions ? 1 : 0
+    };
+
+    const total = Object.values(sections).reduce((a, b) => a + b, 0);
+    return Math.round((total / 6) * 100);
+}
+```
+
+### Establish Confidence Baseline
+
+Based on survey completeness:
+- 80-100% complete: Confidence baseline HIGH (can assign HIGH to well-supported recommendations)
+- 50-79% complete: Confidence baseline MEDIUM (cap most recommendations at MEDIUM)
+- <50% complete: Confidence baseline LOW (all recommendations get LOW unless very well supported)
+
+Store this baseline for use during document generation.
 
 ### Completeness Analysis
 
@@ -207,11 +299,8 @@ function analyzeCompleteness(survey) {
         analysis.phases_missing.push('Phase 5: Rubric not captured');
     }
 
-    // Compute overall percentage
-    const completeness_values = Object.values(analysis.phase_completeness);
-    analysis.overall_percentage = Math.round(
-        completeness_values.reduce((sum, val) => sum + val, 0) / completeness_values.length
-    );
+    // Compute overall percentage using computeCompleteness function
+    analysis.overall_percentage = computeCompleteness(survey);
 
     // Determine confidence baseline
     if (analysis.overall_percentage >= 80 && analysis.gaps.length <= 2) {
@@ -227,6 +316,13 @@ function analyzeCompleteness(survey) {
 ```
 
 **Store completeness analysis** for use in all three documents. This baseline informs confidence markers.
+
+**CRITICAL - Partial Data Behavior:**
+- Generate ALL three documents even with partial data
+- Explicitly state gaps in DIAGNOSIS.md "What Is Missing" section
+- Downgrade confidence for recommendations touching gap areas
+- Never invent data not in survey - state the gap instead
+- Example: "Survey gap: No database specified. Cannot recommend specific database. Assuming relational storage needed based on entity relationships in walkthroughs."
 
 ## Step 3: Generate DIAGNOSIS.md
 

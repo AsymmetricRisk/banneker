@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 12 of 15 (Cliff Detection)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-03 — Completed 12-02-PLAN.md
+Plan: 3 of 3 in current phase
+Status: Phase complete
+Last activity: 2026-02-03 — Completed 12-03-PLAN.md
 
-Progress: [#############.......] 63% (Phase 12: 2/3 plans)
+Progress: [##############......] 67% (Phase 12: 3/3 plans - COMPLETE)
 
 ## Current Milestone: v0.3.0
 
@@ -22,7 +22,7 @@ Progress: [#############.......] 63% (Phase 12: 2/3 plans)
 
 **Phases:**
 - Phase 11: Engineer Agent Core (standalone synthesis) - COMPLETE
-- Phase 12: Cliff Detection (signal detection + confirmation) - IN PROGRESS
+- Phase 12: Cliff Detection (signal detection + confirmation) - COMPLETE
 - Phase 13: Approval Flow (user approval before merge)
 - Phase 14: Survey Integration (mid-survey takeover)
 - Phase 15: Polish & Advanced Detection (implicit signals, complexity ceiling)
@@ -74,6 +74,9 @@ Recent decisions affecting v0.3.0 work:
 - Context handoff via surveyor-context.md captures preferences and constraints (12-02)
 - Engineer invocation uses standard Skill tool mechanism (12-02)
 - Deferred questions re-offered at end of each phase (12-02)
+- Longest matching signal wins when response contains overlapping signals (12-03)
+- Detection function returns structured result object for flexible handling (12-03)
+- TDD pattern for detection logic: RED-GREEN-REFACTOR with separate commits (12-03)
 
 ### Blockers/Concerns
 
@@ -82,9 +85,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-03T23:11:42Z
-Stopped at: Completed 12-02-PLAN.md
+Last session: 2026-02-03T23:30:00Z
+Stopped at: Completed 12-03-PLAN.md (Phase 12 complete)
 Resume file: None
 
 ---
-*Last updated: 2026-02-03 — Completed 12-02-PLAN.md*
+*Last updated: 2026-02-03 — Completed 12-03-PLAN.md*

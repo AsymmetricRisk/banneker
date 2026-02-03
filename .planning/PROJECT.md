@@ -59,6 +59,18 @@ Local CLI tool. No server infrastructure. npm registry hosts the package for dis
 - **Prompt before overwrite:** Installer must detect existing installations via `VERSION` file and prompt before replacing files.
 - **Pre-1.0 versioning:** Initial publish at 0.2.0 (DEC-006). Semver semantics with breaking changes reserved for post-1.0.
 
+## Current Milestone: v0.3.0 — The Engineer
+
+**Goal:** Add `/banneker:engineer` command that shifts from interviewing to engineering mode when users reach their knowledge limits during surveys.
+
+**Target features:**
+- Cliff detection during survey (signals like "I don't know", "whatever you think", "take it from here")
+- Auto-takeover offer when cliff detected
+- Standalone `/banneker:engineer` command for post-survey use
+- Three-document output: DIAGNOSIS.md, RECOMMENDATION.md, ENGINEERING-PROPOSAL.md
+- Works with partial survey data (mid-interview cliff support)
+- Synthesizes inputs → makes technical decisions → presents proposal for approval
+
 ## Key Decisions
 
 | ID | Decision | Choice | Rationale |

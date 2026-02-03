@@ -72,3 +72,61 @@
 - **REQ-CONT-001** (must) ✓: All long-running commands track progress in `.banneker/state/{command}-state.md`. Source: continuation-protocol.md Method B. *Complete: Phase 9*
 - **REQ-CONT-002** (must) ✓: Commands check for continuation state before starting work (resume detection at Step 0). Source: continuation-protocol.md resume detection pattern. *Complete: Phase 9*
 - **REQ-CONT-003** (should) ✓: Write `.banneker/state/.continue-here.md` handoff file when a command cannot continue in the current session. Source: continuation-protocol.md Method C. *Complete: Phase 9*
+
+---
+
+## v0.3.0 Requirements — The Engineer
+
+### REQ-CLIFF: Cliff Detection
+
+- [ ] **CLIFF-01** (must): Detect explicit cliff signals during survey ("I don't know", "you decide", "take it from here", "whatever you think is best"). Source: v0.3.0 features research.
+- [ ] **CLIFF-02** (must): Require confirmation before mode switch — no silent takeover. Source: PITFALLS.md P1 prevention.
+- [ ] **CLIFF-03** (should): Detect implicit cliff signals (hedging language, response quality drop, repeated deferrals). Source: v0.3.0 features research.
+- [ ] **CLIFF-04** (should): Use compound signal detection (2+ signals required) to prevent false positives. Source: PITFALLS.md P1 prevention.
+
+### REQ-ENGDOC: Engineer Document Generation
+
+- [ ] **ENGDOC-01** (must): Generate DIAGNOSIS.md identifying what is known, what is missing, and where gaps exist. Source: v0.3.0 output specification.
+- [ ] **ENGDOC-02** (must): Generate RECOMMENDATION.md with options analysis, trade-offs, and alternatives considered. Source: v0.3.0 output specification.
+- [ ] **ENGDOC-03** (must): Generate ENGINEERING-PROPOSAL.md with concrete decisions in DEC-XXX format ready for approval. Source: v0.3.0 output specification.
+- [ ] **ENGDOC-04** (must): Include confidence markers (HIGH/MEDIUM/LOW) on each recommendation with justification. Source: PITFALLS.md P4 prevention.
+- [ ] **ENGDOC-05** (should): Enforce complexity ceiling — prevent over-engineering based on extracted constraints. Source: PITFALLS.md P2 prevention.
+- [ ] **ENGDOC-06** (should): Support research-on-demand (WebSearch) to fill knowledge gaps during synthesis. Source: v0.3.0 features research.
+
+### REQ-APPROVE: Approval Flow
+
+- [ ] **APPROVE-01** (must): Require explicit user approval before merging decisions to architecture-decisions.json. Source: ARCHITECTURE.md approval gate requirement.
+- [ ] **APPROVE-02** (must): Support per-decision granularity — user can approve/reject individual decisions. Source: v0.3.0 features research.
+- [ ] **APPROVE-03** (must): Support edit-before-approve — user can modify proposed decisions before accepting. Source: v0.3.0 features research.
+- [ ] **APPROVE-04** (should): Generate summary tables for quick review to reduce review fatigue. Source: FEATURES.md review fatigue mitigation.
+
+### REQ-ENGINT: Engineer Integration
+
+- [ ] **ENGINT-01** (must): Provide standalone `/banneker:engineer` command that works with existing survey.json. Source: v0.3.0 core requirement.
+- [ ] **ENGINT-02** (must): Work with partial survey data (mid-interview cliff scenarios). Source: v0.3.0 core requirement.
+- [ ] **ENGINT-03** (must): Implement mid-survey takeover — cliff detection triggers offer during interview. Source: v0.3.0 features research.
+- [ ] **ENGINT-04** (must): Implement context handoff protocol — explicit summary of what surveyor learned before switching. Source: PITFALLS.md P3 prevention.
+- [ ] **ENGINT-05** (should): Track engineer state in `.banneker/state/engineer-state.md` for resume-on-interrupt. Source: REQ-CONT-001 pattern.
+
+## Out of Scope (v0.3.0)
+
+| Feature | Reason |
+|---------|--------|
+| Autonomous decision execution | Destroys user trust; approval gates are table stakes |
+| Configurable detection sensitivity | Defer to v0.4.0 after real-world tuning |
+| Multi-proposal comparison | Over-engineering for MVP; single best proposal sufficient |
+| Decision rollback/undo | Defer to future; users can manually edit architecture-decisions.json |
+
+## Traceability (v0.3.0)
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| (To be filled by roadmapper) | | |
+
+**Coverage:**
+- v0.3.0 requirements: 17 total
+- Mapped to phases: 0
+- Unmapped: 17 ⚠️
+
+---
+*Requirements updated: 2026-02-03 after v0.3.0 milestone start*

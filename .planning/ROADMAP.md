@@ -351,12 +351,12 @@ Plans:
 3. Mode switch is offered only after explicit confirmation from user (no silent takeover)
 4. User can decline takeover and continue survey without penalty
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 12-01: Cliff signal detection logic and survey.json schema extension
-- [ ] 12-02: Confirmation flow and surveyor modification
-- [ ] 12-03: Tests for signal detection accuracy
+- [ ] 12-01-PLAN.md — Schema extension and cliff detection config reference
+- [ ] 12-02-PLAN.md — Surveyor modification with detection logic and confirmation flow
+- [ ] 12-03-PLAN.md — Cliff detection module and tests (TDD)
 
 ---
 
@@ -450,10 +450,10 @@ Plans:
 | 9. Polish & Ops | v0.2.0 | 4/4 | Complete | - |
 | 10. Public Launch | v0.2.0 | 1/2 | In progress | - |
 | 11. Engineer Agent Core | v0.3.0 | 4/4 | Complete | 2026-02-03 |
-| 12. Cliff Detection | v0.3.0 | 0/3 | Not started | - |
+| 12. Cliff Detection | v0.3.0 | 0/3 | Planned | - |
 | 13. Approval Flow | v0.3.0 | 0/3 | Not started | - |
 | 14. Survey Integration | v0.3.0 | 0/3 | Not started | - |
 | 15. Polish & Advanced | v0.3.0 | 0/4 | Not started | - |
 
 ---
-*Roadmap updated: 2026-02-03 — Phase 11 complete*
+*Roadmap updated: 2026-02-03 — Phase 12 planned (3 plans)*

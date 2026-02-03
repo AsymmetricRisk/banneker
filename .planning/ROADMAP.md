@@ -281,3 +281,9 @@ Plans:
 **Complexity:** S
 
 **Dependencies:** Phases 1-9
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — README creation and package.json metadata enhancement
+- [ ] 10-02-PLAN.md — Trusted publisher setup, tag creation, and post-publish verification

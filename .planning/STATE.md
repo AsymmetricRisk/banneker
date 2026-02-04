@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 14 of 15 (Survey Integration)
-Plan: 3 of 3 in current phase
+Plan: 4 of 4 in current phase
 Status: Phase complete
-Last activity: 2026-02-04 — Completed 14-03-PLAN.md
+Last activity: 2026-02-04 — Completed 14-04-PLAN.md (gap closure)
 
-Progress: [################----] 80% (Phase 14: 3/3 plans - COMPLETE)
+Progress: [################----] 80% (Phase 14: 4/4 plans - COMPLETE)
 
 ## Current Milestone: v0.3.0
 
@@ -90,6 +90,10 @@ Recent decisions affecting v0.3.0 work:
 - surveyor_notes optional field for backward compatibility with existing surveys (14-02)
 - Dual handoff: surveyor_notes in survey.json + surveyor-context.md for readable context (14-02)
 - Minimum viability threshold at 55% (Phases 1-3 complete) before engineer mode switch (14-02)
+- Dual handoff sources: use both when available, either when only one exists (14-04)
+- Handoff Context section MANDATORY in DIAGNOSIS.md when handoff context exists (14-04)
+- Uncertain topics from handoff map to LOW confidence recommendations (14-04)
+- Deferred questions automatically added to gaps list (14-04)
 
 ### Blockers/Concerns
 
@@ -98,9 +102,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-04T03:53:42Z
-Stopped at: Completed 14-03-PLAN.md (Phase 14 complete)
+Last session: 2026-02-04T04:15:00Z
+Stopped at: Completed 14-04-PLAN.md (Phase 14 gap closure complete)
 Resume file: None
 
 ---
-*Last updated: 2026-02-04 — Completed 14-03-PLAN.md*
+*Last updated: 2026-02-04 — Completed 14-04-PLAN.md*

@@ -469,6 +469,133 @@ describe('Installer Integration Tests', () => {
     });
   });
 
+  describe('Surveyor agent installation (Phase 14)', () => {
+    it('should copy banneker-surveyor.md to agents directory', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Assert: banneker-surveyor.md copied to agents directory
+      const targetPath = join(agentsDir, 'banneker-surveyor.md');
+      assert.ok(existsSync(targetPath), 'banneker-surveyor.md should be copied to agents directory');
+    });
+
+    it('should install surveyor agent with cliff detection protocol', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      const surveyorPath = join(agentsDir, 'banneker-surveyor.md');
+      const content = readFileSync(surveyorPath, 'utf8');
+
+      // Verify cliff detection protocol sections exist
+      assert.ok(content.includes('## Cliff Detection Protocol'),
+        'Surveyor should have Cliff Detection Protocol section');
+      assert.ok(content.includes('## Cliff Tracking State Management'),
+        'Surveyor should have Cliff Tracking State Management section');
+      assert.ok(content.includes('## Mode Switch Execution Protocol'),
+        'Surveyor should have Mode Switch Execution Protocol section');
+    });
+
+    it('should include cliff tracking state fields in surveyor', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      const surveyorPath = join(agentsDir, 'banneker-surveyor.md');
+      const content = readFileSync(surveyorPath, 'utf8');
+
+      // Verify state fields documented
+      assert.ok(content.includes('pendingOffer'),
+        'Surveyor should document pendingOffer state field');
+      assert.ok(content.includes('declinedOffers'),
+        'Surveyor should document declinedOffers state field');
+      assert.ok(content.includes('cliffSignals'),
+        'Surveyor should document cliffSignals state field');
+      assert.ok(content.includes('deferredQuestions'),
+        'Surveyor should document deferredQuestions state field');
+    });
+
+    it('should include phase boundary cliff checks in surveyor', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      const surveyorPath = join(agentsDir, 'banneker-surveyor.md');
+      const content = readFileSync(surveyorPath, 'utf8');
+
+      // Verify cliff detection checks at phase boundaries
+      const cliffCheckCount = (content.match(/Cliff detection check:/g) || []).length;
+      assert.ok(cliffCheckCount >= 5,
+        `Surveyor should have cliff detection checks for phases 1-5, found ${cliffCheckCount}`);
+    });
+
+    it('should include surveyor-context.md documentation', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const agentsDir = join(configDir, 'agents');
+
+      // Manually run install logic
+      mkdirSync(agentsDir, { recursive: true });
+
+      const agentsTemplatesDir = join(PACKAGE_ROOT, 'templates', 'agents');
+      cpSync(agentsTemplatesDir, agentsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      const surveyorPath = join(agentsDir, 'banneker-surveyor.md');
+      const content = readFileSync(surveyorPath, 'utf8');
+
+      // Verify context handoff file documentation
+      assert.ok(content.includes('surveyor-context.md'),
+        'Surveyor should document surveyor-context.md handoff file');
+      assert.ok(content.includes('User Preferences Observed'),
+        'Surveyor should document preference extraction in context handoff');
+    });
+  });
+
   describe('Cliff detection config installation', () => {
     it('copies cliff-detection-signals.md to config directory', () => {
       // Resolve paths using fake home directory

@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 13 of 15 (Approval Flow)
-Plan: 1 of 4 in current phase
+Plan: 2 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-04 — Completed 13-01-PLAN.md
+Last activity: 2026-02-04 — Completed 13-02-PLAN.md
 
-Progress: [###############.....] 71% (Phase 13: 1/4 plans)
+Progress: [################....] 75% (Phase 13: 2/4 plans)
 
 ## Current Milestone: v0.3.0
 
@@ -80,6 +80,10 @@ Recent decisions affecting v0.3.0 work:
 - Atomic write uses backup + .tmp + rename pattern for POSIX safety (13-01)
 - Rejection log includes full_decision for potential recovery (13-01)
 - Display groups by domain field with global numbered indices (13-01)
+- Exported helper functions (parseIndices, formatEditableDecision) for testability (13-02)
+- Edit file uses # comment lines with instructional header (13-02)
+- Editor fallback chain: $EDITOR -> $VISUAL -> vi (13-02)
+- Batch selection defaults to reject-all on too many invalid attempts (13-02)
 
 ### Blockers/Concerns
 
@@ -88,9 +92,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-04T00:09:00Z
-Stopped at: Completed 13-01-PLAN.md
+Last session: 2026-02-04T00:14:49Z
+Stopped at: Completed 13-02-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-04 — Completed 13-01-PLAN.md*
+*Last updated: 2026-02-04 — Completed 13-02-PLAN.md*

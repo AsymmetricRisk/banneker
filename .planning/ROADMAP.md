@@ -403,12 +403,12 @@ Plans:
 4. Engineer mode receives full context (no information loss during transition)
 5. User can complete survey normally if they decline engineer takeover
 
-**Plans:** TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 14-01: Mid-survey takeover offer at phase boundaries
-- [ ] 14-02: Context handoff protocol and surveyor_notes persistence
-- [ ] 14-03: Integration tests for survey-to-engineer flow
+- [ ] 14-01-PLAN.md — Cliff tracking state management and phase boundary offers
+- [ ] 14-02-PLAN.md — Context handoff protocol and surveyor_notes persistence
+- [ ] 14-03-PLAN.md — Integration tests for survey-to-engineer flow
 
 ---
 
@@ -456,8 +456,8 @@ Plans:
 | 11. Engineer Agent Core | v0.3.0 | 4/4 | Complete | 2026-02-03 |
 | 12. Cliff Detection | v0.3.0 | 3/3 | Complete | 2026-02-03 |
 | 13. Approval Flow | v0.3.0 | 3/3 | Complete | 2026-02-04 |
-| 14. Survey Integration | v0.3.0 | 0/3 | Not started | - |
+| 14. Survey Integration | v0.3.0 | 0/3 | Planned | - |
 | 15. Polish & Advanced | v0.3.0 | 0/4 | Not started | - |
 
 ---
-*Roadmap updated: 2026-02-04 — Phase 13 complete (3/3 plans executed)*
+*Roadmap updated: 2026-02-04 — Phase 14 planned (3 plans created)*

@@ -423,6 +423,52 @@ describe('Installer Integration Tests', () => {
     });
   });
 
+  describe('Approve command installation', () => {
+    it('should copy banneker-approve.md to commands directory', () => {
+      // Resolve paths using fake home directory
+      const { commandsDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+
+      // Manually run install logic (mkdir, copy templates)
+      mkdirSync(commandsDir, { recursive: true });
+
+      // Copy template files
+      const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
+      cpSync(templatesDir, commandsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Assert: banneker-approve.md copied to target
+      const approveFile = join(commandsDir, 'banneker-approve.md');
+      assert.ok(existsSync(approveFile), 'banneker-approve.md should exist');
+    });
+
+    it('should contain valid YAML frontmatter', () => {
+      // Resolve paths using fake home directory
+      const { commandsDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+
+      // Manually run install logic
+      mkdirSync(commandsDir, { recursive: true });
+
+      const templatesDir = join(PACKAGE_ROOT, 'templates', 'commands');
+      cpSync(templatesDir, commandsDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      // Read and verify content
+      const approveFile = join(commandsDir, 'banneker-approve.md');
+      const content = readFileSync(approveFile, 'utf8');
+
+      // Check frontmatter structure
+      assert.ok(content.startsWith('---'), 'Should start with YAML frontmatter');
+      assert.ok(content.includes('name: banneker-approve'), 'Should have correct name');
+      assert.ok(content.includes('description:'), 'Should have description');
+    });
+  });
+
   describe('Cliff detection config installation', () => {
     it('copies cliff-detection-signals.md to config directory', () => {
       // Resolve paths using fake home directory

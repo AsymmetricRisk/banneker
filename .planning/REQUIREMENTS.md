@@ -104,8 +104,8 @@
 
 - [ ] **ENGINT-01** (must): Provide standalone `/banneker:engineer` command that works with existing survey.json. Source: v0.3.0 core requirement.
 - [ ] **ENGINT-02** (must): Work with partial survey data (mid-interview cliff scenarios). Source: v0.3.0 core requirement.
-- [ ] **ENGINT-03** (must): Implement mid-survey takeover — cliff detection triggers offer during interview. Source: v0.3.0 features research.
-- [ ] **ENGINT-04** (must): Implement context handoff protocol — explicit summary of what surveyor learned before switching. Source: PITFALLS.md P3 prevention.
+- [x] **ENGINT-03** (must) ✓: Implement mid-survey takeover — cliff detection triggers offer during interview. Source: v0.3.0 features research. *Complete: Phase 14*
+- [x] **ENGINT-04** (must) ✓: Implement context handoff protocol — explicit summary of what surveyor learned before switching. Source: PITFALLS.md P3 prevention. *Complete: Phase 14*
 - [ ] **ENGINT-05** (should): Track engineer state in `.banneker/state/engineer-state.md` for resume-on-interrupt. Source: REQ-CONT-001 pattern.
 
 ## Out of Scope (v0.3.0)
@@ -137,8 +137,8 @@
 | APPROVE-04 | Phase 13 | Complete |
 | ENGINT-01 | Phase 11 | Pending |
 | ENGINT-02 | Phase 11 | Pending |
-| ENGINT-03 | Phase 14 | Pending |
-| ENGINT-04 | Phase 14 | Pending |
+| ENGINT-03 | Phase 14 | Complete |
+| ENGINT-04 | Phase 14 | Complete |
 | ENGINT-05 | Phase 11 | Pending |
 
 **Coverage:**
@@ -147,4 +147,4 @@
 - Unmapped: 0
 
 ---
-*Requirements updated: 2026-02-03 — CLIFF-01, CLIFF-02 complete (Phase 12)*
+*Requirements updated: 2026-02-04 — ENGINT-03, ENGINT-04 complete (Phase 14)*

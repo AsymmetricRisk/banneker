@@ -4,7 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS, detectImplicitCliff, IMPLICIT_CLIFF_SIGNALS } from '../../lib/cliff-detection.js';
+import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS, detectImplicitCliff, IMPLICIT_CLIFF_SIGNALS, detectCompound } from '../../lib/cliff-detection.js';
 
 describe('EXPLICIT_CLIFF_SIGNALS', () => {
   it('contains expected signals', () => {
@@ -159,5 +159,76 @@ describe('detectImplicitCliff', () => {
     const original = "Maybe PostgreSQL?";
     const result = detectImplicitCliff(original);
     assert.strictEqual(result.originalResponse, original);
+  });
+});
+
+describe('detectCompound', () => {
+  it('triggers immediately on explicit signal', () => {
+    const result = detectCompound("I don't know what to use");
+    assert.strictEqual(result.trigger, true);
+    assert.strictEqual(result.reason, 'explicit_signal');
+    assert.strictEqual(result.confidence, 'HIGH');
+  });
+
+  it('does not trigger on single implicit signal', () => {
+    const result = detectCompound("Maybe PostgreSQL");
+    assert.strictEqual(result.trigger, false);
+    assert.strictEqual(result.signalCount, 1);
+  });
+
+  it('triggers on 2+ implicit signals in current response', () => {
+    const result = detectCompound("Um, maybe, whatever works");
+    assert.strictEqual(result.trigger, true);
+    assert.strictEqual(result.reason, 'compound_implicit');
+    assert.strictEqual(result.confidence, 'MEDIUM');
+    assert.ok(result.signalCount >= 2);
+  });
+
+  it('triggers when implicit signals accumulate across history', () => {
+    const history = [
+      { implicitSignals: [{ signal: 'maybe', category: 'hedging' }] },
+      { implicitSignals: [] }
+    ];
+    // Current response has 1 implicit, history has 1 = 2 total
+    const result = detectCompound("I guess so", history);
+    assert.strictEqual(result.trigger, true);
+    assert.strictEqual(result.reason, 'compound_implicit');
+  });
+
+  it('uses only last 3 responses from history', () => {
+    const history = [
+      { implicitSignals: [{ signal: 'old1', category: 'hedging' }] }, // Too old
+      { implicitSignals: [{ signal: 'old2', category: 'hedging' }] }, // Too old
+      { implicitSignals: [] }, // -3
+      { implicitSignals: [] }, // -2
+      { implicitSignals: [] }  // -1
+    ];
+    // Only last 3 have 0 implicit signals, current has 1 = 1 total (no trigger)
+    const result = detectCompound("Maybe", history);
+    assert.strictEqual(result.trigger, false);
+    assert.strictEqual(result.signalCount, 1);
+  });
+
+  it('returns detected signals array', () => {
+    const result = detectCompound("Maybe, I guess, whatever");
+    assert.ok(Array.isArray(result.signals));
+    assert.ok(result.signals.length > 0);
+  });
+
+  it('does not trigger on confident response', () => {
+    const result = detectCompound("Use PostgreSQL with Redis caching");
+    assert.strictEqual(result.trigger, false);
+    assert.strictEqual(result.signalCount, 0);
+  });
+
+  it('explicit signal takes priority over accumulated implicit', () => {
+    const history = [
+      { implicitSignals: [{ signal: 'maybe', category: 'hedging' }] },
+      { implicitSignals: [{ signal: 'um', category: 'quality_degradation' }] }
+    ];
+    const result = detectCompound("I don't know", history);
+    assert.strictEqual(result.trigger, true);
+    assert.strictEqual(result.reason, 'explicit_signal');
+    assert.strictEqual(result.confidence, 'HIGH');
   });
 });

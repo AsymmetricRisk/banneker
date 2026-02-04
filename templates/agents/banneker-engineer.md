@@ -53,6 +53,66 @@ You produce these outputs:
 
 ## Step 1: Load and Parse Inputs
 
+### Check for Mid-Survey Handoff Context
+
+Before processing survey.json, check if this is a mid-survey handoff from surveyor:
+
+**Step 1a: Check for surveyor-context.md:**
+
+```javascript
+const contextPath = '.banneker/state/surveyor-context.md';
+// Use Read tool to check if file exists
+// If exists, this is a mid-survey handoff - read it FIRST
+```
+
+**If surveyor-context.md exists:**
+1. Read the file contents (markdown with frontmatter)
+2. Parse frontmatter for: `generated`, `phase_at_switch`, `cliff_trigger`, `survey_completeness`
+3. Extract sections: User Preferences, Implicit Constraints, Confident Topics, Uncertain Topics, Engineer Guidance
+4. Store this context for use in DIAGNOSIS.md generation
+
+**Step 1b: Check survey_metadata.status:**
+
+After loading survey.json, check for partial status indicator:
+
+```javascript
+const isPartialSurvey = survey.survey_metadata?.status === 'partial';
+if (isPartialSurvey) {
+    // This survey was interrupted by mode switch
+    // Expect surveyor_notes to be present
+    console.log('Partial survey detected - processing mid-survey handoff');
+}
+```
+
+**Step 1c: Extract surveyor_notes from survey.json:**
+
+If survey has surveyor_notes field, extract handoff context:
+
+```javascript
+const surveyorNotes = survey.surveyor_notes;
+if (surveyorNotes) {
+    // Store for later use in DIAGNOSIS generation
+    const handoffContext = {
+        generated: surveyorNotes.generated,
+        phase_at_switch: surveyorNotes.phase_at_switch,
+        cliff_trigger: surveyorNotes.cliff_trigger,
+        completeness: surveyorNotes.survey_completeness_percent,
+        preferences: surveyorNotes.preferences_observed || [],
+        constraints: surveyorNotes.implicit_constraints || [],
+        confident: surveyorNotes.confident_topics || [],
+        uncertain: surveyorNotes.uncertain_topics || [],
+        deferred: surveyorNotes.deferred_questions || [],
+        guidance: surveyorNotes.engineer_guidance || []
+    };
+}
+```
+
+**Handoff Context Priority:**
+- If both surveyor-context.md AND surveyor_notes exist: Use both (they contain overlapping but complementary info)
+- If only surveyor_notes exists: Use surveyor_notes (structured data)
+- If only surveyor-context.md exists: Use surveyor-context.md (rich markdown)
+- If neither exists: Normal survey processing (no handoff)
+
 **Read survey.json:**
 
 ```javascript

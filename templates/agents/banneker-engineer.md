@@ -989,6 +989,130 @@ For each recommendation section, if violations exist:
 ...
 ```
 
+### Step 4b: Research-on-Demand for Gaps
+
+Before generating recommendations for LOW confidence areas, check if research could help:
+
+```javascript
+// Import research integration
+const { identifyResearchableGaps, buildSearchQuery, formatResearchFindings } = require('../lib/research-integration.js');
+
+// Get gaps from DIAGNOSIS
+const diagnosisGaps = completenessAnalysis.gaps;
+
+// Identify which gaps could be filled with research
+const researchableGaps = identifyResearchableGaps(diagnosisGaps);
+
+// Limit to 3 research queries per session (context budget)
+const researchLimit = 3;
+state.researchQueriesUsed = state.researchQueriesUsed || 0;
+
+console.log(`Researchable gaps: ${researchableGaps.length}`);
+console.log(`Research budget: ${researchLimit - state.researchQueriesUsed} queries remaining`);
+```
+
+**Research Triggers:**
+1. Gap mentions "best practices", "recommended", "industry standard"
+2. Gap involves technology comparison ("vs", "comparison", "which to use")
+3. Recommendation would be LOW confidence without additional information
+
+**Research Limits:**
+- Maximum 3 WebSearch queries per engineer session
+- Only trigger for HIGH priority gaps (technology comparisons) first
+- Skip research if survey completeness > 70% (probably enough info)
+
+### Executing Research
+
+When research is warranted:
+
+```javascript
+if (researchableGaps.length > 0 && state.researchQueriesUsed < researchLimit) {
+  for (const { gap, searchQuery, priority } of researchableGaps) {
+    if (state.researchQueriesUsed >= researchLimit) break;
+
+    // Use WebFetch tool for research
+    // The executor should use the WebFetch tool with the query
+    console.log(`Researching: ${searchQuery}`);
+
+    // In practice, the agent would call:
+    // const result = await WebFetch({ url: searchUrl, prompt: "Extract key recommendations" });
+
+    state.researchQueriesUsed++;
+    state.researchFindings = state.researchFindings || [];
+    state.researchFindings.push({
+      gap,
+      query: searchQuery,
+      // findings will be populated from WebFetch result
+    });
+  }
+}
+```
+
+**When to Research:**
+- Survey completeness < 70%
+- Gap is technology comparison (priority: high)
+- No existing decision covers this area
+- Would significantly improve confidence
+
+**When to Skip Research:**
+- Survey completeness >= 70%
+- Gap is project-specific (can't be researched)
+- Research budget exhausted
+- User explicitly deferred this topic
+
+### Including Research Findings
+
+If research was performed, add findings section to relevant recommendation:
+
+```markdown
+## [Area]: [Recommendation]
+
+### Research Conducted
+
+**Query:** "[search query]"
+**Gap addressed:** [original gap from DIAGNOSIS]
+
+**Key findings:**
+- [finding 1]
+- [finding 2]
+
+**How this affected the recommendation:**
+[Explanation of how research improved confidence or changed recommendation]
+
+### Analysis
+...
+```
+
+**Research Impact on Confidence:**
+- Research findings that confirm recommendation: Boost confidence by one level (LOW -> MEDIUM)
+- Research findings that conflict: Note disagreement, keep at original confidence
+- No relevant findings: Keep at original confidence, note research was inconclusive
+
+### Research State Tracking
+
+Track research queries in engineer-state.md:
+
+```markdown
+## Research Activity
+
+**Queries used:** 2/3
+**Queries remaining:** 1
+
+### Research Log
+
+| Query | Gap Addressed | Status | Finding Summary |
+|-------|---------------|--------|-----------------|
+| "react vs vue 2026 best practices" | frontend framework comparison | completed | React ecosystem larger |
+| "postgresql vs mongodb 2026" | database choice | completed | PostgreSQL for relational |
+
+### Impact on Recommendations
+
+| Recommendation | Original Confidence | Post-Research Confidence |
+|----------------|---------------------|--------------------------|
+| Frontend Framework | LOW | MEDIUM |
+| Database | LOW | MEDIUM |
+```
+
 ### Write Document
 
 ```javascript

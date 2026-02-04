@@ -46,6 +46,66 @@ const EXPLICIT_CLIFF_SIGNALS = [
 | Declined offers before suppression | 2 | After 2 declined offers, stop offering for this session |
 | Session reset | New survey | Decline counter resets on new survey start |
 
+## Implicit Cliff Signals (MEDIUM Confidence)
+
+Implicit signals indicate uncertainty without explicit declaration. These signals use **compound detection** - requiring 2+ signals across the current response and last 3 responses before triggering a mode switch offer.
+
+### Hedging Language
+- "maybe", "perhaps", "possibly"
+- "i guess", "i think maybe"
+- "not sure if", "could be", "might be"
+- "probably", "i suppose"
+
+### Quality Degradation Markers
+- "um", "uh", "hmm"
+- "well...", "let me think"
+- "that's a good question"
+- "honestly i'm not"
+
+### Soft Deferrals
+- "i'll figure it out later"
+- "we can decide later"
+- "whatever works", "whatever is easier"
+- "any of those", "you pick"
+- "dealer's choice"
+
+## Detection Rules
+
+### Explicit Signals (HIGH Confidence)
+- **Trigger:** Single match triggers mode switch offer immediately
+- **Confidence:** HIGH
+- **Example:** "I don't know what database to use" -> immediate offer
+
+### Implicit Signals (MEDIUM Confidence)
+- **Trigger:** 2+ signals required across current + last 3 responses
+- **Confidence:** MEDIUM
+- **History window:** Last 3 responses only (resets at phase boundaries)
+- **Example:** "Maybe PostgreSQL" (1 signal) + later "I guess that works" (2 signals) -> compound trigger
+
+### Logging
+- All detections logged to `cliff_signals` array in survey.json
+- Includes: timestamp, signal, category (explicit/hedging/quality_degradation/deferral), confidence
+- Logged regardless of whether threshold met (for analytics)
+
+### State Tracking
+Survey state file tracks recent history for compound detection:
+
+```markdown
+## Cliff Detection State
+
+**Recent Response History (for compound detection):**
+
+| Response # | Implicit Signals | Categories |
+|------------|------------------|------------|
+| -3         | 0                | -          |
+| -2         | 1                | hedging    |
+| -1         | 1                | deferral   |
+| Current    | 1                | hedging    |
+
+**Compound signal count:** 3 (threshold: 2)
+**Compound trigger:** YES
+```
+
 ## Notes
 
 - Phase 12 focuses on explicit signals only (HIGH confidence)

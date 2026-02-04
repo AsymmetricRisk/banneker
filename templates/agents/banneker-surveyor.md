@@ -610,6 +610,203 @@ Would you like to:
 3. Mark as "not applicable"
 ```
 
+## Mode Switch Execution Protocol
+
+When user accepts mode switch (option 1), execute these steps in exact order:
+
+### Step A: Build Partial Survey Data
+
+Construct survey.json with current state, marking as partial:
+
+```javascript
+const partialSurvey = {
+  survey_metadata: {
+    version: "1.0",
+    created: surveyState.started_at,
+    runtime: detectRuntime(),
+    status: "partial"  // Indicates mid-survey mode switch
+  },
+  project: surveyState.project || {},
+  actors: surveyState.actors || [],
+  walkthroughs: surveyState.walkthroughs || [],
+  backend: surveyState.backend || { applicable: "unknown" },
+  rubric_coverage: {
+    covered: computeCoveredCategories(surveyState),
+    gaps: computeRemainingGaps(surveyState)
+  },
+  cliff_signals: surveyState.cliffSignals || [],
+  surveyor_notes: null  // Populated in Step C
+};
+```
+
+### Step B: Compute Survey Completeness
+
+Calculate completeness percentage based on phases completed:
+
+| Phases Complete | Completeness |
+|-----------------|--------------|
+| Phase 1 only | 15% |
+| Phases 1-2 | 35% |
+| Phases 1-3 | 55% |
+| Phases 1-4 | 75% |
+| Phases 1-5 | 90% |
+| All 6 phases | 100% |
+
+Adjust percentage based on partial phase completion (e.g., Phase 3 half-done = 45%).
+
+### Step C: Generate Context Handoff
+
+Build surveyor_notes object by analyzing conversation:
+
+1. **Extract preferences**: Scan conversation for explicit preference statements
+   - Look for: "I prefer", "I want", "I don't want", "important to me", "priority is"
+   - Example: "I don't want to manage infrastructure" -> "Prefers managed services"
+
+2. **Identify implicit constraints**: Infer from language patterns
+   - Solo developer indicators: "I" vs "we", "my app" vs "our team"
+   - Experience level: Clarifying questions, technical vocabulary usage
+   - Budget sensitivity: Mentions of "limited", "small team", "cost"
+
+3. **Categorize confidence areas**: Based on response quality
+   - Confident: Detailed answers, specific examples, quick responses
+   - Uncertain: Hedging language, vague answers, cliff signals
+
+4. **Compile deferred questions**: From deferredQuestions state array
+
+5. **Generate engineer guidance**: Based on preferences and constraints
+   - If prefers simple -> "Start with simplest viable approach"
+   - If budget-conscious -> "Include cost considerations"
+   - If inexperienced -> "Provide educational context"
+
+```javascript
+const surveyorNotes = {
+  generated: new Date().toISOString(),
+  phase_at_switch: surveyState.currentPhase,
+  cliff_trigger: cliffEntry.user_response,
+  survey_completeness_percent: computedCompleteness,
+  preferences_observed: extractedPreferences,
+  implicit_constraints: inferredConstraints,
+  confident_topics: confidentAreas,
+  uncertain_topics: uncertainAreas,
+  deferred_questions: surveyState.deferredQuestions || [],
+  engineer_guidance: generatedGuidance
+};
+
+partialSurvey.surveyor_notes = surveyorNotes;
+```
+
+### Step D: Write Survey JSON
+
+Write partial survey to disk:
+
+```
+.banneker/survey.json
+```
+
+Verify write succeeded before proceeding.
+
+### Step E: Write Context Handoff File
+
+Write detailed context to `.banneker/state/surveyor-context.md`:
+
+```markdown
+---
+generated: [ISO 8601]
+phase_at_switch: [phase name]
+cliff_trigger: "[trigger response]"
+survey_completeness: [N]%
+---
+
+## User Preferences Observed
+
+During conversation, user indicated:
+[list from surveyor_notes.preferences_observed]
+
+## Implicit Constraints
+
+[list from surveyor_notes.implicit_constraints]
+
+## Topics User Felt Confident About
+
+[list from surveyor_notes.confident_topics]
+
+## Topics User Felt Uncertain About
+
+[list from surveyor_notes.uncertain_topics]
+
+## Deferred Questions
+
+[list from surveyor_notes.deferred_questions with phase/question/timestamp]
+
+## Cliff Signals Detected
+
+[list from cliff_signals array]
+
+## Recommendations for Engineer Agent
+
+[list from surveyor_notes.engineer_guidance]
+```
+
+### Step F: Update Survey State
+
+Update survey-state.md with mode switch marker:
+
+```markdown
+## Mode Switch
+
+- **Switched at:** [ISO 8601 timestamp]
+- **Switch phase:** [phase name]
+- **Switch reason:** [cliff trigger signal]
+- **Survey completeness:** [N]%
+```
+
+### Step G: Display Transition Message
+
+Show user what was saved:
+
+```
+Switching to engineering mode...
+
+I've saved our conversation progress:
+- Survey data: .banneker/survey.json (Phases 1-[N] captured, [X]% complete)
+- Context notes: .banneker/state/surveyor-context.md
+
+I'll now analyze what we've discussed and generate:
+- DIAGNOSIS.md - What we know, what's missing, where gaps exist
+- RECOMMENDATION.md - Options analysis with trade-offs
+- ENGINEERING-PROPOSAL.md - Concrete decisions for your approval
+
+All recommendations will require your approval before any decisions are finalized.
+```
+
+### Step H: Invoke Engineer
+
+Use Skill tool to invoke banneker:engineer with context:
+
+**Task name:** "Synthesize engineering documents from mid-survey handoff"
+**Context to pass:**
+- "Mode switch from surveyor at phase [X]"
+- "Survey completeness: [N]%"
+- "Read .banneker/state/surveyor-context.md FIRST for conversational context"
+- "surveyor_notes embedded in survey.json for structured context"
+
+### Minimum Viability Warning
+
+If survey completeness < 55% (Phases 1-3 not complete), display warning before proceeding:
+
+```
+WARNING: Survey is only [X]% complete (Phases 1-3 recommended minimum).
+
+Engineer analysis will have reduced accuracy without:
+- Project overview (Phase 1)
+- Actor definitions (Phase 2)
+- Walkthrough examples (Phase 3)
+
+Continue anyway? (y/N)
+```
+
+If user declines, return to survey. If user confirms, proceed with mode switch.
+
 ## Resume Handling
 
 **When spawned as continuation** (state file exists):

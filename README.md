@@ -1,11 +1,38 @@
 # Banneker
 
-[![npm version](https://badge.fury.io/js/banneker.svg)](https://www.npmjs.com/package/banneker)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <img src="banneker-cover.png" alt="Banneker" width="500">
+</p>
 
-**Project planning and documentation pipeline for AI coding assistants**
+<p align="center">
+  <strong>✦ It's Your Website's Website ✦</strong><br>
+  <em>Survey the vision. Architect the plan. Build Something Great.</em>
+</p>
 
-Banneker transforms structured discovery interviews into engineering plans, architecture diagrams, and agent-ready HTML appendices. Built for AI-assisted development workflows, it provides a complete project planning pipeline that integrates seamlessly with Claude Code, OpenCode, and Gemini coding assistants.
+<p align="center">
+  <a href="https://www.npmjs.com/package/banneker"><img src="https://badge.fury.io/js/banneker.svg" alt="npm version"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
+---
+
+## The Gap Between Vibes and Production
+
+You've got the vision. Maybe you've even started building with AI assistants. But somewhere between "vibe coding" and deploying a production system that handles real traffic, real users, and real complexity—things get murky.
+
+**Banneker bridges that gap.**
+
+It's a project planning pipeline that transforms your ideas into comprehensive engineering documentation *before* you write a single line of production code. The output? A complete HTML appendix—**your website's website**—where you can explore your architecture, understand your data flows, and validate your approach before building.
+
+Banneker starts with simple language. It guides you through mapping out how your site is supposed to work, how users will experience it, and the backend mechanics that make it real. From documents to diagrams, it lays the plans for what you're about to build.
+
+## Inspired by Benjamin Banneker (1731-1806)
+
+*Surveyor · Mathematician · Astronomer*
+
+Benjamin Banneker was a self-taught polymath who helped survey the land that became Washington D.C. He mapped the terrain before monuments rose. Banneker (the tool) follows the same philosophy: **survey your project's landscape before you Build Something Great.**
+
+---
 
 ## Installation
 
@@ -57,6 +84,16 @@ npx banneker --local     # Install to current project
    /banneker:feed
    ```
 
+## What You Get
+
+Banneker produces a comprehensive planning package:
+
+- **Survey Data** — Structured capture of your project vision, user journeys, and technical requirements
+- **Architecture Documents** — Planning docs tailored to your project's needs
+- **Visual Diagrams** — Executive roadmap, system architecture, decision maps, and wiring diagrams
+- **HTML Appendix** — A local website to explore your build architecture before you build your app
+- **Framework Export** — Markdown and JSON files ready to feed your AI coding assistant
+
 ## Command Reference
 
 | Command | Description |
@@ -72,6 +109,16 @@ npx banneker --local     # Install to current project
 | `/banneker:progress` | Show current Banneker project state |
 | `/banneker:help` | Display command reference |
 
+## Works With Your Stack
+
+Banneker is designed to work alongside other AI development frameworks:
+
+- **[GSD](https://github.com/dnakov/gsd)** — Get Stuff Done workflow for Claude Code
+- **OpenClaw** — Open-source agent framework
+- **Lovable** — AI-powered app builder
+
+Export your Banneker appendix as markdown and JSON to feed directly into these tools.
+
 ## Requirements
 
 - **Node.js**: >= 18.0.0
@@ -80,9 +127,9 @@ npx banneker --local     # Install to current project
 
 ## Supported Runtimes
 
-- **Claude Code** (primary) - Anthropic's official CLI for Claude
-- **OpenCode** - Open-source AI coding assistant
-- **Gemini** - Google's AI coding assistant
+- **Claude Code** (primary) — Anthropic's official CLI for Claude
+- **OpenCode** — Open-source AI coding assistant
+- **Gemini** — Google's AI coding assistant
 
 ## Security
 
@@ -94,7 +141,7 @@ npm packages published with Banneker include provenance attestation for supply c
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) file for details.
 
 ## Links
 

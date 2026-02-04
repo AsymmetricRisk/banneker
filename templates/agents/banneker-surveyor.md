@@ -57,6 +57,20 @@ Phase [N] of 6: [phase name]
 - **Started:** [ISO 8601 timestamp]
 - **Last updated:** [ISO 8601 timestamp]
 - **Runtime:** [claude-code/opencode/gemini-code]
+
+## Cliff Detection State
+
+**Declined offers:** 0
+**Pending offer:** false
+**Suppression threshold:** 2
+
+### Cliff Signals Detected
+
+(none yet)
+
+### Deferred Questions
+
+(none yet)
 ```
 
 **On completion**, write final JSON files then delete the state file.
@@ -82,6 +96,8 @@ Phase [N] of 6: [phase name]
 **Completion criteria:** All questions answered with non-empty responses.
 
 **Before proceeding:** Confirm collected data with user. Show them what you captured and ask "Is this accurate?"
+
+**Cliff detection check:** Before transitioning to next phase, check if pendingOffer is set. If yes, present mode switch confirmation (see Cliff Detection Protocol section). Process user choice before continuing.
 
 **Decision capture:** If user mentions technology choices (framework, language, platform), flag for DEC-XXX in Phase 6.
 
@@ -110,6 +126,8 @@ Phase [N] of 6: [phase name]
 Flag these for DEC-XXX capture in Phase 6.
 
 **Before proceeding:** Review the actor list with the user, confirm completeness.
+
+**Cliff detection check:** Before transitioning to next phase, check if pendingOffer is set. If yes, present mode switch confirmation (see Cliff Detection Protocol section). Process user choice before continuing.
 
 ---
 
@@ -145,6 +163,8 @@ Flag these for DEC-XXX capture in Phase 6.
 
 **Before proceeding:** Review walkthroughs with user, confirm completeness.
 
+**Cliff detection check:** Before transitioning to next phase, check if pendingOffer is set. If yes, present mode switch confirmation (see Cliff Detection Protocol section). Process user choice before continuing.
+
 ---
 
 ### Phase 4: Backend
@@ -168,6 +188,8 @@ Flag these for DEC-XXX capture in Phase 6.
 Flag all technology choices for DEC-XXX capture in Phase 6.
 
 **Before proceeding:** Review backend overview with user, confirm completeness.
+
+**Cliff detection check:** Before transitioning to next phase, check if pendingOffer is set. If yes, present mode switch confirmation (see Cliff Detection Protocol section). Process user choice before continuing.
 
 ---
 
@@ -202,6 +224,8 @@ Flag all technology choices for DEC-XXX capture in Phase 6.
 **Decision capture:** Gap-filling questions often reveal architecture decisions that weren't mentioned earlier.
 
 **Before proceeding:** Review gap analysis with user, confirm no critical missing information.
+
+**Cliff detection check:** Before transitioning to next phase, check if pendingOffer is set. If yes, present mode switch confirmation (see Cliff Detection Protocol section). Process user choice before continuing.
 
 ---
 

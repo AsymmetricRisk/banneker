@@ -81,17 +81,17 @@
 
 - [x] **CLIFF-01** (must) ✓: Detect explicit cliff signals during survey ("I don't know", "you decide", "take it from here", "whatever you think is best"). Source: v0.3.0 features research. *Complete: Phase 12*
 - [x] **CLIFF-02** (must) ✓: Require confirmation before mode switch — no silent takeover. Source: PITFALLS.md P1 prevention. *Complete: Phase 12*
-- [ ] **CLIFF-03** (should): Detect implicit cliff signals (hedging language, response quality drop, repeated deferrals). Source: v0.3.0 features research.
-- [ ] **CLIFF-04** (should): Use compound signal detection (2+ signals required) to prevent false positives. Source: PITFALLS.md P1 prevention.
+- [x] **CLIFF-03** (should) ✓: Detect implicit cliff signals (hedging language, response quality drop, repeated deferrals). Source: v0.3.0 features research. *Complete: Phase 15*
+- [x] **CLIFF-04** (should) ✓: Use compound signal detection (2+ signals required) to prevent false positives. Source: PITFALLS.md P1 prevention. *Complete: Phase 15*
 
 ### REQ-ENGDOC: Engineer Document Generation
 
-- [ ] **ENGDOC-01** (must): Generate DIAGNOSIS.md identifying what is known, what is missing, and where gaps exist. Source: v0.3.0 output specification.
-- [ ] **ENGDOC-02** (must): Generate RECOMMENDATION.md with options analysis, trade-offs, and alternatives considered. Source: v0.3.0 output specification.
-- [ ] **ENGDOC-03** (must): Generate ENGINEERING-PROPOSAL.md with concrete decisions in DEC-XXX format ready for approval. Source: v0.3.0 output specification.
-- [ ] **ENGDOC-04** (must): Include confidence markers (HIGH/MEDIUM/LOW) on each recommendation with justification. Source: PITFALLS.md P4 prevention.
-- [ ] **ENGDOC-05** (should): Enforce complexity ceiling — prevent over-engineering based on extracted constraints. Source: PITFALLS.md P2 prevention.
-- [ ] **ENGDOC-06** (should): Support research-on-demand (WebSearch) to fill knowledge gaps during synthesis. Source: v0.3.0 features research.
+- [x] **ENGDOC-01** (must) ✓: Generate DIAGNOSIS.md identifying what is known, what is missing, and where gaps exist. Source: v0.3.0 output specification. *Complete: Phase 11*
+- [x] **ENGDOC-02** (must) ✓: Generate RECOMMENDATION.md with options analysis, trade-offs, and alternatives considered. Source: v0.3.0 output specification. *Complete: Phase 11*
+- [x] **ENGDOC-03** (must) ✓: Generate ENGINEERING-PROPOSAL.md with concrete decisions in DEC-XXX format ready for approval. Source: v0.3.0 output specification. *Complete: Phase 11*
+- [x] **ENGDOC-04** (must) ✓: Include confidence markers (HIGH/MEDIUM/LOW) on each recommendation with justification. Source: PITFALLS.md P4 prevention. *Complete: Phase 11*
+- [x] **ENGDOC-05** (should) ✓: Enforce complexity ceiling — prevent over-engineering based on extracted constraints. Source: PITFALLS.md P2 prevention. *Complete: Phase 15*
+- [x] **ENGDOC-06** (should) ✓: Support research-on-demand (WebSearch) to fill knowledge gaps during synthesis. Source: v0.3.0 features research. *Complete: Phase 15*
 
 ### REQ-APPROVE: Approval Flow
 
@@ -102,11 +102,11 @@
 
 ### REQ-ENGINT: Engineer Integration
 
-- [ ] **ENGINT-01** (must): Provide standalone `/banneker:engineer` command that works with existing survey.json. Source: v0.3.0 core requirement.
-- [ ] **ENGINT-02** (must): Work with partial survey data (mid-interview cliff scenarios). Source: v0.3.0 core requirement.
+- [x] **ENGINT-01** (must) ✓: Provide standalone `/banneker:engineer` command that works with existing survey.json. Source: v0.3.0 core requirement. *Complete: Phase 11*
+- [x] **ENGINT-02** (must) ✓: Work with partial survey data (mid-interview cliff scenarios). Source: v0.3.0 core requirement. *Complete: Phase 11*
 - [x] **ENGINT-03** (must) ✓: Implement mid-survey takeover — cliff detection triggers offer during interview. Source: v0.3.0 features research. *Complete: Phase 14*
 - [x] **ENGINT-04** (must) ✓: Implement context handoff protocol — explicit summary of what surveyor learned before switching. Source: PITFALLS.md P3 prevention. *Complete: Phase 14*
-- [ ] **ENGINT-05** (should): Track engineer state in `.banneker/state/engineer-state.md` for resume-on-interrupt. Source: REQ-CONT-001 pattern.
+- [x] **ENGINT-05** (should) ✓: Track engineer state in `.banneker/state/engineer-state.md` for resume-on-interrupt. Source: REQ-CONT-001 pattern. *Complete: Phase 11*
 
 ## Out of Scope (v0.3.0)
 
@@ -123,28 +123,28 @@
 |-------------|-------|--------|
 | CLIFF-01 | Phase 12 | Complete |
 | CLIFF-02 | Phase 12 | Complete |
-| CLIFF-03 | Phase 15 | Pending |
-| CLIFF-04 | Phase 15 | Pending |
-| ENGDOC-01 | Phase 11 | Pending |
-| ENGDOC-02 | Phase 11 | Pending |
-| ENGDOC-03 | Phase 11 | Pending |
-| ENGDOC-04 | Phase 11 | Pending |
-| ENGDOC-05 | Phase 15 | Pending |
-| ENGDOC-06 | Phase 15 | Pending |
+| CLIFF-03 | Phase 15 | Complete |
+| CLIFF-04 | Phase 15 | Complete |
+| ENGDOC-01 | Phase 11 | Complete |
+| ENGDOC-02 | Phase 11 | Complete |
+| ENGDOC-03 | Phase 11 | Complete |
+| ENGDOC-04 | Phase 11 | Complete |
+| ENGDOC-05 | Phase 15 | Complete |
+| ENGDOC-06 | Phase 15 | Complete |
 | APPROVE-01 | Phase 13 | Complete |
 | APPROVE-02 | Phase 13 | Complete |
 | APPROVE-03 | Phase 13 | Complete |
 | APPROVE-04 | Phase 13 | Complete |
-| ENGINT-01 | Phase 11 | Pending |
-| ENGINT-02 | Phase 11 | Pending |
+| ENGINT-01 | Phase 11 | Complete |
+| ENGINT-02 | Phase 11 | Complete |
 | ENGINT-03 | Phase 14 | Complete |
 | ENGINT-04 | Phase 14 | Complete |
-| ENGINT-05 | Phase 11 | Pending |
+| ENGINT-05 | Phase 11 | Complete |
 
 **Coverage:**
 - v0.3.0 requirements: 17 total
-- Mapped to phases: 17
-- Unmapped: 0
+- Complete: 17 ✓
+- Pending: 0
 
 ---
-*Requirements updated: 2026-02-04 — ENGINT-03, ENGINT-04 complete (Phase 14)*
+*Requirements updated: 2026-02-04 — All v0.3.0 requirements complete (Phases 11-15)*

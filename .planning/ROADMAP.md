@@ -6,7 +6,7 @@
 ## Milestones
 
 - ✅ **v0.2.0 Initial Public Release** - Phases 1-10 (shipped)
-- 🚧 **v0.3.0 The Engineer** - Phases 11-15 (in progress)
+- ✅ **v0.3.0 The Engineer** - Phases 11-15 (complete)
 
 ## Phases
 
@@ -433,11 +433,13 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 15-01-PLAN.md — TDD: Implicit signal detection and compound logic
-- [ ] 15-02-PLAN.md — TDD: Complexity ceiling module
-- [ ] 15-03-PLAN.md — Surveyor compound detection integration
-- [ ] 15-04-PLAN.md — Engineer complexity ceiling and research-on-demand
-- [ ] 15-05-PLAN.md — Integration tests and installer update
+- [x] 15-01-PLAN.md — TDD: Implicit signal detection and compound logic
+- [x] 15-02-PLAN.md — TDD: Complexity ceiling module
+- [x] 15-03-PLAN.md — Surveyor compound detection integration
+- [x] 15-04-PLAN.md — Engineer complexity ceiling and research-on-demand
+- [x] 15-05-PLAN.md — Integration tests and installer update
+
+**Phase 15 Status:** COMPLETE (all 5 plans executed, all success criteria met)
 
 ---
 
@@ -461,7 +463,7 @@ Plans:
 | 12. Cliff Detection | v0.3.0 | 3/3 | Complete | 2026-02-03 |
 | 13. Approval Flow | v0.3.0 | 3/3 | Complete | 2026-02-04 |
 | 14. Survey Integration | v0.3.0 | 4/4 | Complete | 2026-02-04 |
-| 15. Polish & Advanced | v0.3.0 | 0/5 | Not started | - |
+| 15. Polish & Advanced | v0.3.0 | 5/5 | Complete | 2026-02-04 |
 
 ---
-*Roadmap updated: 2026-02-04 — Phase 15 planned (5 plans in 3 waves)*
+*Roadmap updated: 2026-02-04 — Phase 15 complete (v0.3.0 milestone complete)*

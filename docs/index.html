@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banneker — Your Website's Website</title>
+  <meta name="description" content="Survey the vision. Architect the plan. Build Something Great.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0a0f;
+      --bg-section: #0f1117;
+      --bg-card: #161922;
+      --bg-highlight: #1a1d2e;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --accent-cyan: #06b6d4;
+      --border: #27272a;
+      --gradient-1: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      --gradient-2: linear-gradient(135deg, #8b5cf6, #ec4899);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    code, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--gradient-1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .nav-cta {
+      background: var(--gradient-1);
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h1 span {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--gradient-1);
+      color: white;
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-highlight);
+      border-color: var(--text-muted);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* Journey Sections */
+    .journey-section {
+      min-height: 100vh;
+      padding: 6rem 2rem;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .journey-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .phase-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .phase-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .phase-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    .journey-section h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .journey-section .lead {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    /* Phase 1: Excitement */
+    .phase-excitement {
+      background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-section) 100%);
+    }
+
+    .phase-excitement .phase-number {
+      background: var(--accent-green);
+      color: var(--bg-dark);
+    }
+
+    .phase-excitement .phase-label {
+      color: var(--accent-green);
+    }
+
+    .excitement-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .vibe-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vibe-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-green);
+    }
+
+    .vibe-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .vibe-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Phase 2: Cracks */
+    .phase-cracks {
+      background: var(--bg-section);
+    }
+
+    .phase-cracks .phase-number {
+      background: var(--accent-amber);
+      color: var(--bg-dark);
+    }
+
+    .phase-cracks .phase-label {
+      color: var(--accent-amber);
+    }
+
+    .crack-timeline {
+      margin-top: 2rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .crack-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-amber), var(--accent-red));
+    }
+
+    .crack-item {
+      position: relative;
+      padding-bottom: 2rem;
+      padding-left: 1.5rem;
+    }
+
+    .crack-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px solid var(--accent-amber);
+    }
+
+    .crack-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .crack-item h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .crack-item p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .crack-item .thought {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-highlight);
+      border-left: 3px solid var(--accent-amber);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Phase 3: Unknown Unknowns */
+    .phase-unknown {
+      background: linear-gradient(180deg, var(--bg-section) 0%, var(--bg-dark) 100%);
+    }
+
+    .phase-unknown .phase-number {
+      background: var(--accent-red);
+      color: white;
+    }
+
+    .phase-unknown .phase-label {
+      color: var(--accent-red);
+    }
+
+    .unknown-reveal {
+      margin-top: 2rem;
+    }
+
+    .unknown-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .unknown-header {
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .unknown-header:hover {
+      background: var(--bg-highlight);
+    }
+
+    .unknown-header h3 {
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .unknown-header .icon {
+      transition: transform 0.3s;
+    }
+
+    .unknown-card.open .unknown-header .icon {
+      transform: rotate(180deg);
+    }
+
+    .unknown-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+    }
+
+    .unknown-card.open .unknown-content {
+      max-height: 500px;
+    }
+
+    .unknown-inner {
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    .unknown-inner p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .cost-tag {
+      display: inline-block;
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-red);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Phase 4: The Real Cost */
+    .phase-cost {
+      background: var(--bg-dark);
+    }
+
+    .phase-cost .phase-number {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .phase-cost .phase-label {
+      color: var(--accent-purple);
+    }
+
+    .cost-visual {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .cost-visual {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cost-diagram {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .cost-diagram h3 {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cost-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .cost-bar-label {
+      width: 80px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .cost-bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--bg-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cost-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding-left: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+      transition: width 1s ease-out;
+    }
+
+    .cost-bar-fill.low {
+      background: var(--accent-green);
+      width: 15%;
+    }
+
+    .cost-bar-fill.medium {
+      background: var(--accent-amber);
+      width: 45%;
+    }
+
+    .cost-bar-fill.high {
+      background: var(--accent-red);
+      width: 85%;
+    }
+
+    .insight-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .insight-box blockquote {
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .insight-box cite {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-style: normal;
+    }
+
+    /* The Turn - Banneker Introduction */
+    .phase-solution {
+      background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-section) 50%, var(--bg-dark) 100%);
+      position: relative;
+    }
+
+    .phase-solution::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .phase-solution .phase-number {
+      background: var(--gradient-1);
+      color: white;
+    }
+
+    .phase-solution .phase-label {
+      color: var(--accent-blue);
+    }
+
+    .solution-hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .solution-hero h2 {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .solution-tagline {
+      font-size: 1.5rem;
+      font-weight: 600;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .origin-story {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .origin-story {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    .origin-portrait {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--gradient-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .origin-text h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .origin-text .dates {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .origin-text p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* The Journey with Banneker */
+    .banneker-journey {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .bj-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .bj-step:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .bj-step-number {
+      position: absolute;
+      top: -12px;
+      left: 1.5rem;
+      width: 24px;
+      height: 24px;
+      background: var(--gradient-1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .bj-step h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .bj-step p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .bj-command {
+      background: var(--bg-dark);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+    }
+
+    /* Comparison Section */
+    .phase-compare {
+      background: var(--bg-section);
+      padding: 6rem 2rem;
+    }
+
+    .compare-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .compare-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .compare-header h2 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      margin-bottom: 1rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .compare-column {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .compare-column.before .compare-column-header {
+      background: rgba(239, 68, 68, 0.1);
+      border-bottom-color: var(--accent-red);
+    }
+
+    .compare-column.after .compare-column-header {
+      background: rgba(34, 197, 94, 0.1);
+      border-bottom-color: var(--accent-green);
+    }
+
+    .compare-column-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid;
+      font-weight: 600;
+    }
+
+    .compare-column-header h3 {
+      font-size: 1rem;
+    }
+
+    .compare-list {
+      padding: 1.5rem;
+    }
+
+    .compare-item {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .compare-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .compare-item .icon {
+      flex-shrink: 0;
+      width: 20px;
+      text-align: center;
+    }
+
+    .compare-column.before .compare-item .icon {
+      color: var(--accent-red);
+    }
+
+    .compare-column.after .compare-item .icon {
+      color: var(--accent-green);
+    }
+
+    /* Features Section */
+    .phase-features {
+      background: var(--bg-dark);
+      padding: 6rem 2rem;
+    }
+
+    .features-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .features-header h2 {
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      margin-bottom: 1rem;
+    }
+
+    .features-header p {
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--bg-highlight);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* CTA Section */
+    .phase-cta {
+      background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-section) 100%);
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .cta-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-container h2 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: 1rem;
+    }
+
+    .cta-container p {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+    }
+
+    .cta-code {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+      display: inline-block;
+    }
+
+    .cta-code code {
+      font-size: 1.25rem;
+      color: var(--accent-cyan);
+    }
+
+    .cta-code .copy-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      margin-left: 1rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .cta-code .copy-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-section);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+    }
+
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-copy {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav {
+        padding: 0.75rem 1rem;
+      }
+
+      .hero, .journey-section {
+        padding: 4rem 1.25rem;
+      }
+
+      .phase-indicator {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .crack-timeline {
+        padding-left: 1.5rem;
+      }
+
+      .crack-item {
+        padding-left: 1rem;
+      }
+
+      .crack-item::before {
+        left: -1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">
+        <span class="logo-icon">B</span>
+        Banneker
+      </a>
+      <a href="#get-started" class="nav-cta">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content fade-in">
+      <div class="hero-badge">Survey the vision. Architect the plan.</div>
+      <h1>It's <span>Your Website's Website</span></h1>
+      <p class="hero-subtitle">
+        A project planning pipeline that bridges the gap between vibe coding and production-ready architecture.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#the-journey" class="btn-primary">See the Journey ↓</a>
+        <a href="#get-started" class="btn-secondary">Start Now</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll to begin</span>
+      <span>↓</span>
+    </div>
+  </section>
+
+  <!-- Phase 1: The Excitement -->
+  <section id="the-journey" class="journey-section phase-excitement">
+    <div class="journey-container">
+      <div class="phase-indicator fade-in">
+        <span class="phase-number">1</span>
+        <span class="phase-label">The Excitement</span>
+      </div>
+      <h2 class="fade-in">You've got the vision. The tools are incredible.</h2>
+      <p class="lead fade-in">
+        AI assistants can generate code faster than you can type. The first features come together in hours, not weeks. Everything feels possible.
+      </p>
+      <div class="excitement-grid">
+        <div class="vibe-card fade-in">
+          <h3>✨ Rapid Prototyping</h3>
+          <p>"I described what I wanted and it just... built it. This is the future."</p>
+        </div>
+        <div class="vibe-card fade-in">
+          <h3>🚀 Instant Progress</h3>
+          <p>"We have a working demo after one afternoon. The team is energized."</p>
+        </div>
+        <div class="vibe-card fade-in">
+          <h3>💡 Pure Potential</h3>
+          <p>"Every idea feels achievable. We can finally move as fast as we think."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phase 2: The Cracks -->
+  <section class="journey-section phase-cracks">
+    <div class="journey-container">
+      <div class="phase-indicator fade-in">
+        <span class="phase-number">2</span>
+        <span class="phase-label">The Cracks Appear</span>
+      </div>
+      <h2 class="fade-in">Then the small questions start piling up.</h2>
+      <p class="lead fade-in">
+        At first they seem minor. Easy to defer. But each one adds friction, and the momentum starts to slip.
+      </p>
+      <div class="crack-timeline">
+        <div class="crack-item fade-in">
+          <h3>Week 2: "Wait, where does this data live?"</h3>
+          <p>You realize you've been building features without deciding on your data model. Three components are now storing state differently.</p>
+          <div class="thought">"I'll standardize this later. Let's keep moving."</div>
+        </div>
+        <div class="crack-item fade-in">
+          <h3>Week 3: "The AI keeps forgetting context"</h3>
+          <p>Every new session, you're re-explaining the architecture. Implementations start drifting from your original vision.</p>
+          <div class="thought">"Maybe if I write better prompts..."</div>
+        </div>
+        <div class="crack-item fade-in">
+          <h3>Week 4: "Who has permission to do what?"</h3>
+          <p>Auth was supposed to be simple. Now there are three different patterns across the codebase, and none of them handle edge cases.</p>
+          <div class="thought">"We'll fix this before launch. Probably."</div>
+        </div>
+        <div class="crack-item fade-in">
+          <h3>Week 5: "This doesn't scale"</h3>
+          <p>The demo worked beautifully. With 10 users. Now you're staring at O(n²) queries that seemed fine a month ago.</p>
+          <div class="thought">"How did we miss this?"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phase 3: The Unknown Unknowns -->
+  <section class="journey-section phase-unknown">
+    <div class="journey-container">
+      <div class="phase-indicator fade-in">
+        <span class="phase-number">3</span>
+        <span class="phase-label">You Don't Know What You Don't Know</span>
+      </div>
+      <h2 class="fade-in">The hardest problems are the ones you don't see coming.</h2>
+      <p class="lead fade-in">
+        Click to reveal the questions that surface too late—after the code is written, after the patterns are set, after the cost of change has multiplied.
+      </p>
+      <div class="unknown-reveal">
+        <div class="unknown-card fade-in">
+          <div class="unknown-header" onclick="this.parentElement.classList.toggle('open')">
+            <h3>🔐 "How do sessions actually work here?"</h3>
+            <span class="icon">▼</span>
+          </div>
+          <div class="unknown-content">
+            <div class="unknown-inner">
+              <p>You've been testing logged-in flows for weeks. But you never defined session duration, refresh tokens, or what happens when a session expires mid-action. Now users are losing work.</p>
+              <span class="cost-tag">Cost to fix: 2 weeks + angry users</span>
+            </div>
+          </div>
+        </div>
+        <div class="unknown-card fade-in">
+          <div class="unknown-header" onclick="this.parentElement.classList.toggle('open')">
+            <h3>🔄 "What happens when two users edit the same thing?"</h3>
+            <span class="icon">▼</span>
+          </div>
+          <div class="unknown-content">
+            <div class="unknown-inner">
+              <p>Concurrent editing. Race conditions. Conflict resolution. These words never came up during vibe coding. Now they're your biggest production bug.</p>
+              <span class="cost-tag">Cost to fix: Architecture rewrite</span>
+            </div>
+          </div>
+        </div>
+        <div class="unknown-card fade-in">
+          <div class="unknown-header" onclick="this.parentElement.classList.toggle('open')">
+            <h3>📊 "Why is the database so slow?"</h3>
+            <span class="icon">▼</span>
+          </div>
+          <div class="unknown-content">
+            <div class="unknown-inner">
+              <p>No indexes were planned. Queries that worked on test data crawl on real data. The schema that "felt right" doesn't match how users actually use the system.</p>
+              <span class="cost-tag">Cost to fix: Migration nightmare + downtime</span>
+            </div>
+          </div>
+        </div>
+        <div class="unknown-card fade-in">
+          <div class="unknown-header" onclick="this.parentElement.classList.toggle('open')">
+            <h3>🌐 "How do we actually deploy this?"</h3>
+            <span class="icon">▼</span>
+          </div>
+          <div class="unknown-content">
+            <div class="unknown-inner">
+              <p>It works on localhost. But environment variables, secrets management, CI/CD pipelines, staging environments—none of these were planned. Deployment becomes a week-long ordeal.</p>
+              <span class="cost-tag">Cost to fix: Launch delay + security risks</span>
+            </div>
+          </div>
+        </div>
+        <div class="unknown-card fade-in">
+          <div class="unknown-header" onclick="this.parentElement.classList.toggle('open')">
+            <h3>🧩 "Why doesn't this feature work with that feature?"</h3>
+            <span class="icon">▼</span>
+          </div>
+          <div class="unknown-content">
+            <div class="unknown-inner">
+              <p>Features were built in isolation. Now they need to work together, and their assumptions conflict. The notification system doesn't know about the permission system that doesn't know about the org hierarchy.</p>
+              <span class="cost-tag">Cost to fix: Integration sprint nobody planned for</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phase 4: The Real Cost -->
+  <section class="journey-section phase-cost">
+    <div class="journey-container">
+      <div class="phase-indicator fade-in">
+        <span class="phase-number">4</span>
+        <span class="phase-label">The Real Cost</span>
+      </div>
+      <h2 class="fade-in">Architectural mistakes are most expensive after you've coded them.</h2>
+      <p class="lead fade-in">
+        The later you discover a problem, the more it costs to fix. This isn't a new insight—but AI-assisted coding makes it easier to build faster, which means you can get further down the wrong path before you notice.
+      </p>
+      <div class="cost-visual">
+        <div class="cost-diagram fade-in">
+          <h3>Cost to Fix by When Discovered</h3>
+          <div class="cost-bar">
+            <span class="cost-bar-label">Planning</span>
+            <div class="cost-bar-track">
+              <div class="cost-bar-fill low">1x</div>
+            </div>
+          </div>
+          <div class="cost-bar">
+            <span class="cost-bar-label">Development</span>
+            <div class="cost-bar-track">
+              <div class="cost-bar-fill medium">6x</div>
+            </div>
+          </div>
+          <div class="cost-bar">
+            <span class="cost-bar-label">Production</span>
+            <div class="cost-bar-track">
+              <div class="cost-bar-fill high">100x</div>
+            </div>
+          </div>
+        </div>
+        <div class="insight-box fade-in">
+          <blockquote>
+            "Weeks of coding can save you hours of planning."
+          </blockquote>
+          <cite>— Every developer who learned this the hard way</cite>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phase 5: The Turn - Banneker -->
+  <section class="journey-section phase-solution">
+    <div class="journey-container">
+      <div class="phase-indicator fade-in">
+        <span class="phase-number">✦</span>
+        <span class="phase-label">The Solution</span>
+      </div>
+      <div class="solution-hero fade-in">
+        <div class="solution-tagline">What if you could surface those questions first?</div>
+        <h2>Banneker maps your project before you build it.</h2>
+        <p class="lead" style="text-align: center; margin-left: auto; margin-right: auto;">
+          A structured discovery process that finds the edge cases, captures the decisions, and creates a complete planning reference—before you write production code.
+        </p>
+      </div>
+
+      <div class="origin-story fade-in">
+        <div class="origin-portrait">🧭</div>
+        <div class="origin-text">
+          <h3>Benjamin Banneker</h3>
+          <div class="dates">1731–1806 · Surveyor · Mathematician · Astronomer</div>
+          <p>A self-taught polymath who helped survey the land that became Washington D.C. He mapped the terrain before monuments rose. Banneker (the tool) follows the same philosophy: <strong>survey your project's landscape before you build something great.</strong></p>
+        </div>
+      </div>
+
+      <h3 class="fade-in" style="margin-bottom: 1.5rem; text-align: center; color: var(--text-secondary);">The Banneker Workflow</h3>
+      <div class="banneker-journey">
+        <div class="bj-step fade-in">
+          <span class="bj-step-number">1</span>
+          <h3>Survey</h3>
+          <p>A 6-phase discovery interview that captures your vision, user journeys, workflows, and technical decisions. Not a form—a conversation that finds edge cases.</p>
+          <div class="bj-command">/banneker:survey</div>
+        </div>
+        <div class="bj-step fade-in">
+          <span class="bj-step-number">2</span>
+          <h3>Architect</h3>
+          <p>Generate planning documents tailored to your project: data models, auth flows, API specs, scaling strategy. Only what you need, complete and decision-ready.</p>
+          <div class="bj-command">/banneker:architect</div>
+        </div>
+        <div class="bj-step fade-in">
+          <span class="bj-step-number">3</span>
+          <h3>Visualize</h3>
+          <p>Create architecture diagrams: executive roadmap, system map, decision map, wiring diagram. Self-contained HTML you can share with anyone.</p>
+          <div class="bj-command">/banneker:roadmap</div>
+        </div>
+        <div class="bj-step fade-in">
+          <span class="bj-step-number">4</span>
+          <h3>Compile</h3>
+          <p>Build a complete HTML appendix—your project's reference website. Explore architecture, review decisions, align stakeholders before coding starts.</p>
+          <div class="bj-command">/banneker:appendix</div>
+        </div>
+        <div class="bj-step fade-in">
+          <span class="bj-step-number">5</span>
+          <h3>Export</h3>
+          <p>Feed structured requirements into AI frameworks. GSD, Lovable, OpenClaw, Claude Code—they all work better with proper context.</p>
+          <div class="bj-command">/banneker:feed</div>
+        </div>
+        <div class="bj-step fade-in">
+          <span class="bj-step-number">6</span>
+          <h3>Build</h3>
+          <p>Now build—with confidence. Your AI assistant has context. Your team has alignment. Your architecture has been validated.</p>
+          <div class="bj-command" style="color: var(--accent-green);">→ Production</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="phase-compare">
+    <div class="compare-container">
+      <div class="compare-header fade-in">
+        <h2>The Same Journey, Different Outcomes</h2>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-column before fade-in">
+          <div class="compare-column-header">
+            <h3>Without Banneker</h3>
+          </div>
+          <div class="compare-list">
+            <div class="compare-item">
+              <span class="icon">✗</span>
+              <span>Architecture decisions made in code</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✗</span>
+              <span>AI loses context between sessions</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✗</span>
+              <span>Edge cases discovered in production</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✗</span>
+              <span>Documentation is an afterthought</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✗</span>
+              <span>Team alignment through tribal knowledge</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✗</span>
+              <span>Expensive fixes after code is written</span>
+            </div>
+          </div>
+        </div>
+        <div class="compare-column after fade-in">
+          <div class="compare-column-header">
+            <h3>With Banneker</h3>
+          </div>
+          <div class="compare-list">
+            <div class="compare-item">
+              <span class="icon">✓</span>
+              <span>Explicit decisions before code exists</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✓</span>
+              <span>Complete project context for AI tools</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✓</span>
+              <span>Edge cases surfaced during planning</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✓</span>
+              <span>Documentation generated from discovery</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✓</span>
+              <span>Team alignment through shared appendix</span>
+            </div>
+            <div class="compare-item">
+              <span class="icon">✓</span>
+              <span>Cheap fixes while still in planning</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="phase-features">
+    <div class="features-container">
+      <div class="features-header fade-in">
+        <h2>Built for the AI Development Era</h2>
+        <p>Banneker doesn't slow you down. It gives you the confidence to move fast without breaking things later.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🔄</div>
+          <h3>Resume Anywhere</h3>
+          <p>Every operation saves state. Interrupted? Pick up exactly where you left off. No lost work, no re-running from scratch.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">📦</div>
+          <h3>Zero Dependencies</h3>
+          <p>Uses only Node.js built-ins. Installs in seconds. Uninstalls cleanly. No bloat, no conflicts, no surprises.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🎯</div>
+          <h3>Cliff Detection</h3>
+          <p>When answers reveal complexity, Banneker defers those questions to later phases. Keeps interviews focused and productive.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🔗</div>
+          <h3>Framework Export</h3>
+          <p>Export to GSD, Lovable, OpenClaw, or any AI framework. Structured input leads to better AI output.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">📄</div>
+          <h3>Self-Contained Output</h3>
+          <p>HTML diagrams and appendices work offline with zero external dependencies. Share as files, email to stakeholders.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🏗️</div>
+          <h3>Brownfield Ready</h3>
+          <p>Not starting fresh? Banneker can analyze existing codebases and create structured understanding from what's already built.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="get-started" class="phase-cta">
+    <div class="cta-container">
+      <h2 class="fade-in">Map Your Project Before You Build It</h2>
+      <p class="fade-in">One command. Complete project planning. Build with confidence.</p>
+      <div class="cta-code fade-in">
+        <code>npx banneker</code>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('npx banneker')">📋</button>
+      </div>
+      <div class="cta-buttons fade-in">
+        <a href="https://github.com/dsj7419/banneker" class="btn-primary">View on GitHub →</a>
+        <a href="https://www.npmjs.com/package/banneker" class="btn-secondary">npm Package</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">
+        <span class="logo-icon" style="width: 24px; height: 24px; font-size: 12px; border-radius: 4px;">B</span>
+        Banneker
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/dsj7419/banneker">GitHub</a>
+        <a href="https://www.npmjs.com/package/banneker">npm</a>
+        <a href="https://github.com/dsj7419/banneker/issues">Issues</a>
+      </div>
+      <div class="footer-copy">
+        MIT License · Survey the vision. Architect the plan. Build Something Great.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Animate cost bars on scroll
+    const costBars = document.querySelectorAll('.cost-bar-fill');
+    const costObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.width = entry.target.classList.contains('low') ? '15%' :
+                                     entry.target.classList.contains('medium') ? '45%' : '85%';
+        }
+      });
+    }, { threshold: 0.5 });
+
+    costBars.forEach(bar => {
+      bar.style.width = '0';
+      costObserver.observe(bar);
+    });
+  </script>
+</body>
+</html>

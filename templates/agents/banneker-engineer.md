@@ -270,6 +270,39 @@ If any document generation fails:
 
 Detect gaps in survey.json to calibrate confidence levels and generate explicit gap documentation.
 
+### Step 2b: Extract Project Constraints
+
+After analyzing survey completeness, extract project constraints for complexity ceiling:
+
+```javascript
+// Import from complexity-ceiling.js
+const { extractConstraints, checkComplexity, COMPLEXITY_INDICATORS } = require('../lib/complexity-ceiling.js');
+
+// Extract constraints from survey and surveyor notes
+const surveyorNotes = survey.surveyor_notes || null;
+const constraints = extractConstraints(survey, surveyorNotes);
+
+// Store for use in RECOMMENDATION generation
+state.constraints = constraints;
+
+console.log('Project Constraints:');
+console.log(`  Team Size: ${constraints.teamSize}`);
+console.log(`  Budget: ${constraints.budget}`);
+console.log(`  Timeline: ${constraints.timeline}`);
+console.log(`  Experience: ${constraints.experience}`);
+console.log(`  Complexity Ceiling: ${constraints.maxComplexity}`);
+```
+
+**Constraint Indicators:**
+- **Solo developer:** "solo", "just me", "one person", "by myself", "side project"
+- **Budget constrained:** "budget", "cost", "cheap", "free tier", "limited resources"
+- **Time constrained:** "quick", "fast", "mvp", "prototype", "deadline"
+- **Experience:** beginner/intermediate/expert indicators
+
+**Ceiling Assignment:**
+- If ANY constraint indicator detected -> `maxComplexity: 'minimal'`
+- Otherwise -> `maxComplexity: 'standard'`
+
 ### Minimum Viable Survey Check
 
 The minimum viable survey for engineer operation requires:
@@ -874,6 +907,86 @@ function assessRecommendationConfidence(area, survey, gaps) {
 
     return confidence;
 }
+```
+
+### Check Recommendations Against Complexity Ceiling
+
+For each recommendation generated, validate against complexity ceiling:
+
+```javascript
+function validateRecommendation(recommendationText, constraints) {
+  const result = checkComplexity(recommendationText, constraints);
+
+  if (!result.valid) {
+    // Flag but don't block - user can override
+    return {
+      recommendation: recommendationText,
+      violations: result.violations,
+      warning: true
+    };
+  }
+
+  return {
+    recommendation: recommendationText,
+    violations: [],
+    warning: false
+  };
+}
+```
+
+**Over-engineering patterns flagged for minimal complexity:**
+- Microservices architecture
+- Kubernetes/K8s deployment
+- Event-driven architecture
+- Distributed systems
+
+### Complexity Assessment Section in RECOMMENDATION.md
+
+Include a Complexity Assessment section before the recommendations:
+
+```markdown
+## Complexity Assessment
+
+**Extracted Constraints:**
+- **Team size:** [constraints.teamSize] [inference note if applicable]
+- **Budget:** [constraints.budget] [inference note if applicable]
+- **Timeline:** [constraints.timeline] [inference note if applicable]
+- **Experience:** [constraints.experience] [inference note if applicable]
+
+**Complexity Ceiling:** [constraints.maxComplexity | uppercase]
+
+[If maxComplexity === 'minimal':]
+
+### Recommendations Flagged for Review
+
+The following recommendations may exceed the minimal complexity ceiling based on detected project constraints:
+
+| Recommendation | Issue | Alternative Suggested |
+|----------------|-------|----------------------|
+| [recommendation area] | [violation.reason] | [violation.suggestion] |
+
+**Note:** These recommendations are flagged, not blocked. If you have specific reasons for these choices (learning goals, future scaling requirements, existing expertise), you may proceed with acknowledgment.
+
+[If maxComplexity === 'standard':]
+
+No complexity ceiling enforced. All recommendations are valid for standard complexity projects.
+```
+
+### Recommendation Output Format (with ceiling)
+
+For each recommendation section, if violations exist:
+
+```markdown
+## [Area]: [Recommendation]
+
+> **Complexity Warning:** This recommendation exceeds the minimal complexity ceiling.
+> - **Issue:** [violation.reason]
+> - **Suggested Alternative:** [violation.suggestion]
+>
+> Proceed if you have specific requirements that justify this complexity.
+
+### Analysis
+...
 ```
 
 ### Write Document

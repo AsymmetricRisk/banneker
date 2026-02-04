@@ -4,7 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { extractConstraints, COMPLEXITY_INDICATORS } from '../../lib/complexity-ceiling.js';
+import { extractConstraints, checkComplexity, COMPLEXITY_INDICATORS } from '../../lib/complexity-ceiling.js';
 
 describe('COMPLEXITY_INDICATORS', () => {
   it('contains solo developer indicators', () => {
@@ -94,5 +94,72 @@ describe('extractConstraints', () => {
     assert.strictEqual(result.budget, 'constrained');
     assert.strictEqual(result.timeline, 'fast');
     assert.strictEqual(result.maxComplexity, 'minimal');
+  });
+});
+
+describe('checkComplexity', () => {
+  it('returns valid: true for standard complexity', () => {
+    const constraints = { maxComplexity: 'standard' };
+    const recommendation = "Use microservices with Kubernetes";
+    const result = checkComplexity(recommendation, constraints);
+    assert.strictEqual(result.valid, true);
+    assert.strictEqual(result.violations.length, 0);
+  });
+
+  it('flags microservices for minimal complexity', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Deploy as microservices architecture";
+    const result = checkComplexity(recommendation, constraints);
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.violations.length > 0);
+    assert.ok(result.violations[0].type === 'over_engineering');
+    assert.ok(result.violations[0].reason.includes('Microservice'));
+  });
+
+  it('flags Kubernetes for minimal complexity', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Deploy to Kubernetes cluster";
+    const result = checkComplexity(recommendation, constraints);
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.violations.some(v => v.reason.includes('K8s')));
+  });
+
+  it('flags event-driven architecture for MVP', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Use event-driven architecture with message queues";
+    const result = checkComplexity(recommendation, constraints);
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.violations.some(v => v.reason.includes('Event-driven')));
+  });
+
+  it('flags distributed systems for solo projects', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Build a distributed system with consensus";
+    const result = checkComplexity(recommendation, constraints);
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.violations.some(v => v.reason.includes('Distributed')));
+  });
+
+  it('allows simple stack for minimal complexity', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Use Next.js with PostgreSQL deployed on Vercel";
+    const result = checkComplexity(recommendation, constraints);
+    assert.strictEqual(result.valid, true);
+    assert.strictEqual(result.violations.length, 0);
+  });
+
+  it('returns suggestions in violations', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Use microservices";
+    const result = checkComplexity(recommendation, constraints);
+    assert.ok(result.violations[0].suggestion);
+    assert.ok(result.violations[0].suggestion.includes('monolithic'));
+  });
+
+  it('detects multiple violations', () => {
+    const constraints = { maxComplexity: 'minimal' };
+    const recommendation = "Deploy microservices on Kubernetes with event-driven patterns";
+    const result = checkComplexity(recommendation, constraints);
+    assert.ok(result.violations.length >= 2);
   });
 });

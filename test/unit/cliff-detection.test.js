@@ -4,7 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS } from '../../lib/cliff-detection.js';
+import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS, detectImplicitCliff, IMPLICIT_CLIFF_SIGNALS } from '../../lib/cliff-detection.js';
 
 describe('EXPLICIT_CLIFF_SIGNALS', () => {
   it('contains expected signals', () => {
@@ -97,5 +97,67 @@ describe('detectExplicitCliff', () => {
     const result = detectExplicitCliff("I'm not technical enough to answer that");
     assert.strictEqual(result.detected, true);
     assert.strictEqual(result.signal, "i'm not technical enough");
+  });
+});
+
+describe('IMPLICIT_CLIFF_SIGNALS', () => {
+  it('contains hedging signals', () => {
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.hedging.includes('maybe'));
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.hedging.includes('perhaps'));
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.hedging.includes('i guess'));
+  });
+
+  it('contains quality degradation markers', () => {
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.quality_markers.includes('um'));
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.quality_markers.includes('hmm'));
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.quality_markers.includes("let me think"));
+  });
+
+  it('contains deferral signals', () => {
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.deferrals.includes('whatever works'));
+    assert.ok(IMPLICIT_CLIFF_SIGNALS.deferrals.includes('you pick'));
+  });
+});
+
+describe('detectImplicitCliff', () => {
+  it('detects hedging language', () => {
+    const result = detectImplicitCliff("Maybe we should use PostgreSQL");
+    assert.strictEqual(result.detected, true);
+    assert.strictEqual(result.signals[0].category, 'hedging');
+    assert.strictEqual(result.signals[0].confidence, 'MEDIUM');
+  });
+
+  it('detects quality degradation markers', () => {
+    const result = detectImplicitCliff("Um, let me think about that");
+    assert.strictEqual(result.detected, true);
+    assert.ok(result.signals.some(s => s.category === 'quality_degradation'));
+  });
+
+  it('detects deferral patterns', () => {
+    const result = detectImplicitCliff("Whatever works, you pick");
+    assert.strictEqual(result.detected, true);
+    assert.ok(result.signals.some(s => s.category === 'deferral'));
+  });
+
+  it('returns multiple signals if present', () => {
+    const result = detectImplicitCliff("Maybe, um, whatever works I guess");
+    assert.ok(result.signals.length >= 2);
+  });
+
+  it('returns detected: false for confident responses', () => {
+    const result = detectImplicitCliff("I want PostgreSQL with Redis caching");
+    assert.strictEqual(result.detected, false);
+    assert.strictEqual(result.signals.length, 0);
+  });
+
+  it('is case insensitive', () => {
+    const result = detectImplicitCliff("MAYBE we should use React");
+    assert.strictEqual(result.detected, true);
+  });
+
+  it('preserves original response', () => {
+    const original = "Maybe PostgreSQL?";
+    const result = detectImplicitCliff(original);
+    assert.strictEqual(result.originalResponse, original);
   });
 });

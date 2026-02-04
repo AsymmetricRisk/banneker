@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 14 of 15 (Survey Integration)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-04 — Completed 14-01-PLAN.md
+Last activity: 2026-02-04 — Completed 14-02-PLAN.md
 
-Progress: [######--------------] 33% (Phase 14: 1/3 plans)
+Progress: [############--------] 67% (Phase 14: 2/3 plans)
 
 ## Current Milestone: v0.3.0
 
@@ -87,6 +87,9 @@ Recent decisions affecting v0.3.0 work:
 - CWD swap pattern for testing relative-path libraries in isolation (13-03)
 - Phase 1-5 get cliff detection checks; Phase 6 excluded from cliff detection (14-01)
 - State fields for cliff tracking: pendingOffer, declinedOffers, cliffSignals, deferredQuestions (14-01)
+- surveyor_notes optional field for backward compatibility with existing surveys (14-02)
+- Dual handoff: surveyor_notes in survey.json + surveyor-context.md for readable context (14-02)
+- Minimum viability threshold at 55% (Phases 1-3 complete) before engineer mode switch (14-02)
 
 ### Blockers/Concerns
 
@@ -95,9 +98,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-04T03:37:37Z
-Stopped at: Completed 14-01-PLAN.md
+Last session: 2026-02-04T03:46:38Z
+Stopped at: Completed 14-02-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-04 — Completed 14-01-PLAN.md*
+*Last updated: 2026-02-04 — Completed 14-02-PLAN.md*

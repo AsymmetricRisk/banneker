@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS, detectImplicitCliff, detectCompound, IMPLICIT_CLIFF_SIGNALS } from '../../lib/cliff-detection.js';
+import { extractConstraints, checkComplexity, COMPLEXITY_INDICATORS } from '../../lib/complexity-ceiling.js';
 
 describe('Surveyor Integration', () => {
   let tempDir;
@@ -882,6 +883,155 @@ survey_completeness: 55%
         // Third or fourth response should trigger (2+ accumulated)
         const triggered = results.some(r => r.trigger && r.reason === 'compound_implicit');
         assert.ok(triggered, 'Should trigger compound detection within 4 responses');
+      });
+    });
+  });
+
+  describe('Complexity ceiling integration', () => {
+    describe('Constraint extraction from survey', () => {
+      it('extracts solo developer constraint', () => {
+        const survey = {
+          project: {
+            name: 'TaskApp',
+            one_liner: "A side project I'm building by myself"
+          }
+        };
+
+        const constraints = extractConstraints(survey);
+
+        assert.strictEqual(constraints.teamSize, 'solo');
+        assert.strictEqual(constraints.maxComplexity, 'minimal');
+      });
+
+      it('extracts budget constraint from surveyor notes', () => {
+        const survey = { project: { name: 'TaskApp' } };
+        const surveyorNotes = {
+          implicit_constraints: [
+            "User mentioned wanting to stay on free tier",
+            "Budget is a concern"
+          ]
+        };
+
+        const constraints = extractConstraints(survey, surveyorNotes);
+
+        assert.strictEqual(constraints.budget, 'constrained');
+        assert.strictEqual(constraints.maxComplexity, 'minimal');
+      });
+
+      it('extracts MVP timeline', () => {
+        const survey = {
+          project: {
+            name: 'TaskApp',
+            one_liner: "Building an MVP to test the market"
+          }
+        };
+
+        const constraints = extractConstraints(survey);
+
+        assert.strictEqual(constraints.timeline, 'fast');
+        assert.strictEqual(constraints.maxComplexity, 'minimal');
+      });
+
+      it('detects beginner experience', () => {
+        const survey = { project: { name: 'TaskApp' } };
+        const surveyorNotes = {
+          implicit_constraints: [
+            "This is my first time building a full-stack app"
+          ]
+        };
+
+        const constraints = extractConstraints(survey, surveyorNotes);
+
+        assert.strictEqual(constraints.experience, 'beginner');
+      });
+    });
+
+    describe('Complexity ceiling enforcement', () => {
+      it('allows any recommendation for standard complexity', () => {
+        const constraints = { maxComplexity: 'standard' };
+        const recommendations = [
+          "Use microservices architecture",
+          "Deploy on Kubernetes cluster",
+          "Implement event-driven patterns"
+        ];
+
+        for (const rec of recommendations) {
+          const result = checkComplexity(rec, constraints);
+          assert.strictEqual(result.valid, true, `${rec} should be valid for standard`);
+        }
+      });
+
+      it('flags over-engineering for minimal complexity', () => {
+        const constraints = { maxComplexity: 'minimal' };
+
+        const testCases = [
+          { rec: "Use microservices", pattern: 'Microservice' },
+          { rec: "Deploy on Kubernetes", pattern: 'K8s' },
+          { rec: "Event-driven architecture", pattern: 'Event-driven' },
+          { rec: "Build distributed system", pattern: 'Distributed' }
+        ];
+
+        for (const { rec, pattern } of testCases) {
+          const result = checkComplexity(rec, constraints);
+          assert.strictEqual(result.valid, false, `${rec} should be flagged`);
+          assert.ok(
+            result.violations.some(v => v.reason.includes(pattern)),
+            `Should flag ${pattern}`
+          );
+        }
+      });
+
+      it('allows simple stack for minimal complexity', () => {
+        const constraints = { maxComplexity: 'minimal' };
+        const simpleRecommendations = [
+          "Use Next.js with PostgreSQL",
+          "Deploy on Vercel",
+          "Use SQLite for local development",
+          "Simple monolithic Node.js server"
+        ];
+
+        for (const rec of simpleRecommendations) {
+          const result = checkComplexity(rec, constraints);
+          assert.strictEqual(result.valid, true, `${rec} should be valid for minimal`);
+        }
+      });
+
+      it('provides suggestions in violations', () => {
+        const constraints = { maxComplexity: 'minimal' };
+        const result = checkComplexity("Use Kubernetes", constraints);
+
+        assert.ok(result.violations[0].suggestion);
+        assert.ok(result.violations[0].suggestion.includes('monolithic'));
+      });
+    });
+
+    describe('End-to-end constraint to ceiling flow', () => {
+      it('detects MVP and enforces minimal ceiling', () => {
+        // Simulate survey with MVP indicators
+        const survey = {
+          project: {
+            name: 'TaskTracker',
+            one_liner: "Quick MVP to validate idea before building full product"
+          }
+        };
+        const surveyorNotes = {
+          implicit_constraints: [
+            "Just me working on this",
+            "Want to ship fast"
+          ]
+        };
+
+        // Extract constraints
+        const constraints = extractConstraints(survey, surveyorNotes);
+        assert.strictEqual(constraints.maxComplexity, 'minimal');
+
+        // Validate recommendations
+        const goodRec = checkComplexity("Use Next.js with Prisma and PostgreSQL", constraints);
+        assert.strictEqual(goodRec.valid, true);
+
+        const badRec = checkComplexity("Use microservices with Kubernetes and event sourcing", constraints);
+        assert.strictEqual(badRec.valid, false);
+        assert.ok(badRec.violations.length >= 2, 'Should flag multiple violations');
       });
     });
   });

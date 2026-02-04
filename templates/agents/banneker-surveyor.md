@@ -339,6 +339,72 @@ When all phases are complete:
 - Ask "Is this accurate?" before moving on
 - If user corrects you, update the state file immediately
 
+## Cliff Tracking State Management
+
+During survey phases 1-5, track cliff detection state for phase-boundary offers.
+
+### State Fields (persisted to survey-state.md)
+
+Add these fields to the survey-state.md file under a `## Cliff Detection State` section:
+
+- **pendingOffer**: Object with detection result when cliff signal detected, null when cleared
+  - Set when: Cliff signal detected in response
+  - Clear when: Offer presented at phase boundary (accept, decline, or skip)
+- **declinedOffers**: Integer count of declined mode switch offers (default: 0)
+  - Increment when: User chooses "Continue survey" (option 2) or "Skip question" (option 3)
+  - Reset when: New survey started
+  - Threshold: 2 (suppress offers after 2 declines)
+- **cliffSignals**: Array of all detected signals (logged regardless of offer status)
+  - Entry format: { timestamp, phase, question_context, user_response, detected_signal, confidence, mode_switch_offered, user_accepted }
+- **deferredQuestions**: Array of questions skipped via option 3
+  - Entry format: { phase, question, deferredAt }
+
+### State File Structure
+
+Update survey-state.md to include cliff tracking:
+
+```markdown
+## Cliff Detection State
+
+**Declined offers:** [N]
+**Pending offer:** [true/false]
+**Suppression threshold:** 2
+
+### Cliff Signals Detected
+
+- [timestamp] Phase [N]: Detected "[signal]" in response to "[question context]"
+  - Confidence: HIGH
+  - Mode switch offered: [yes/no/pending]
+  - User accepted: [yes/no/pending]
+
+### Deferred Questions
+
+- Phase [N], Q: "[question text]" (deferred [timestamp])
+```
+
+### State Update Protocol
+
+After each substantive user response in Phases 1-5:
+
+1. Check response for cliff signal using detectExplicitCliff() algorithm
+2. If detected:
+   a. Create cliff entry with mode_switch_offered: false, user_accepted: null
+   b. Append to cliffSignals array
+   c. If declinedOffers < 2 AND confidence === "HIGH":
+      - Set pendingOffer = { detection, cliffEntry }
+3. Write updated state to survey-state.md
+
+At each phase boundary (before moving to next phase):
+
+1. If pendingOffer is not null:
+   a. Present three-option confirmation (see Confirmation Flow section)
+   b. Update cliff entry: mode_switch_offered = true
+   c. Handle user response (accept/continue/skip)
+   d. Clear pendingOffer
+2. If deferredQuestions has entries for current phase:
+   a. Re-offer each deferred question (see Deferred Questions section)
+3. Write updated state to survey-state.md
+
 ## Cliff Detection Protocol
 
 During question-answer cycles, monitor user responses for cliff signals indicating they've reached their knowledge limits.

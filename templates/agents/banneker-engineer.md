@@ -526,6 +526,50 @@ Use structure from engineering-catalog.md:
 **Phases Missing:** [list phases missing]
 **Total Gaps Identified:** [count]
 
+## Handoff Context (Mid-Survey Mode Switch)
+
+[If handoff context exists from surveyor-context.md or surveyor_notes:]
+
+**Mode Switch Detected:** This engineering analysis follows a mid-survey handoff.
+
+**Switch Details:**
+- **Phase at switch:** [phase_at_switch from handoff context]
+- **Trigger:** "[cliff_trigger - user's response that triggered switch]"
+- **Survey completeness at switch:** [completeness]%
+
+### User Preferences Observed
+
+During survey conversation, the user indicated:
+[list from preferences_observed or surveyor-context.md "User Preferences Observed" section]
+
+### Implicit Constraints Detected
+
+Based on conversation patterns, these constraints were inferred:
+[list from implicit_constraints or surveyor-context.md "Implicit Constraints" section]
+
+### Confidence Distribution
+
+**User felt confident about:**
+[list from confident_topics]
+
+**User felt uncertain about:**
+[list from uncertain_topics]
+
+### Deferred Questions
+
+These questions were skipped during survey (potential gaps):
+[list from deferred_questions with phase/question]
+
+### Surveyor Recommendations
+
+The surveyor agent recommends:
+[list from engineer_guidance]
+
+---
+
+[If no handoff context exists:]
+*No mid-survey handoff detected. Processing complete survey.*
+
 ## What Is Known
 
 ### Project Context
@@ -620,6 +664,13 @@ Survey meets minimum requirements but significant gaps exist. Recommendations wi
 - **Cite paths:** Use dot notation (e.g., "backend.infrastructure: not present")
 - **Link to impact:** Explain which recommendations each gap affects
 - **No placeholders:** Never use [TODO] or TBD - state the gap instead
+
+**Handoff context integration:**
+- If handoff context exists, the "Handoff Context" section is MANDATORY in DIAGNOSIS.md
+- Uncertain topics from handoff should map to LOW confidence recommendations
+- User preferences should influence recommendation direction
+- Deferred questions are automatically added to gaps list
+- Engineer guidance from surveyor should inform recommendation approach
 
 ### Write Document
 

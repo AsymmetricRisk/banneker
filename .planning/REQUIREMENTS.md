@@ -95,10 +95,10 @@
 
 ### REQ-APPROVE: Approval Flow
 
-- [ ] **APPROVE-01** (must): Require explicit user approval before merging decisions to architecture-decisions.json. Source: ARCHITECTURE.md approval gate requirement.
-- [ ] **APPROVE-02** (must): Support per-decision granularity — user can approve/reject individual decisions. Source: v0.3.0 features research.
-- [ ] **APPROVE-03** (must): Support edit-before-approve — user can modify proposed decisions before accepting. Source: v0.3.0 features research.
-- [ ] **APPROVE-04** (should): Generate summary tables for quick review to reduce review fatigue. Source: FEATURES.md review fatigue mitigation.
+- [x] **APPROVE-01** (must): Require explicit user approval before merging decisions to architecture-decisions.json. Source: ARCHITECTURE.md approval gate requirement.
+- [x] **APPROVE-02** (must): Support per-decision granularity — user can approve/reject individual decisions. Source: v0.3.0 features research.
+- [x] **APPROVE-03** (must): Support edit-before-approve — user can modify proposed decisions before accepting. Source: v0.3.0 features research.
+- [x] **APPROVE-04** (should): Generate summary tables for quick review to reduce review fatigue. Source: FEATURES.md review fatigue mitigation.
 
 ### REQ-ENGINT: Engineer Integration
 
@@ -131,10 +131,10 @@
 | ENGDOC-04 | Phase 11 | Pending |
 | ENGDOC-05 | Phase 15 | Pending |
 | ENGDOC-06 | Phase 15 | Pending |
-| APPROVE-01 | Phase 13 | Pending |
-| APPROVE-02 | Phase 13 | Pending |
-| APPROVE-03 | Phase 13 | Pending |
-| APPROVE-04 | Phase 13 | Pending |
+| APPROVE-01 | Phase 13 | Complete |
+| APPROVE-02 | Phase 13 | Complete |
+| APPROVE-03 | Phase 13 | Complete |
+| APPROVE-04 | Phase 13 | Complete |
 | ENGINT-01 | Phase 11 | Pending |
 | ENGINT-02 | Phase 11 | Pending |
 | ENGINT-03 | Phase 14 | Pending |

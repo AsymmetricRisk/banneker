@@ -430,13 +430,14 @@ Plans:
 4. Research-on-demand capability available via WebSearch to fill knowledge gaps during synthesis
 5. End-to-end pipeline works: survey with cliff -> engineer takeover -> documents -> approval -> merge
 
-**Plans:** TBD
+**Plans:** 5 plans
 
 Plans:
-- [ ] 15-01: Implicit signal detection patterns and compound logic
-- [ ] 15-02: Complexity ceiling configuration and enforcement
-- [ ] 15-03: Research-on-demand WebSearch integration
-- [ ] 15-04: End-to-end integration tests and installer update
+- [ ] 15-01-PLAN.md — TDD: Implicit signal detection and compound logic
+- [ ] 15-02-PLAN.md — TDD: Complexity ceiling module
+- [ ] 15-03-PLAN.md — Surveyor compound detection integration
+- [ ] 15-04-PLAN.md — Engineer complexity ceiling and research-on-demand
+- [ ] 15-05-PLAN.md — Integration tests and installer update
 
 ---
 
@@ -460,7 +461,7 @@ Plans:
 | 12. Cliff Detection | v0.3.0 | 3/3 | Complete | 2026-02-03 |
 | 13. Approval Flow | v0.3.0 | 3/3 | Complete | 2026-02-04 |
 | 14. Survey Integration | v0.3.0 | 4/4 | Complete | 2026-02-04 |
-| 15. Polish & Advanced | v0.3.0 | 0/4 | Not started | - |
+| 15. Polish & Advanced | v0.3.0 | 0/5 | Not started | - |
 
 ---
-*Roadmap updated: 2026-02-04 — Phase 14 complete (all 4 plans executed, verification passed)*
+*Roadmap updated: 2026-02-04 — Phase 15 planned (5 plans in 3 waves)*

@@ -607,4 +607,166 @@ During conversation, user indicated:
       assert.ok(context.includes('backend'));
     });
   });
+
+  describe('Engineer Handoff Consumption', () => {
+    it('should detect surveyor-context.md presence', async () => {
+      // Write surveyor-context.md to temp dir
+      const contextPath = join(tempDir, '.banneker', 'state', 'surveyor-context.md');
+      const contextContent = `---
+generated: 2026-02-03T10:30:00Z
+phase_at_switch: backend
+cliff_trigger: "I don't know what database to use"
+survey_completeness: 55%
+---
+
+## User Preferences Observed
+
+- Prefers managed services
+- Budget-conscious
+
+## Implicit Constraints
+
+- Solo developer
+
+## Topics User Felt Confident About
+
+- User flows
+
+## Topics User Felt Uncertain About
+
+- Infrastructure
+
+## Recommendations for Engineer Agent
+
+- Start with simple approach
+`;
+      await writeFile(contextPath, contextContent);
+
+      // Verify file exists (simulating engineer's Step 1a check)
+      const content = await readFile(contextPath, 'utf-8');
+      assert.ok(content.includes('phase_at_switch: backend'));
+      assert.ok(content.includes('Prefers managed services'));
+    });
+
+    it('should extract surveyor_notes from partial survey.json', async () => {
+      const partialSurvey = {
+        survey_metadata: {
+          version: '1.0',
+          created: '2026-02-03T10:00:00Z',
+          runtime: 'claude-code',
+          status: 'partial'  // Indicates mid-survey handoff
+        },
+        project: {
+          name: 'TestApp',
+          one_liner: 'A test application'
+        },
+        actors: [{ name: 'User', type: 'human' }],
+        walkthroughs: [{ name: 'Test Flow', steps: ['Step 1'] }],
+        surveyor_notes: {
+          generated: '2026-02-03T10:30:00Z',
+          phase_at_switch: 'backend',
+          cliff_trigger: "I don't know",
+          survey_completeness_percent: 55,
+          preferences_observed: ['Prefers managed services'],
+          implicit_constraints: ['Solo developer'],
+          confident_topics: ['User flows'],
+          uncertain_topics: ['Infrastructure', 'Database'],
+          deferred_questions: [
+            { phase: 'backend', question: 'What caching?', deferred_at: '2026-02-03T10:25:00Z' }
+          ],
+          engineer_guidance: ['Start simple', 'Include cost analysis']
+        }
+      };
+
+      const surveyPath = join(tempDir, '.banneker', 'survey.json');
+      await writeFile(surveyPath, JSON.stringify(partialSurvey, null, 2));
+
+      // Simulate engineer's Step 1c - extract surveyor_notes
+      const content = await readFile(surveyPath, 'utf-8');
+      const survey = JSON.parse(content);
+
+      // Verify status check (Step 1b)
+      assert.equal(survey.survey_metadata.status, 'partial');
+
+      // Verify surveyor_notes extraction (Step 1c)
+      assert.ok(survey.surveyor_notes);
+      assert.equal(survey.surveyor_notes.phase_at_switch, 'backend');
+      assert.equal(survey.surveyor_notes.survey_completeness_percent, 55);
+      assert.deepEqual(survey.surveyor_notes.preferences_observed, ['Prefers managed services']);
+      assert.equal(survey.surveyor_notes.deferred_questions.length, 1);
+      assert.deepEqual(survey.surveyor_notes.engineer_guidance, ['Start simple', 'Include cost analysis']);
+    });
+
+    it('should handle complete survey without handoff context', async () => {
+      const completeSurvey = {
+        survey_metadata: {
+          version: '1.0',
+          created: '2026-02-03T10:00:00Z',
+          runtime: 'claude-code',
+          status: 'complete'  // Normal complete survey
+        },
+        project: { name: 'TestApp', one_liner: 'A test application' },
+        actors: [{ name: 'User', type: 'human' }],
+        walkthroughs: [{ name: 'Test Flow', steps: ['Step 1'] }],
+        backend: { applicable: true, stack: ['Node.js'] }
+        // No surveyor_notes - complete survey
+      };
+
+      const surveyPath = join(tempDir, '.banneker', 'survey.json');
+      await writeFile(surveyPath, JSON.stringify(completeSurvey, null, 2));
+
+      const content = await readFile(surveyPath, 'utf-8');
+      const survey = JSON.parse(content);
+
+      // Verify no handoff context
+      assert.equal(survey.survey_metadata.status, 'complete');
+      assert.equal(survey.surveyor_notes, undefined);
+    });
+
+    it('should map uncertain topics to potential gaps', () => {
+      const surveyorNotes = {
+        uncertain_topics: ['Infrastructure', 'Database selection', 'Caching strategy'],
+        deferred_questions: [
+          { phase: 'backend', question: 'What database?', deferred_at: '2026-02-03T10:25:00Z' }
+        ]
+      };
+
+      // Simulate engineer's gap identification from handoff
+      const gapsFromHandoff = [
+        ...surveyorNotes.uncertain_topics.map(t => `Uncertainty: ${t}`),
+        ...surveyorNotes.deferred_questions.map(q => `Deferred: ${q.question} (${q.phase})`)
+      ];
+
+      assert.equal(gapsFromHandoff.length, 4);
+      assert.ok(gapsFromHandoff.includes('Uncertainty: Infrastructure'));
+      assert.ok(gapsFromHandoff.includes('Deferred: What database? (backend)'));
+    });
+
+    it('should prioritize handoff context sources correctly', async () => {
+      // Both surveyor-context.md AND surveyor_notes exist
+      const contextPath = join(tempDir, '.banneker', 'state', 'surveyor-context.md');
+      await writeFile(contextPath, '---\ngenerated: 2026-02-03T10:30:00Z\n---\n\n## User Preferences\n\n- From markdown file');
+
+      const surveyPath = join(tempDir, '.banneker', 'survey.json');
+      const survey = {
+        survey_metadata: { status: 'partial' },
+        project: { name: 'Test' },
+        actors: [],
+        walkthroughs: [],
+        surveyor_notes: {
+          generated: '2026-02-03T10:30:00Z',
+          phase_at_switch: 'backend',
+          preferences_observed: ['From JSON notes']
+        }
+      };
+      await writeFile(surveyPath, JSON.stringify(survey, null, 2));
+
+      // Both sources exist - should use both
+      const mdContent = await readFile(contextPath, 'utf-8');
+      const jsonContent = JSON.parse(await readFile(surveyPath, 'utf-8'));
+
+      assert.ok(mdContent.includes('From markdown file'));
+      assert.ok(jsonContent.surveyor_notes.preferences_observed.includes('From JSON notes'));
+    });
+  });
 });

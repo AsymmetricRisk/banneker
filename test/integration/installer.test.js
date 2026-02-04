@@ -636,4 +636,74 @@ describe('Installer Integration Tests', () => {
       assert.ok(content.includes('version:'), 'Should have version in frontmatter');
     });
   });
+
+  describe('Survey schema validation (Phase 14)', () => {
+    it('should include surveyor_notes in survey schema', () => {
+      const schemaPath = join(PACKAGE_ROOT, 'schemas', 'survey.schema.json');
+      const content = readFileSync(schemaPath, 'utf8');
+      const schema = JSON.parse(content);
+
+      // Verify surveyor_notes property exists
+      assert.ok(schema.properties.surveyor_notes,
+        'Survey schema should have surveyor_notes property');
+
+      // Verify nested fields
+      const notes = schema.properties.surveyor_notes;
+      assert.strictEqual(notes.type, 'object');
+      assert.ok(notes.properties.generated, 'Should have generated field');
+      assert.ok(notes.properties.phase_at_switch, 'Should have phase_at_switch field');
+      assert.ok(notes.properties.preferences_observed, 'Should have preferences_observed field');
+      assert.ok(notes.properties.implicit_constraints, 'Should have implicit_constraints field');
+      assert.ok(notes.properties.engineer_guidance, 'Should have engineer_guidance field');
+
+      // Verify required fields in surveyor_notes
+      assert.ok(notes.required.includes('generated'));
+      assert.ok(notes.required.includes('phase_at_switch'));
+
+      // Verify surveyor_notes is NOT required at root level
+      assert.ok(!schema.required.includes('surveyor_notes'),
+        'surveyor_notes should be optional at root level');
+    });
+
+    it('should include status field in survey_metadata', () => {
+      const schemaPath = join(PACKAGE_ROOT, 'schemas', 'survey.schema.json');
+      const content = readFileSync(schemaPath, 'utf8');
+      const schema = JSON.parse(content);
+
+      const metadata = schema.properties.survey_metadata;
+      assert.ok(metadata.properties.status, 'survey_metadata should have status field');
+      assert.deepEqual(metadata.properties.status.enum, ['complete', 'partial'],
+        'status should have enum with complete and partial');
+    });
+
+    it('should have cliff_signals as optional array', () => {
+      const schemaPath = join(PACKAGE_ROOT, 'schemas', 'survey.schema.json');
+      const content = readFileSync(schemaPath, 'utf8');
+      const schema = JSON.parse(content);
+
+      // Verify cliff_signals exists
+      assert.ok(schema.properties.cliff_signals,
+        'Survey schema should have cliff_signals property');
+      assert.strictEqual(schema.properties.cliff_signals.type, 'array');
+
+      // Verify cliff_signals is NOT required at root level
+      assert.ok(!schema.required.includes('cliff_signals'),
+        'cliff_signals should be optional at root level');
+    });
+
+    it('should have correct cliff_signal entry structure', () => {
+      const schemaPath = join(PACKAGE_ROOT, 'schemas', 'survey.schema.json');
+      const content = readFileSync(schemaPath, 'utf8');
+      const schema = JSON.parse(content);
+
+      const signalItem = schema.properties.cliff_signals.items;
+      assert.ok(signalItem.properties.timestamp, 'Should have timestamp');
+      assert.ok(signalItem.properties.phase, 'Should have phase');
+      assert.ok(signalItem.properties.user_response, 'Should have user_response');
+      assert.ok(signalItem.properties.detected_signal, 'Should have detected_signal');
+      assert.ok(signalItem.properties.confidence, 'Should have confidence');
+      assert.ok(signalItem.properties.mode_switch_offered, 'Should have mode_switch_offered');
+      assert.ok(signalItem.properties.user_accepted, 'Should have user_accepted');
+    });
+  });
 });

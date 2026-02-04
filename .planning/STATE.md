@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Transform structured discovery interviews into engineering plans, architecture diagrams, and agent-ready HTML appendices
-**Current focus:** Milestone v0.3.0 — The Engineer (Phase 14: Survey Integration)
+**Current focus:** Milestone v0.3.0 — The Engineer (Phase 15: Polish & Advanced Detection)
 
 ## Current Position
 
-Phase: 14 of 15 (Survey Integration)
-Plan: 4 of 4 in current phase
-Status: Phase complete + verified
-Last activity: 2026-02-04 — Phase 14 verified (5/5 must-haves)
+Phase: 15 of 15 (Polish & Advanced Detection)
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-04 — Completed 15-01-PLAN.md
 
-Progress: [################----] 80% (Phase 14: 4/4 plans - COMPLETE + VERIFIED)
+Progress: [#################---] 85% (Phase 15: 1/4 plans complete)
 
 ## Current Milestone: v0.3.0
 
@@ -25,7 +25,7 @@ Progress: [################----] 80% (Phase 14: 4/4 plans - COMPLETE + VERIFIED)
 - Phase 12: Cliff Detection (signal detection + confirmation) - COMPLETE
 - Phase 13: Approval Flow (user approval before merge) - COMPLETE
 - Phase 14: Survey Integration (mid-survey takeover) - COMPLETE + VERIFIED
-- Phase 15: Polish & Advanced Detection (implicit signals, complexity ceiling)
+- Phase 15: Polish & Advanced Detection (implicit signals, complexity ceiling) - IN PROGRESS
 
 **Requirements:** 17 total (CLIFF: 4, ENGDOC: 6, APPROVE: 4, ENGINT: 5)
 
@@ -94,6 +94,10 @@ Recent decisions affecting v0.3.0 work:
 - Handoff Context section MANDATORY in DIAGNOSIS.md when handoff context exists (14-04)
 - Uncertain topics from handoff map to LOW confidence recommendations (14-04)
 - Deferred questions automatically added to gaps list (14-04)
+- Implicit signals use MEDIUM confidence vs explicit HIGH (15-01)
+- Compound threshold requires 2+ implicit signals across current + last 3 responses (15-01)
+- 3 implicit signal categories: hedging (10), quality_markers (7), deferrals (7) (15-01)
+- Explicit signals always take priority with immediate HIGH confidence trigger (15-01)
 
 ### Blockers/Concerns
 
@@ -102,9 +106,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-04T17:45:00Z
-Stopped at: Phase 14 verified (5/5 must-haves passed)
+Last session: 2026-02-04T17:20:00Z
+Stopped at: Completed 15-01-PLAN.md (Implicit & Compound Detection)
 Resume file: None
 
 ---
-*Last updated: 2026-02-04 — Phase 14 complete and verified*
+*Last updated: 2026-02-04 — Phase 15 plan 01 complete*

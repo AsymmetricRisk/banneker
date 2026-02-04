@@ -32,6 +32,11 @@
           "type": "string",
           "description": "Runtime environment that executed the survey",
           "enum": ["claude-code", "opencode", "gemini-code"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["complete", "partial"],
+          "description": "Survey completion status (partial indicates mid-survey mode switch)"
         }
       }
     },
@@ -263,6 +268,70 @@
           }
         }
       }
+    },
+    "surveyor_notes": {
+      "type": "object",
+      "description": "Context summary from surveyor for engineer handoff (populated on mid-survey mode switch)",
+      "properties": {
+        "generated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when notes were generated"
+        },
+        "phase_at_switch": {
+          "type": "string",
+          "description": "Survey phase name when mode switch occurred"
+        },
+        "cliff_trigger": {
+          "type": "string",
+          "description": "User response that triggered the mode switch"
+        },
+        "survey_completeness_percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Estimated survey completion percentage at mode switch"
+        },
+        "preferences_observed": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "User preferences noted during conversation"
+        },
+        "implicit_constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Constraints implied but not explicitly stated"
+        },
+        "confident_topics": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Topics where user provided confident responses"
+        },
+        "uncertain_topics": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Topics where user showed uncertainty"
+        },
+        "deferred_questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "phase": { "type": "string" },
+              "question": { "type": "string" },
+              "deferred_at": { "type": "string", "format": "date-time" }
+            },
+            "required": ["phase", "question", "deferred_at"]
+          },
+          "description": "Questions skipped during survey"
+        },
+        "engineer_guidance": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Recommendations for engineer based on conversation"
+        }
+      },
+      "required": ["generated", "phase_at_switch"]
     }
   }
 }

@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 ## Current Position
 
 Phase: 15 of 15 (Polish & Advanced Detection)
-Plan: 1 of 4 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-02-04 — Completed 15-01-PLAN.md
+Last activity: 2026-02-04 — Completed 15-02-PLAN.md
 
-Progress: [#################---] 85% (Phase 15: 1/4 plans complete)
+Progress: [##################--] 90% (Phase 15: 2/5 plans complete)
 
 ## Current Milestone: v0.3.0
 
@@ -98,6 +98,11 @@ Recent decisions affecting v0.3.0 work:
 - Compound threshold requires 2+ implicit signals across current + last 3 responses (15-01)
 - 3 implicit signal categories: hedging (10), quality_markers (7), deferrals (7) (15-01)
 - Explicit signals always take priority with immediate HIGH confidence trigger (15-01)
+- maxComplexity levels: standard (default), minimal (constrained), enterprise (15-02)
+- Solo, budget, timeline constraints all trigger minimal complexity ceiling (15-02)
+- Over-engineering patterns: microservices, k8s, event-driven, distributed (15-02)
+- Standard complexity projects bypass all checks (no false positives) (15-02)
+- Violations include type, reason, and suggestion for alternatives (15-02)
 
 ### Blockers/Concerns
 
@@ -106,9 +111,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-04T17:20:00Z
-Stopped at: Completed 15-01-PLAN.md (Implicit & Compound Detection)
+Last session: 2026-02-04T17:26:00Z
+Stopped at: Completed 15-02-PLAN.md (Complexity Ceiling)
 Resume file: None
 
 ---
-*Last updated: 2026-02-04 — Phase 15 plan 01 complete*
+*Last updated: 2026-02-04 — Phase 15 plan 02 complete*

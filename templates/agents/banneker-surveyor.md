@@ -374,6 +374,8 @@ Add these fields to the survey-state.md file under a `## Cliff Detection State` 
 - **pendingOffer**: Object with detection result when cliff signal detected, null when cleared
   - Set when: Cliff signal detected in response
   - Clear when: Offer presented at phase boundary (accept, decline, or skip)
+- **pendingOfferConfidence**: Confidence level (HIGH or MEDIUM) for determining message format
+- **pendingOfferReason**: Trigger reason (explicit_signal or compound_implicit)
 - **declinedOffers**: Integer count of declined mode switch offers (default: 0)
   - Increment when: User chooses "Continue survey" (option 2) or "Skip question" (option 3)
   - Reset when: New survey started
@@ -382,17 +384,35 @@ Add these fields to the survey-state.md file under a `## Cliff Detection State` 
   - Entry format: { timestamp, phase, question_context, user_response, detected_signal, confidence, mode_switch_offered, user_accepted }
 - **deferredQuestions**: Array of questions skipped via option 3
   - Entry format: { phase, question, deferredAt }
+- **recentHistory**: Array of last 5 responses with implicit signal counts (used by compound detection)
+  - Entry format: { responseNumber, implicitSignals, timestamp }
 
 ### State File Structure
 
-Update survey-state.md to include cliff tracking:
+Update survey-state.md to include cliff tracking with compound detection support:
 
 ```markdown
 ## Cliff Detection State
 
 **Declined offers:** [N]
 **Pending offer:** [true/false]
+**Pending offer confidence:** [HIGH/MEDIUM]
 **Suppression threshold:** 2
+
+### Recent Response History
+
+Tracks last 5 responses for compound detection (only last 3 used for threshold):
+
+| # | Phase | Implicit Signals | Categories |
+|---|-------|------------------|------------|
+| 1 | 2     | 0                | -          |
+| 2 | 2     | 1                | hedging    |
+| 3 | 3     | 0                | -          |
+| 4 | 3     | 1                | deferral   |
+| 5 | 3     | 1                | hedging    |
+
+**Total implicit (last 3):** 2
+**Compound threshold met:** YES
 
 ### Cliff Signals Detected
 
@@ -410,24 +430,102 @@ Update survey-state.md to include cliff tracking:
 
 After each substantive user response in Phases 1-5:
 
-1. Check response for cliff signal using detectExplicitCliff() algorithm
-2. If detected:
-   a. Create cliff entry with mode_switch_offered: false, user_accepted: null
-   b. Append to cliffSignals array
-   c. If declinedOffers < 2 AND confidence === "HIGH":
-      - Set pendingOffer = { detection, cliffEntry }
-3. Write updated state to survey-state.md
+**Step 1: Update response history for compound detection**
+
+```javascript
+// Maintain recentHistory array in survey-state.md
+const recentHistory = state.recentHistory || [];
+
+// After processing user response, run implicit detection and add to history
+const implicitResult = detectImplicitCliff(userResponse);
+recentHistory.push({
+  responseNumber: state.currentResponseNumber,
+  implicitSignals: implicitResult.signals,
+  timestamp: new Date().toISOString()
+});
+
+// Keep only last 5 entries (we only use last 3, but buffer for safety)
+if (recentHistory.length > 5) {
+  recentHistory.shift();
+}
+
+state.recentHistory = recentHistory;
+```
+
+**Step 2: Run compound detection**
+
+```javascript
+// Use detectCompound with history for accumulated signal detection
+const cliffResult = detectCompound(userResponse, state.recentHistory);
+
+if (cliffResult.trigger) {
+  // Log to cliff_signals array
+  survey.cliff_signals = survey.cliff_signals || [];
+  survey.cliff_signals.push({
+    timestamp: new Date().toISOString(),
+    phase: currentPhase,
+    signal: cliffResult.signal || cliffResult.signals[0]?.signal,
+    category: cliffResult.reason === 'explicit_signal' ? 'explicit' : cliffResult.signals[0]?.category,
+    confidence: cliffResult.confidence,
+    trigger_reason: cliffResult.reason,
+    signal_count: cliffResult.signalCount
+  });
+
+  // Check if we should offer mode switch
+  if (!state.pendingOffer && state.declinedOffers < 2) {
+    // Trigger mode switch offer at phase boundary
+    state.pendingOffer = true;
+    state.pendingOfferConfidence = cliffResult.confidence;
+    state.pendingOfferReason = cliffResult.reason;
+  }
+}
+```
+
+**Step 3: Log implicit signals even when not triggering**
+
+```javascript
+// Always log implicit signals for analytics, even if no trigger
+if (implicitResult.detected && !cliffResult.trigger) {
+  survey.cliff_signals = survey.cliff_signals || [];
+  survey.cliff_signals.push({
+    timestamp: new Date().toISOString(),
+    phase: currentPhase,
+    signals: implicitResult.signals,
+    category: 'implicit_logged',
+    confidence: 'MEDIUM',
+    trigger_reason: 'below_threshold',
+    signal_count: cliffResult.signalCount,
+    threshold: 2
+  });
+}
+```
+
+**Step 4: Write updated state**
+
+Write updated state to survey-state.md including recentHistory array.
 
 At each phase boundary (before moving to next phase):
 
 1. If pendingOffer is not null:
-   a. Present three-option confirmation (see Confirmation Flow section)
+   a. Present three-option confirmation with appropriate confidence message (see Confirmation Flow section)
    b. Update cliff entry: mode_switch_offered = true
    c. Handle user response (accept/continue/skip)
-   d. Clear pendingOffer
+   d. Clear pendingOffer, pendingOfferConfidence, pendingOfferReason
 2. If deferredQuestions has entries for current phase:
    a. Re-offer each deferred question (see Deferred Questions section)
-3. Write updated state to survey-state.md
+3. **Reset recentHistory array** (compound detection is per-phase contextual)
+4. Write updated state to survey-state.md
+
+### Phase Boundary History Reset
+
+When transitioning between phases, reset the recentHistory array to keep detection contextual:
+
+```javascript
+// At phase transition
+state.recentHistory = [];  // Reset for new phase context
+```
+
+This prevents implicit signals from one phase unduly influencing detection in the next phase.
 
 ## Cliff Detection Protocol
 
@@ -496,34 +594,44 @@ When threshold reached, still log detections but don't offer mode switch:
 
 When a cliff signal is detected and offer threshold not exceeded, present the user with explicit confirmation before any mode switch. **No silent takeover.**
 
-**Step 1: Acknowledge Detection**
+**Step 1: Acknowledge Detection (confidence-based messaging)**
 
-After detecting a cliff signal, respond with:
+The message format depends on `state.pendingOfferConfidence`:
 
-```
-I notice you're uncertain about [topic from question context]. I can switch to engineering mode where I'll:
-
-1. Analyze what we've discussed so far in the survey
-2. Identify gaps in the information we've collected
-3. Propose technical recommendations based on your requirements
-4. Present options for your review and approval
-
-You'll still be in control - all recommendations require your approval before any decisions are made.
-```
-
-**Step 2: Present Options**
-
-Offer exactly three options:
+**For HIGH confidence (explicit signal):**
 
 ```
+I noticed you mentioned "[signal text]" - it sounds like you've reached
+the limit of what you're certain about in this area.
+
 Would you like to:
+1. **Switch to Engineer Mode** - I'll analyze what we have and generate recommendations
+2. **Continue Survey** - We can keep exploring, skip tough questions
+3. **Skip This Topic** - Mark it for later and move on
 
-1. **Switch to engineering mode now** - I'll generate a diagnosis and recommendations
-2. **Continue with the survey** - We can finish collecting information first
-3. **Skip this question for now** - We can come back to it later
-
-Please respond with 1, 2, or 3.
+Your choice?
 ```
+
+**For MEDIUM confidence (compound implicit signals):**
+
+```
+Based on our conversation, I'm sensing some uncertainty in your responses
+about this area (detected [signal_count] uncertainty indicators).
+
+This is a softer signal than an explicit "I don't know" - so I want to
+check in: Would you like to:
+1. **Switch to Engineer Mode** - I'll work with what we have so far
+2. **Continue Survey** - You're actually doing fine, let's keep going
+3. **Skip This Topic** - Defer to engineer for these questions
+
+Your choice?
+```
+
+Use `state.pendingOfferConfidence` and `state.pendingOfferReason` to determine which message format to use. For MEDIUM confidence, include the `signalCount` from the cliff detection result.
+
+**Step 2: Present Options (same for both confidence levels)**
+
+The three options remain consistent regardless of confidence level - only the framing changes.
 
 **Step 3: Handle User Response**
 

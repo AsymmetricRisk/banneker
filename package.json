@@ -1,10 +1,10 @@
 {
   "name": "banneker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Project planning and documentation pipeline for AI coding assistants",
   "type": "module",
   "bin": {
-    "banneker": "./bin/banneker.js"
+    "banneker": "bin/banneker.js"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -13,11 +13,11 @@
   "author": "Daniel Jackson",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dsj7419/banneker.git"
+    "url": "git+https://github.com/AsymmetricRisk/banneker.git"
   },
-  "homepage": "https://github.com/dsj7419/banneker#readme",
+  "homepage": "https://github.com/AsymmetricRisk/banneker#readme",
   "bugs": {
-    "url": "https://github.com/dsj7419/banneker/issues"
+    "url": "https://github.com/AsymmetricRisk/banneker/issues"
   },
   "keywords": [
     "project-planning",

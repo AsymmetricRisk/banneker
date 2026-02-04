@@ -13,7 +13,6 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment: npm-production
 
     steps:
       - name: Checkout code
@@ -46,3 +45,5 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --ignore-scripts --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

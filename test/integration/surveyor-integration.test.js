@@ -7,7 +7,7 @@ import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS } from '../../lib/cliff-detection.js';
+import { detectExplicitCliff, EXPLICIT_CLIFF_SIGNALS, detectImplicitCliff, detectCompound, IMPLICIT_CLIFF_SIGNALS } from '../../lib/cliff-detection.js';
 
 describe('Surveyor Integration', () => {
   let tempDir;
@@ -767,6 +767,122 @@ survey_completeness: 55%
 
       assert.ok(mdContent.includes('From markdown file'));
       assert.ok(jsonContent.surveyor_notes.preferences_observed.includes('From JSON notes'));
+    });
+  });
+
+  describe('Cliff detection integration', () => {
+    describe('Implicit signal detection', () => {
+      it('detects hedging across signal categories', () => {
+        const hedgingResponse = "Maybe we could use React, perhaps with Next.js";
+        const result = detectImplicitCliff(hedgingResponse);
+
+        assert.strictEqual(result.detected, true);
+        assert.ok(result.signals.some(s => s.category === 'hedging'));
+        assert.strictEqual(result.confidence, 'MEDIUM');
+      });
+
+      it('detects quality degradation markers', () => {
+        const uncertainResponse = "Hmm, let me think... um, well...";
+        const result = detectImplicitCliff(uncertainResponse);
+
+        assert.strictEqual(result.detected, true);
+        assert.ok(result.signals.some(s => s.category === 'quality_degradation'));
+      });
+
+      it('detects soft deferrals', () => {
+        const deferralResponse = "Whatever works, you pick the database";
+        const result = detectImplicitCliff(deferralResponse);
+
+        assert.strictEqual(result.detected, true);
+        assert.ok(result.signals.some(s => s.category === 'deferral'));
+      });
+    });
+
+    describe('Compound detection threshold', () => {
+      it('does not trigger on single implicit signal', () => {
+        const singleSignalResponse = "Maybe PostgreSQL";
+        const result = detectCompound(singleSignalResponse, []);
+
+        assert.strictEqual(result.trigger, false);
+        assert.strictEqual(result.signalCount, 1);
+      });
+
+      it('triggers when accumulating 2+ signals across responses', () => {
+        const history = [
+          { implicitSignals: [{ signal: 'maybe', category: 'hedging' }] }
+        ];
+        const currentResponse = "I guess that works";
+        const result = detectCompound(currentResponse, history);
+
+        assert.strictEqual(result.trigger, true);
+        assert.strictEqual(result.reason, 'compound_implicit');
+        assert.strictEqual(result.confidence, 'MEDIUM');
+      });
+
+      it('explicit signal overrides compound threshold', () => {
+        const explicitResponse = "I don't know what database to use";
+        const result = detectCompound(explicitResponse, []);
+
+        assert.strictEqual(result.trigger, true);
+        assert.strictEqual(result.reason, 'explicit_signal');
+        assert.strictEqual(result.confidence, 'HIGH');
+      });
+
+      it('uses only last 3 responses from history', () => {
+        // History with 5 responses, signals only in oldest 2
+        const history = [
+          { implicitSignals: [{ signal: 'maybe', category: 'hedging' }] },
+          { implicitSignals: [{ signal: 'perhaps', category: 'hedging' }] },
+          { implicitSignals: [] }, // -3
+          { implicitSignals: [] }, // -2
+          { implicitSignals: [] }  // -1
+        ];
+        // Current has 1 signal, history (last 3) has 0 = 1 total
+        const result = detectCompound("Maybe", history);
+
+        assert.strictEqual(result.trigger, false);
+        assert.strictEqual(result.signalCount, 1); // Only current signal counts
+      });
+    });
+
+    describe('Full survey simulation', () => {
+      it('simulates gradual uncertainty accumulation', () => {
+        const responses = [
+          "I want to build a task management app",        // No signals
+          "React seems good, maybe Next.js",              // 1 hedging
+          "For the database, hmm, PostgreSQL I guess",    // 2 signals (quality + hedging)
+          "Authentication... um, whatever works really"   // 3 signals (quality + deferral)
+        ];
+
+        const history = [];
+        const results = [];
+
+        for (const response of responses) {
+          const implicitResult = detectImplicitCliff(response);
+          const compoundResult = detectCompound(response, history);
+
+          results.push({
+            response: response.substring(0, 30) + '...',
+            implicitSignals: implicitResult.signals.length,
+            trigger: compoundResult.trigger,
+            reason: compoundResult.reason,
+            totalCount: compoundResult.signalCount
+          });
+
+          // Add to history for next iteration
+          history.push({ implicitSignals: implicitResult.signals });
+        }
+
+        // First response: no trigger
+        assert.strictEqual(results[0].trigger, false);
+
+        // Second response: 1 signal, no trigger
+        assert.strictEqual(results[1].trigger, false);
+
+        // Third or fourth response should trigger (2+ accumulated)
+        const triggered = results.some(r => r.trigger && r.reason === 'compound_implicit');
+        assert.ok(triggered, 'Should trigger compound detection within 4 responses');
+      });
     });
   });
 });

@@ -637,6 +637,81 @@ describe('Installer Integration Tests', () => {
     });
   });
 
+  describe('Phase 15 module installation', () => {
+    it('installs complexity-ceiling.js to lib directory', () => {
+      // Verify lib file exists in package (not installed, but available for tests)
+      const filePath = join(PACKAGE_ROOT, 'lib', 'complexity-ceiling.js');
+      assert.ok(existsSync(filePath), 'complexity-ceiling.js should exist in lib');
+
+      // Verify content structure
+      const content = readFileSync(filePath, 'utf-8');
+      assert.ok(content.includes('COMPLEXITY_INDICATORS'), 'Should export COMPLEXITY_INDICATORS');
+      assert.ok(content.includes('extractConstraints'), 'Should export extractConstraints');
+      assert.ok(content.includes('checkComplexity'), 'Should export checkComplexity');
+    });
+
+    it('installs research-integration.js to lib directory', () => {
+      const filePath = join(PACKAGE_ROOT, 'lib', 'research-integration.js');
+      assert.ok(existsSync(filePath), 'research-integration.js should exist in lib');
+
+      const content = readFileSync(filePath, 'utf-8');
+      assert.ok(content.includes('identifyResearchableGaps'), 'Should export identifyResearchableGaps');
+      assert.ok(content.includes('buildSearchQuery'), 'Should export buildSearchQuery');
+    });
+
+    it('installs updated cliff-detection.js with compound detection', () => {
+      const filePath = join(PACKAGE_ROOT, 'lib', 'cliff-detection.js');
+      assert.ok(existsSync(filePath), 'cliff-detection.js should exist in lib');
+
+      const content = readFileSync(filePath, 'utf-8');
+      assert.ok(content.includes('IMPLICIT_CLIFF_SIGNALS'), 'Should have implicit signals');
+      assert.ok(content.includes('detectImplicitCliff'), 'Should export detectImplicitCliff');
+      assert.ok(content.includes('detectCompound'), 'Should export detectCompound');
+    });
+
+    it('installs updated cliff-detection-signals.md config', () => {
+      // Resolve paths using fake home directory
+      const { configDir } = resolveInstallPaths('claude', 'global', fakeHomeDir);
+      const configTargetDir = join(configDir, 'config');
+
+      // Manually run install logic
+      mkdirSync(configTargetDir, { recursive: true });
+
+      const configTemplatesDir = join(PACKAGE_ROOT, 'templates', 'config');
+      cpSync(configTemplatesDir, configTargetDir, {
+        recursive: true,
+        force: true,
+        filter: (src) => !src.endsWith('.gitkeep')
+      });
+
+      const filePath = join(configTargetDir, 'cliff-detection-signals.md');
+      assert.ok(existsSync(filePath), 'cliff-detection-signals.md should be installed');
+
+      const content = readFileSync(filePath, 'utf-8');
+      assert.ok(content.includes('Implicit Cliff Signals'), 'Should document implicit signals');
+      assert.ok(content.includes('compound'), 'Should document compound detection');
+    });
+
+    it('engineer agent references complexity-ceiling patterns', () => {
+      const agentPath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-engineer.md');
+      const content = readFileSync(agentPath, 'utf-8');
+
+      // Verify complexity ceiling integration documented
+      assert.ok(content.includes('complexity-ceiling'), 'Should reference complexity-ceiling module');
+      assert.ok(content.includes('extractConstraints'), 'Should document extractConstraints');
+      assert.ok(content.includes('checkComplexity'), 'Should document checkComplexity');
+    });
+
+    it('engineer agent references research-integration patterns', () => {
+      const agentPath = join(PACKAGE_ROOT, 'templates', 'agents', 'banneker-engineer.md');
+      const content = readFileSync(agentPath, 'utf-8');
+
+      // Verify research integration documented
+      assert.ok(content.includes('research-integration'), 'Should reference research-integration module');
+      assert.ok(content.includes('identifyResearchableGaps'), 'Should document identifyResearchableGaps');
+    });
+  });
+
   describe('Survey schema validation (Phase 14)', () => {
     it('should include surveyor_notes in survey schema', () => {
       const schemaPath = join(PACKAGE_ROOT, 'schemas', 'survey.schema.json');

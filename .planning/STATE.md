@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Transform structured discovery interviews into engineering plans, architecture diagrams, and agent-ready HTML appendices
-**Current focus:** Milestone v0.3.0 — The Engineer (Phase 13: Approval Flow)
+**Current focus:** Milestone v0.3.0 — The Engineer (Phase 14: Survey Integration)
 
 ## Current Position
 
-Phase: 13 of 15 (Approval Flow)
-Plan: 3 of 3 in current phase
-Status: Phase 13 complete
-Last activity: 2026-02-04 — Completed 13-03-PLAN.md
+Phase: 14 of 15 (Survey Integration)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-04 — Completed 14-01-PLAN.md
 
-Progress: [####################] 100% (Phase 13: 3/3 plans)
+Progress: [######--------------] 33% (Phase 14: 1/3 plans)
 
 ## Current Milestone: v0.3.0
 
@@ -24,7 +24,7 @@ Progress: [####################] 100% (Phase 13: 3/3 plans)
 - Phase 11: Engineer Agent Core (standalone synthesis) - COMPLETE
 - Phase 12: Cliff Detection (signal detection + confirmation) - COMPLETE
 - Phase 13: Approval Flow (user approval before merge) - COMPLETE
-- Phase 14: Survey Integration (mid-survey takeover)
+- Phase 14: Survey Integration (mid-survey takeover) - IN PROGRESS (1/3 plans)
 - Phase 15: Polish & Advanced Detection (implicit signals, complexity ceiling)
 
 **Requirements:** 17 total (CLIFF: 4, ENGDOC: 6, APPROVE: 4, ENGINT: 5)
@@ -85,6 +85,8 @@ Recent decisions affecting v0.3.0 work:
 - Editor fallback chain: $EDITOR -> $VISUAL -> vi (13-02)
 - Batch selection defaults to reject-all on too many invalid attempts (13-02)
 - CWD swap pattern for testing relative-path libraries in isolation (13-03)
+- Phase 1-5 get cliff detection checks; Phase 6 excluded from cliff detection (14-01)
+- State fields for cliff tracking: pendingOffer, declinedOffers, cliffSignals, deferredQuestions (14-01)
 
 ### Blockers/Concerns
 
@@ -93,9 +95,9 @@ Recent decisions affecting v0.3.0 work:
 
 ## Session Continuity
 
-Last session: 2026-02-04T00:19:07Z
-Stopped at: Completed 13-03-PLAN.md (Phase 13 complete)
+Last session: 2026-02-04T03:37:37Z
+Stopped at: Completed 14-01-PLAN.md
 Resume file: None
 
 ---
-*Last updated: 2026-02-04 — Completed 13-03-PLAN.md*
+*Last updated: 2026-02-04 — Completed 14-01-PLAN.md*
